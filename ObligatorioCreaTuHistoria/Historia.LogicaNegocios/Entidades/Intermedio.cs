@@ -1,9 +1,9 @@
-﻿using Historia.LogicaNegocios.ValueObjects;
+﻿using EscogeAventura.LogicaNegocios.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Historia.LogicaNegocios.Entidades
+namespace EscogeAventura.LogicaNegocios.Entidades
 {
     public class Intermedio: Capitulo
     {

@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.12">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Historia.LogicaAccesoDatos\EscogeAventura.LogicaAccesoDatos.csproj" />
+    <ProjectReference Include="..\Historia.LogicaAplicacion\EscogeAventura.LogicaAplicacion.csproj" />
+    <ProjectReference Include="..\Historia.LogicaNegocios\EscogeAventura.LogicaNegocios.csproj" />
+    <ProjectReference Include="..\ObligatorioCreaTuHistoria\DTOs.csproj" />
+  </ItemGroup>
+
+</Project>

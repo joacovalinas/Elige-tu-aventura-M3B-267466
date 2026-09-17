@@ -1,16 +1,14 @@
-﻿using Historia.LogicaNegocios.ValueObjects;
+﻿using EscogeAventura.LogicaNegocios.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace Historia.LogicaNegocios.Entidades
+namespace EscogeAventura.LogicaNegocios.Entidades
 {
     public class Usuario
     {
-        // Constructor parameterless para EF
-        public Usuario() { }
-
+        
         [Key]
         public int Id { get; set; }
 
@@ -34,5 +32,15 @@ namespace Historia.LogicaNegocios.Entidades
         public Rol Rol { get; set; } 
 
         public virtual List<Lectura> Biblioteca { get; set; } = new List<Lectura>();
+
+
+
+
+        // Constructor parameterless para EF
+        public Usuario() { }
+
+
+
+
     }
 }

@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Historia.LogicaNegocios.ValueObjects
+namespace EscogeAventura.LogicaNegocios.ValueObjects
 {
     [ComplexType]
     public record Contrasena

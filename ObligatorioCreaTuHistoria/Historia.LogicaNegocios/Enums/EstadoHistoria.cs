@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Historia.LogicaNegocios.Enums
+namespace EscogeAventura.LogicaNegocios.Enums
 {
     public enum EstadoHistoria
     {

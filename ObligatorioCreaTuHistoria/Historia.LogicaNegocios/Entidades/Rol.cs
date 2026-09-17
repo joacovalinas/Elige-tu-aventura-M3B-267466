@@ -1,7 +1,11 @@
-namespace Historia.LogicaNegocios.Entidades
+using System.ComponentModel.DataAnnotations;
+
+namespace EscogeAventura.LogicaNegocios.Entidades
 {
     public class Rol
     {
+        [Key]
+
         public int Id { get; set; }
         public string Nombre { get; set; } 
 

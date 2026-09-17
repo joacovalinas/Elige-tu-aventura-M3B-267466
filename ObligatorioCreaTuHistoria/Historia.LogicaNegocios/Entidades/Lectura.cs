@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace Historia.LogicaNegocios.Entidades
+namespace EscogeAventura.LogicaNegocios.Entidades
 {
     public class Lectura
     {

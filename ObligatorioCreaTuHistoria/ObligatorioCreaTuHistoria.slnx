@@ -1,7 +1,7 @@
 <Solution>
-  <Project Path="Historia.LogicaAccesoDatos/Historia.LogicaAccesoDatos.csproj" />
-  <Project Path="Historia.LogicaAplicacion/Historia.LogicaAplicacion.csproj" />
-  <Project Path="Historia.LogicaNegocios/Historia.LogicaNegocios.csproj" />
-  <Project Path="Historia.WebApp/Historia.WebApp.csproj" />
+  <Project Path="EscogeAventura/EscogeAventura.WebApp.csproj" Id="ad7f41fe-203d-4d67-82d1-1461301dd82b" />
+  <Project Path="Historia.LogicaAccesoDatos/EscogeAventura.LogicaAccesoDatos.csproj" />
+  <Project Path="Historia.LogicaAplicacion/EscogeAventura.LogicaAplicacion.csproj" />
+  <Project Path="Historia.LogicaNegocios/EscogeAventura.LogicaNegocios.csproj" />
   <Project Path="ObligatorioCreaTuHistoria/DTOs.csproj" />
 </Solution>

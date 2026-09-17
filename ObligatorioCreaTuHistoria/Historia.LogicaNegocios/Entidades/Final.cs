@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Historia.LogicaNegocios.Entidades
+namespace EscogeAventura.LogicaNegocios.Entidades
 {
     public class Final: Capitulo
     {
