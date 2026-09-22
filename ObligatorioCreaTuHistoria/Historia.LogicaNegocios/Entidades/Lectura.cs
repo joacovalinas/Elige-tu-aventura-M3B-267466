@@ -12,6 +12,6 @@ namespace EscogeAventura.LogicaNegocios.Entidades
         public DateTime FechaInicio { get; set; }
         public DateTime FechaFin { get; set; }
         public Final Final { get; set; }
-        public Capitulo UltCapitulo { get; set; }
+        public Capitulo CapituloActual { get; set; }
     }
 }

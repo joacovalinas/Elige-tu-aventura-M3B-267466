@@ -1,3 +1,4 @@
+using EscogeAventura.LogicaNegocios.CustomExceptions.Genericas;
 using System.ComponentModel.DataAnnotations;
 
 namespace EscogeAventura.LogicaNegocios.Entidades
@@ -13,7 +14,19 @@ namespace EscogeAventura.LogicaNegocios.Entidades
 
         public Rol()
         {
+            
             Usuarios = new List<Usuario>();
         }
+
+        public void Validar()
+        {
+            if (string.IsNullOrEmpty(Nombre))
+            {
+                throw new DatoVacioException("El nombre del rol no puede estar vacío.");
+            }
+        }
+
+
+
     }
 }

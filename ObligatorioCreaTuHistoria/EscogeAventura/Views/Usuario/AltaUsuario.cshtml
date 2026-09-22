@@ -1,0 +1,62 @@
+﻿@using EscogeAventura.WebApp.Models
+@model AltaUsuarioViewModel
+
+@{
+    ViewData["Title"] = "Alta de Usuario";
+}
+
+
+<h1>Alta de Usuario</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-6">
+        <form asp-controller="Usuario" asp-action="AltaUsuario" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Dto.Nombre" class="control-label"></label>
+                <input asp-for="Dto.Nombre" class="form-control" />
+                <span asp-validation-for="Dto.Nombre" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Dto.Apellido" class="control-label"></label>
+                <input asp-for="Dto.Apellido" class="form-control" />
+                <span asp-validation-for="Dto.Apellido" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Dto.Email" class="control-label"></label>
+                <input asp-for="Dto.Email" type="email" class="form-control" />
+                <span asp-validation-for="Dto.Email" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Dto.NomUsu" class="control-label"></label>
+                <input asp-for="Dto.NomUsu" class="form-control" />
+                <span asp-validation-for="Dto.NomUsu" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Dto.Contrasena" class="control-label"></label>
+                <input asp-for="Dto.Contrasena" type="password" class="form-control" />
+                <span asp-validation-for="Dto.Contrasena" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mb-3">
+                <label asp-for="Dto.Rol" class="control-label"></label>
+                <select asp-for="Dto.Rol" class="form-control" asp-items="@(new Microsoft.AspNetCore.Mvc.Rendering.SelectList(Model.TodosLosRoles, "Id", "Nombre"))">
+                    <option value="">-- Seleccione un rol --</option>
+                </select>
+                <span asp-validation-for="Dto.Rol" class="text-danger"></span>
+            </div>
+
+            <div class="form-group mt-3">
+                <input type="submit" value="Crear" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Volver a la lista</a>
+            </div>
+        </form>
+    </div>
+</div>
+

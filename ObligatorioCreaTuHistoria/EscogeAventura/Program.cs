@@ -1,4 +1,10 @@
 using EscogeAventura.LogicaAccesoDatos;
+using EscogeAventura.LogicaAccesoDatos.Repos;
+using EscogeAventura.LogicaAplicacion.CasosUso.CURol;
+using EscogeAventura.LogicaAplicacion.CasosUso.CUUsuario;
+using EscogeAventura.LogicaAplicacion.ICasosUso.ICURol;
+using EscogeAventura.LogicaAplicacion.ICasosUso.ICUUsuario;
+using EscogeAventura.LogicaNegocios.IRepositorios;
 using Microsoft.EntityFrameworkCore;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -18,8 +24,22 @@ namespace EscogeAventura.WebApp
             // Registrar el DbContext en el contenedor de servicios
             builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 
+            builder.Services.AddSession();
+
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+
+            //Inyeccion de repositorios
+            builder.Services.AddScoped<IRepositorioUsuario, RepositorioUsuario>();
+            builder.Services.AddScoped<IRepositorioRol, RepositorioRol>();
+
+
+
+            //ID - CU
+            builder.Services.AddScoped<ICUAltaUsuario, CUAltaUsuario>();
+            builder.Services.AddScoped<ICUObtenerRol, CUObtenerRol>();
+
 
             var app = builder.Build();
 

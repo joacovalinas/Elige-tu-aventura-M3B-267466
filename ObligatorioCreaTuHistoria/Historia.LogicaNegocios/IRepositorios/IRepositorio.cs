@@ -10,7 +10,7 @@ namespace EscogeAventura.LogicaNegocios.IRepositorios
         public interface IRepositorio<T> where T : class
         {
             void Add(T nuevo);
-            void Update(T entidad);
+            void Update(T ToEditar);
             void Remove(T ToEliminar);
 
             List<T> FindAll();

@@ -7,8 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="CasosUso\" />
-    <Folder Include="ICasosUso\" />
+    <ProjectReference Include="..\ObligatorioCreaTuHistoria\DTOs.csproj" />
   </ItemGroup>
 
 </Project>

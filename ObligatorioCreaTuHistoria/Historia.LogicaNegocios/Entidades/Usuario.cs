@@ -1,4 +1,5 @@
-﻿using EscogeAventura.LogicaNegocios.ValueObjects;
+﻿using EscogeAventura.LogicaNegocios.CustomExceptions.Genericas;
+using EscogeAventura.LogicaNegocios.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -31,16 +32,37 @@ namespace EscogeAventura.LogicaNegocios.Entidades
         [Required]
         public Rol Rol { get; set; } 
 
-        public virtual List<Lectura> Biblioteca { get; set; } = new List<Lectura>();
+        public List<Lectura> Biblioteca { get; set; } 
 
 
 
 
-        // Constructor parameterless para EF
-        public Usuario() { }
+        public Usuario() 
+        {
+            Biblioteca = new List<Lectura>();
+        }
 
+        public Usuario(string nombre, string apellido, string email, string nomUsu, string contrasena, Rol rol)
+        {
+            NombreCompleto = new NombreCompleto(nombre, apellido);
+            Email = email;
+            NomUsu = nomUsu;
+            Contrasena = new Contrasena(contrasena);
+            Rol = rol;
+            Biblioteca = new List<Lectura>();
+            Validar();
+        }
 
-
-
+        public void Validar()
+        {
+            if (string.IsNullOrEmpty(Email))
+            {
+                throw new DatoVacioException("El correo electrónico no puede estar vacío.");
+            }
+            if (string.IsNullOrEmpty(NomUsu))
+            {
+                throw new DatoVacioException("El nombre de usuario no puede estar vacío.");
+            }
+        }
     }
 }
