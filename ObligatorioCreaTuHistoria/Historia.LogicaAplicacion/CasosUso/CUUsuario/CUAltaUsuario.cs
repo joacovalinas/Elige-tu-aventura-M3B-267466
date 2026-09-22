@@ -1,5 +1,7 @@
 ﻿using DTOs.DTO.DTOsUsuario;
 using EscogeAventura.LogicaAplicacion.ICasosUso.ICUUsuario;
+using EscogeAventura.LogicaNegocios.CustomExceptions.Genericas;
+using EscogeAventura.LogicaNegocios.CustomExceptions.Usuario;
 using EscogeAventura.LogicaNegocios.Entidades;
 using EscogeAventura.LogicaNegocios.IRepositorios;
 using EscogeAventura.LogicaNegocios.ValueObjects;
@@ -22,15 +24,49 @@ namespace EscogeAventura.LogicaAplicacion.CasosUso.CUUsuario
         }
         public void Ejecutar(DTOAltaUsuario dto)
         {
-            Usuario nuevoUsu = new Usuario();
-            nuevoUsu.NombreCompleto = new NombreCompleto(dto.Nombre, dto.Apellido);
-            nuevoUsu.Email= dto.Email;
-            nuevoUsu.Contrasena= new Contrasena(dto.Contrasena);
-            nuevoUsu.NomUsu = dto.NomUsu;
+            try
+            {
+                Usuario verif = _repoUsuario.FindByEmail(dto.Email);
+                if (verif != null)
+                {
+                    throw new UsuarioYaExisteException("Ya existe este usuario.");
+                }
 
-            Rol r = _repoRol.FindByNombreRol(dto.Rol);
 
-            nuevoUsu.Rol = r;
+                Usuario nuevoUsu = new Usuario();
+                nuevoUsu.NombreCompleto = new NombreCompleto(dto.Nombre, dto.Apellido);
+                nuevoUsu.Email = dto.Email;
+                nuevoUsu.Contrasena = new Contrasena(dto.Contrasena);
+                nuevoUsu.NomUsu = dto.NomUsu;
+
+                Rol r = _repoRol.FindById(dto.Rol);
+
+                
+
+                if (r is null)
+                {
+                    throw new DatoVacioException("El rol está nulo");
+                }
+                nuevoUsu.Rol = r;
+
+                nuevoUsu.Validar();
+                _repoUsuario.Add(nuevoUsu);
+
+
+            }
+            catch (UsuarioYaExisteException ex)
+            {
+                //auditoria
+            }
+            catch (DatoVacioException ex)
+            {
+                //auditoria
+            }
+            catch (Exception ex)
+            {
+                //auditoria
+            }
+
 
         }
     }

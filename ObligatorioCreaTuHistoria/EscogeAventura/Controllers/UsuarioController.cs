@@ -2,6 +2,7 @@
 using EscogeAventura.LogicaAplicacion.ICasosUso.ICURol;
 using EscogeAventura.LogicaAplicacion.ICasosUso.ICUUsuario;
 using EscogeAventura.LogicaNegocios.CustomExceptions.Genericas;
+using EscogeAventura.LogicaNegocios.CustomExceptions.Usuario;
 using EscogeAventura.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -36,7 +37,6 @@ namespace EscogeAventura.WebApp.Controllers
         {
             try
             {
-                int logueadoId = 1000;
                 _CuAltaUsuario.Ejecutar(vm.Dto);
                 ViewBag.msg = "Alta correcta";
 

@@ -34,6 +34,12 @@ namespace EscogeAventura.LogicaAccesoDatos.Repos
             return _context.Usuarios.Include(u => u.Rol).ToList();
         }
 
+        public Usuario FindByEmail(string email)
+        {
+            Usuario u = _context.Usuarios.Include(u => u.Rol).FirstOrDefault(u => u.Email == email);
+            return u;
+        }
+
         public Usuario FindById(int id)
         {
             return _context.Usuarios.Where(a => a.Id.Equals(id)).SingleOrDefault();

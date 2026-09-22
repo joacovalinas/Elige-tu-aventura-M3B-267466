@@ -15,7 +15,7 @@ namespace DTOs.DTO.DTOsUsuario
 
         public string Contrasena { get; set; }
 
-        public string Rol { get; set; }
+        public int Rol { get; set; }
 
 
 

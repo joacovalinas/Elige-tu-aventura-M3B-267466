@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace EscogeAventura.LogicaNegocios.CustomExceptions.Genericas
+namespace EscogeAventura.LogicaNegocios.CustomExceptions.Usuario
 {
     public class UsuarioYaExisteException : Exception
     {
