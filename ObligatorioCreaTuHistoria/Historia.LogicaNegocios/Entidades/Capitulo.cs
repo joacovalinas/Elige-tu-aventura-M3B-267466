@@ -16,6 +16,8 @@ namespace EscogeAventura.LogicaNegocios.Entidades
         public string Titulo { get; set; }
         public string Cuerpo { get; set; }
 
+        public Intermedio? CapAnterior { get; set; }
+
 
 
 

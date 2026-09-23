@@ -50,7 +50,6 @@ body {
     font-family: var(--font-body);
     background-color: var(--color-bg);
     color: var(--color-dark);
-    margin-bottom: 60px;
 }
 
 h1, h2, h3, h4, h5, h6,
@@ -162,10 +161,6 @@ h1, h2, h3, h4, h5, h6,
 
 /* Footer */
 .app-footer {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    line-height: 50px;
     background-color: var(--color-purple);
     color: rgba(232, 241, 236, 0.75);
     font-size: 0.9rem;

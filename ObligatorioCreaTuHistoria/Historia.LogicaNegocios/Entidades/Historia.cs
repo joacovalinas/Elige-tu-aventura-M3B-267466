@@ -16,5 +16,17 @@ namespace EscogeAventura.LogicaNegocios.Entidades
         public EstadoHistoria Estado { get; set; }
         public List<Categoria> CatHistorias { get; set; } = new List<Categoria>();
         public Intermedio CapInicial { get; set; }
+
+
+
+
+
+
+
+
+
+
+
+
     }
 }

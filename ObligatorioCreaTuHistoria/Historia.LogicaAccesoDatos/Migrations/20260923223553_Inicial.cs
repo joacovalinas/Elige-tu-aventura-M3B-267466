@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace EscogeAventura.LogicaAccesoDatos.Migrations
 {
     /// <inheritdoc />
-    public partial class Inicio : Migration
+    public partial class Inicial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -29,14 +29,34 @@ namespace EscogeAventura.LogicaAccesoDatos.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Titulo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Titulo = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     Cuerpo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Discriminator = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false),
+                    CapAnteriorId = table.Column<int>(type: "int", nullable: true),
+                    TipoCapitulo = table.Column<string>(type: "nvarchar(13)", maxLength: 13, nullable: false),
                     CantidadDeVecesAlcanzado = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Capitulos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Capitulos_Capitulos_CapAnteriorId",
+                        column: x => x.CapAnteriorId,
+                        principalTable: "Capitulos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Categorias",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nombre = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Categorias", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -58,8 +78,8 @@ namespace EscogeAventura.LogicaAccesoDatos.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Titulo = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Sinopsis = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Titulo = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
+                    Sinopsis = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false),
                     Estado = table.Column<int>(type: "int", nullable: false),
                     CapInicialId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -71,7 +91,7 @@ namespace EscogeAventura.LogicaAccesoDatos.Migrations
                         column: x => x.CapInicialId,
                         principalTable: "Capitulos",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -80,7 +100,7 @@ namespace EscogeAventura.LogicaAccesoDatos.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    NombreCap = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NombreCap = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     CapDestinoId = table.Column<int>(type: "int", nullable: false),
                     IntermedioId = table.Column<int>(type: "int", nullable: true)
                 },
@@ -92,12 +112,13 @@ namespace EscogeAventura.LogicaAccesoDatos.Migrations
                         column: x => x.CapDestinoId,
                         principalTable: "Capitulos",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Opcion_Capitulos_IntermedioId",
                         column: x => x.IntermedioId,
                         principalTable: "Capitulos",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -106,12 +127,12 @@ namespace EscogeAventura.LogicaAccesoDatos.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Nombre = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Apellido = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     NomUsu = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    RolId = table.Column<int>(type: "int", nullable: false),
                     Contrasena = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    RolId = table.Column<int>(type: "int", nullable: false)
+                    Apellido = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Nombre = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -121,26 +142,31 @@ namespace EscogeAventura.LogicaAccesoDatos.Migrations
                         column: x => x.RolId,
                         principalTable: "Roles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Categorias",
+                name: "CategoriaHistoria",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Nombre = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    HistoriaId = table.Column<int>(type: "int", nullable: true)
+                    CatHistoriasId = table.Column<int>(type: "int", nullable: false),
+                    HistoriaId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Categorias", x => x.Id);
+                    table.PrimaryKey("PK_CategoriaHistoria", x => new { x.CatHistoriasId, x.HistoriaId });
                     table.ForeignKey(
-                        name: "FK_Categorias_Historias_HistoriaId",
+                        name: "FK_CategoriaHistoria_Categorias_CatHistoriasId",
+                        column: x => x.CatHistoriasId,
+                        principalTable: "Categorias",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_CategoriaHistoria_Historias_HistoriaId",
                         column: x => x.HistoriaId,
                         principalTable: "Historias",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -176,24 +202,36 @@ namespace EscogeAventura.LogicaAccesoDatos.Migrations
                         column: x => x.historiaId,
                         principalTable: "Historias",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_lecturas_Usuarios_usuarioId",
                         column: x => x.usuarioId,
                         principalTable: "Usuarios",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Categorias_HistoriaId",
-                table: "Categorias",
+                name: "IX_Capitulos_CapAnteriorId",
+                table: "Capitulos",
+                column: "CapAnteriorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CategoriaHistoria_HistoriaId",
+                table: "CategoriaHistoria",
                 column: "HistoriaId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Categorias_Nombre",
+                table: "Categorias",
+                column: "Nombre",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Historias_CapInicialId",
                 table: "Historias",
-                column: "CapInicialId");
+                column: "CapInicialId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_lecturas_CapituloActualId",
@@ -226,6 +264,18 @@ namespace EscogeAventura.LogicaAccesoDatos.Migrations
                 column: "IntermedioId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Roles_Nombre",
+                table: "Roles",
+                column: "Nombre",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Usuarios_Email",
+                table: "Usuarios",
+                column: "Email",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Usuarios_NomUsu",
                 table: "Usuarios",
                 column: "NomUsu",
@@ -244,13 +294,16 @@ namespace EscogeAventura.LogicaAccesoDatos.Migrations
                 name: "Auditorias");
 
             migrationBuilder.DropTable(
-                name: "Categorias");
+                name: "CategoriaHistoria");
 
             migrationBuilder.DropTable(
                 name: "lecturas");
 
             migrationBuilder.DropTable(
                 name: "Opcion");
+
+            migrationBuilder.DropTable(
+                name: "Categorias");
 
             migrationBuilder.DropTable(
                 name: "Historias");
