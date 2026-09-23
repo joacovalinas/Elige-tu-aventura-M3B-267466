@@ -29,3 +29,167 @@ body {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
 }
+
+:root {
+    --color-primary: #0B3D2E; /* verde oscuro */
+    --color-secondary: #10A37F; /* verde esmeralda */
+    --color-accent: #2ED9A3; /* verde claro / detalles */
+    --color-purple: #12294D; /* azul noche */
+    --color-dark: #E8F1EC; /* texto claro sobre fondo oscuro */
+    --color-bg: #0A1929; /* fondo azul muy oscuro */
+    --color-card: #102A43; /* tarjetas azul oscuro */
+    --font-heading: 'Fredoka', sans-serif;
+    --font-body: 'Nunito', sans-serif;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    font-family: var(--font-body);
+    background-color: var(--color-bg);
+    color: var(--color-dark);
+    margin-bottom: 60px;
+}
+
+h1, h2, h3, h4, h5, h6,
+.navbar-brand {
+    font-family: var(--font-heading);
+    color: var(--color-dark);
+}
+
+/* Navbar */
+.app-navbar {
+    background: linear-gradient(90deg, var(--color-purple), var(--color-primary));
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+    border-bottom: 1px solid rgba(46, 217, 163, 0.25);
+}
+
+    .app-navbar .navbar-brand {
+        color: var(--color-accent);
+        font-weight: 700;
+        font-size: 1.4rem;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+
+    .app-navbar .brand-icon {
+        font-size: 1.5rem;
+    }
+
+    .app-navbar .nav-link {
+        color: rgba(232, 241, 236, 0.85);
+        font-weight: 600;
+        margin: 0 0.25rem;
+        border-radius: 8px;
+        padding: 0.4rem 0.8rem;
+        transition: background-color 0.2s ease, color 0.2s ease;
+    }
+
+        .app-navbar .nav-link:hover {
+            background-color: rgba(46, 217, 163, 0.15);
+            color: var(--color-accent);
+        }
+
+/* Botones */
+.btn-primary {
+    background-color: var(--color-secondary);
+    border-color: var(--color-secondary);
+    font-weight: 700;
+    border-radius: 12px;
+    color: #fff;
+}
+
+    .btn-primary:hover {
+        background-color: #0d8a6a;
+        border-color: #0d8a6a;
+    }
+
+.btn-secondary {
+    background-color: var(--color-purple);
+    border-color: var(--color-purple);
+    font-weight: 700;
+    border-radius: 12px;
+    color: var(--color-dark);
+}
+
+    .btn-secondary:hover {
+        background-color: #0d1f3c;
+        border-color: #0d1f3c;
+        color: #fff;
+    }
+
+.btn-accent {
+    background-color: var(--color-accent);
+    border-color: var(--color-accent);
+    color: var(--color-bg);
+    font-weight: 700;
+    border-radius: 12px;
+}
+
+/* Tarjetas de historias */
+.card {
+    background-color: var(--color-card);
+    border: 1px solid rgba(46, 217, 163, 0.15);
+    border-radius: 16px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    overflow: hidden;
+    color: var(--color-dark);
+}
+
+    .card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+        border-color: var(--color-accent);
+    }
+
+.card-title {
+    font-family: var(--font-heading);
+    color: var(--color-accent);
+}
+
+/* Badges de estado / genero */
+.badge-story {
+    background-color: var(--color-secondary);
+    color: #fff;
+    border-radius: 20px;
+    padding: 0.35em 0.8em;
+    font-weight: 700;
+}
+
+/* Footer */
+.app-footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    line-height: 50px;
+    background-color: var(--color-purple);
+    color: rgba(232, 241, 236, 0.75);
+    font-size: 0.9rem;
+    border-top: 1px solid rgba(46, 217, 163, 0.2);
+}
+
+    .app-footer a {
+        color: var(--color-accent);
+        text-decoration: none;
+    }
+
+        .app-footer a:hover {
+            text-decoration: underline;
+        }
+
+/* Utilidades de color rápido */
+.text-brand-navy {
+    color: var(--color-purple);
+}
+
+.text-brand-green {
+    color: var(--color-secondary);
+}
+
+.bg-brand-green {
+    background-color: var(--color-secondary);
+}

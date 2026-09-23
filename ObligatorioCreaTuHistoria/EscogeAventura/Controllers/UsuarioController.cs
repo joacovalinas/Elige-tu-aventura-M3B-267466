@@ -50,7 +50,7 @@ namespace EscogeAventura.WebApp.Controllers
             }
             catch (UsuarioYaExisteException e)
             {
-                ViewBag.msg = "Ya se encuentra registrado";
+                ViewBag.msg = e.Message;
 
             }
             catch (Exception e)

@@ -38,6 +38,7 @@ namespace EscogeAventura.WebApp
 
             //ID - CU
             builder.Services.AddScoped<ICUAltaUsuario, CUAltaUsuario>();
+            builder.Services.AddScoped<ICUVerifExistencia, CUVerifExistencia>();
             builder.Services.AddScoped<ICUObtenerRol, CUObtenerRol>();
 
 
@@ -55,7 +56,7 @@ namespace EscogeAventura.WebApp
             app.UseRouting();
 
             app.UseAuthorization();
-
+            app.UseSession();
             app.MapStaticAssets();
             app.MapControllerRoute(
                 name: "default",

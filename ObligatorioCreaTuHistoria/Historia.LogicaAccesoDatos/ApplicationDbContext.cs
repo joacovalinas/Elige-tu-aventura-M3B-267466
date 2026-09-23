@@ -46,6 +46,7 @@ namespace EscogeAventura.LogicaAccesoDatos
                 });
 
                 u.Property(x => x.Email).IsRequired().HasMaxLength(200);
+                
 
                 u.Property(x => x.NomUsu).IsRequired().HasMaxLength(100);
                 u.HasIndex(x => x.NomUsu).IsUnique();
@@ -55,6 +56,7 @@ namespace EscogeAventura.LogicaAccesoDatos
                  .HasForeignKey("RolId")
                  .IsRequired();
             });
+            modelBuilder.Entity<Usuario>().HasIndex(p => new { p.Email }).IsUnique();
 
             modelBuilder.Entity<Rol>(r =>
             {

@@ -1,32 +1,87 @@
-﻿<!DOCTYPE html>
-<html lang="en">
+﻿@{
+    string LogueadoId = Context.Session.GetString("LogueadoId");
+    string LogueadoRol = Context.Session.GetString("LogueadoRol");
+    string LogueadoNombre = Context.Session.GetString("LogueadoNombre");
+
+    // Para marcar el link activo en la navbar
+    string controladorActual = ViewContext.RouteData.Values["controller"]?.ToString();
+    string accionActual = ViewContext.RouteData.Values["action"]?.ToString();
+    string Activo(string c, string a) => (controladorActual == c && accionActual == a) ? "active" : "";
+
+    string inicial = string.IsNullOrEmpty(LogueadoNombre) ? "?" : LogueadoNombre.Substring(0, 1).ToUpper();
+}
+
+
+<!DOCTYPE html>
+<html lang="es">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - EscogeAventura</title>
     <script type="importmap"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/EscogeAventura.styles.css" asp-append-version="true" />
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark app-navbar mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">EscogeAventura</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <span class="brand-icon">📖</span> EscogeAventura
+                </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+
+                         <li class="nav-item">
+                            <a class="nav-link @Activo("Home", "Index")" asp-area="" asp-controller="Home" asp-action="Index">Inicio</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
+                        @if (LogueadoId != null)
+                        {
+                            if (LogueadoRol == "Administrador")
+                            {
+                                // Solo botones para el admin
+                                // <li class="nav-item"><a class="nav-link" asp-controller="..." asp-action="...">...</a></li>
+                            }
+                            else
+                            {
+                                // Solo botones para el empleado
+                            }
+                        }
+
                     </ul>
+
+
+                      <ul class="navbar-nav align-items-sm-center gap-sm-2">
+                        @if (LogueadoId != null)
+                        {
+                            <li class="nav-item user-chip">
+                                <span class="user-avatar" aria-hidden="true">@inicial</span>
+                                <span class="user-info">
+                                    <span class="user-name">@LogueadoNombre</span>
+                                    <span class="user-role">@LogueadoRol</span>
+                                </span>
+                            </li>
+                            <li class="nav-item">
+                                <a class="btn btn-outline-accent btn-sm" asp-area="" asp-controller="Auth" asp-action="Logout">Cerrar sesión</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="btn btn-accent btn-sm" asp-area="" asp-controller="Auth" asp-action="Login">Iniciar sesión</a>
+                            </li>
+                        }
+                    </ul>
+
+
                 </div>
             </div>
         </nav>
@@ -37,7 +92,7 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="app-footer text-center">
         <div class="container">
             &copy; 2026 - EscogeAventura - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
