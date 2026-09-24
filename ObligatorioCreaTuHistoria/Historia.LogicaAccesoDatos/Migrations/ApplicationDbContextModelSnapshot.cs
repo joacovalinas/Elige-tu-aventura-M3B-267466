@@ -151,7 +151,7 @@ namespace EscogeAventura.LogicaAccesoDatos.Migrations
                     b.Property<int>("CapituloActualId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("FechaFin")
+                    b.Property<DateTime?>("FechaFin")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("FechaInicio")
@@ -159,6 +159,11 @@ namespace EscogeAventura.LogicaAccesoDatos.Migrations
 
                     b.Property<int>("FinalId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Nombrelectura")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
 
                     b.Property<int>("historiaId")
                         .HasColumnType("int");

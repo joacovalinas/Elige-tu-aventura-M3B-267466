@@ -4,9 +4,7 @@ using System.Text;
 
 namespace EscogeAventura.LogicaNegocios.IRepositorios
 {
-    public interface IRepositorio
-    {
-
+    
         public interface IRepositorio<T> where T : class
         {
             void Add(T nuevo);
@@ -20,4 +18,4 @@ namespace EscogeAventura.LogicaNegocios.IRepositorios
             
         }
     }
-}
+

@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using static EscogeAventura.LogicaNegocios.IRepositorios.IRepositorio;
+
 
 namespace EscogeAventura.LogicaNegocios.IRepositorios
 {

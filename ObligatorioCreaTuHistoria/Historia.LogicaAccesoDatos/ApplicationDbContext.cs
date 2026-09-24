@@ -172,9 +172,13 @@ namespace EscogeAventura.LogicaAccesoDatos
             modelBuilder.Entity<Lectura>(l =>
             {
                 l.HasKey(x => x.Id);
+                l.Property(x => x.Nombrelectura).HasMaxLength(150);
                 l.Property(x => x.FechaInicio).IsRequired();
+                // FechaFin es nullable (DateTime?) en la entidad: queda en null mientras la lectura sigue en curso.
 
                 // Usuario dueño de la lectura <-> Usuario.Biblioteca (uno a muchos, bidireccional).
+                // A propósito NO hay unique index sobre (usuarioId, historiaId): el mismo usuario puede
+                // tener varias Lecturas de la misma Historia (relecturas para llegar a otros finales).
                 l.HasOne(x => x.usuario)
                  .WithMany(u => u.Biblioteca)
                  .HasForeignKey("usuarioId")
@@ -213,7 +217,7 @@ namespace EscogeAventura.LogicaAccesoDatos
         public DbSet<Final> Finales { get; set; }
         public DbSet<Historia> Historias { get; set; }
         public DbSet<Intermedio> Intermedios { get; set; }
-        public DbSet<Lectura> lecturas { get; set; }
+        public DbSet<Lectura> Lecturas { get; set; }
         public DbSet<Rol> Roles { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
 
