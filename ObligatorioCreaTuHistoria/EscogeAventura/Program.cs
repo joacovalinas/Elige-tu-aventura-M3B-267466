@@ -1,10 +1,15 @@
 using EscogeAventura.LogicaAccesoDatos;
 using EscogeAventura.LogicaAccesoDatos.Repos;
+using EscogeAventura.LogicaAplicacion.CasosUso;
+using EscogeAventura.LogicaAplicacion.CasosUso.CUHistoria;
 using EscogeAventura.LogicaAplicacion.CasosUso.CURol;
 using EscogeAventura.LogicaAplicacion.CasosUso.CUUsuario;
+using EscogeAventura.LogicaAplicacion.ICasosUso.ICUHistoria;
 using EscogeAventura.LogicaAplicacion.ICasosUso.ICURol;
 using EscogeAventura.LogicaAplicacion.ICasosUso.ICUUsuario;
+using EscogeAventura.LogicaNegocios.Entidades;
 using EscogeAventura.LogicaNegocios.IRepositorios;
+using EscogeAventura.LogicaNegocios.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -33,16 +38,44 @@ namespace EscogeAventura.WebApp
             //Inyeccion de repositorios
             builder.Services.AddScoped<IRepositorioUsuario, RepositorioUsuario>();
             builder.Services.AddScoped<IRepositorioRol, RepositorioRol>();
-
-
+            builder.Services.AddScoped<IRepositorioHistoria, RepositorioHistoria>();
+            builder.Services.AddScoped<IRepositorioCategoria, RepositorioCategoria>();
+       
 
             //ID - CU
             builder.Services.AddScoped<ICUAltaUsuario, CUAltaUsuario>();
             builder.Services.AddScoped<ICUVerifExistencia, CUVerifExistencia>();
             builder.Services.AddScoped<ICUObtenerRol, CUObtenerRol>();
+            builder.Services.AddScoped<ICUAltaHistoria, CUAltaHistoria>();
 
+
+
+
+          
 
             var app = builder.Build();
+
+
+
+            //CREAR USUARIO ADMINISTRADOR SI NO EXISTE
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                db.Database.Migrate();
+
+                if (!db.Usuarios.Any(u => u.Email == "admin@admin.com"))
+                {
+                    var rol = db.Roles.First(r => r.Id == 1);
+                    var rolAdmin = db.Roles.FirstOrDefault(r => r.Nombre == "admin");
+                    var admin = new Usuario( "nombre",  "apellido",  "admin@admin.com",  "admin", "1234",  rolAdmin);
+
+                    db.Usuarios.Add(admin);
+                    db.SaveChanges();
+                }
+            }
+
+
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
@@ -64,6 +97,12 @@ namespace EscogeAventura.WebApp
                 .WithStaticAssets();
 
             app.Run();
+
+
+
+
+
+
         }
     }
 }

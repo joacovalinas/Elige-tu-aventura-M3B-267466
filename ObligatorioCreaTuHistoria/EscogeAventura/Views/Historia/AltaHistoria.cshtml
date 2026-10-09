@@ -1,0 +1,43 @@
+﻿@using DTOs.DTO.DTOsHistoria
+@using EscogeAventura.LogicaNegocios.Entidades
+@model DTOAltaHistoria
+
+<h2>Nueva historia</h2>
+
+<form asp-action="Crear" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="mb-3">
+        <label asp-for="Titulo" class="form-label">Título</label>
+        <input asp-for="Titulo" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Sinopsis" class="form-label">Sinopsis</label>
+        <textarea asp-for="Sinopsis" class="form-control" rows="3"></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="CatHistoria" class="form-label">Categorías</label>
+        <select asp-for="CatHistoria" multiple class="form-select">
+            @foreach (Categoria c in (List<Categoria>)ViewBag.Categorias)
+            {
+                <option value="@c.Nombre" selected="@Model.CatHistoria.Contains(c.Nombre)">@c.Nombre</option>
+            }
+        </select>
+    </div>
+
+    <h4>Capítulo inicial</h4>
+
+    <div class="mb-3">
+        <label asp-for="TituloCapInicial" class="form-label">Título</label>
+        <input asp-for="TituloCapInicial" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="CuerpoCapInicial" class="form-label">Texto</label>
+        <textarea asp-for="CuerpoCapInicial" class="form-control" rows="6"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Crear historia</button>
+</form>

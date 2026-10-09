@@ -25,7 +25,7 @@ namespace EscogeAventura.LogicaNegocios.ValueObjects
 
         public void validar(string pass)
         {
-            if (string.IsNullOrEmpty(pass))
+            if (string.IsNullOrWhiteSpace(pass))
             {
                 throw new DatoVacioException("La contraseña no puede estar vacía.");
             }

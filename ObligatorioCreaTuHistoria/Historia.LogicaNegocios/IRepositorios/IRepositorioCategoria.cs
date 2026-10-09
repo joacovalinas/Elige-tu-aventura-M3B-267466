@@ -8,5 +8,6 @@ namespace EscogeAventura.LogicaNegocios.IRepositorios
     public interface IRepositorioCategoria : IRepositorio<Categoria>
     {
         Categoria FindByNombreCategoria(string nombreCategoria);
+        public List<Categoria> ObtenerPorNombres(List<string> nombres);
     }
 }

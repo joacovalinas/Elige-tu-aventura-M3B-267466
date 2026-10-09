@@ -25,11 +25,11 @@ namespace EscogeAventura.LogicaNegocios.ValueObjects
 
         public void validar(string nombre, string apellido)
         {
-            if (string.IsNullOrEmpty(nombre))
+            if (string.IsNullOrWhiteSpace(nombre))
             {
                 throw new DatoVacioException("El nombre no puede estar vacío.");
             }
-            if (string.IsNullOrEmpty(apellido))
+            if (string.IsNullOrWhiteSpace(apellido))
             {
                 throw new DatoVacioException("El apellido no puede estar vacío.");
             }

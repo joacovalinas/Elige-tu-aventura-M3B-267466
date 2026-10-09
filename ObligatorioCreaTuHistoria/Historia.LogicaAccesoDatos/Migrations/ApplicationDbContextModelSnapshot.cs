@@ -25,13 +25,13 @@ namespace EscogeAventura.LogicaAccesoDatos.Migrations
 
             modelBuilder.Entity("CategoriaHistoria", b =>
                 {
-                    b.Property<int>("CatHistoriasId")
+                    b.Property<int>("CatHistoriaId")
                         .HasColumnType("int");
 
                     b.Property<int>("HistoriaId")
                         .HasColumnType("int");
 
-                    b.HasKey("CatHistoriasId", "HistoriaId");
+                    b.HasKey("CatHistoriaId", "HistoriaId");
 
                     b.HasIndex("HistoriaId");
 
@@ -59,12 +59,12 @@ namespace EscogeAventura.LogicaAccesoDatos.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("CapAnteriorId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Cuerpo")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("HistoriaId")
+                        .HasColumnType("int");
 
                     b.Property<string>("TipoCapitulo")
                         .IsRequired()
@@ -78,7 +78,7 @@ namespace EscogeAventura.LogicaAccesoDatos.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CapAnteriorId");
+                    b.HasIndex("HistoriaId");
 
                     b.ToTable("Capitulos");
 
@@ -116,7 +116,7 @@ namespace EscogeAventura.LogicaAccesoDatos.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CapInicialId")
+                    b.Property<int?>("CapInicialId")
                         .HasColumnType("int");
 
                     b.Property<int>("Estado")
@@ -135,7 +135,8 @@ namespace EscogeAventura.LogicaAccesoDatos.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CapInicialId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[CapInicialId] IS NOT NULL");
 
                     b.ToTable("Historias");
                 });
@@ -148,7 +149,7 @@ namespace EscogeAventura.LogicaAccesoDatos.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CapituloActualId")
+                    b.Property<int?>("CapituloActualId")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("FechaFin")
@@ -157,7 +158,10 @@ namespace EscogeAventura.LogicaAccesoDatos.Migrations
                     b.Property<DateTime>("FechaInicio")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("FinalId")
+                    b.Property<int?>("FinalId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("HistoriaId")
                         .HasColumnType("int");
 
                     b.Property<string>("Nombrelectura")
@@ -165,10 +169,7 @@ namespace EscogeAventura.LogicaAccesoDatos.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
-                    b.Property<int>("historiaId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("usuarioId")
+                    b.Property<int>("UsuarioId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -177,11 +178,37 @@ namespace EscogeAventura.LogicaAccesoDatos.Migrations
 
                     b.HasIndex("FinalId");
 
-                    b.HasIndex("historiaId");
+                    b.HasIndex("HistoriaId");
 
-                    b.HasIndex("usuarioId");
+                    b.HasIndex("UsuarioId");
 
-                    b.ToTable("lecturas");
+                    b.ToTable("Lecturas");
+                });
+
+            modelBuilder.Entity("EscogeAventura.LogicaNegocios.Entidades.PasoLectura", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CapituloId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("LecturaId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Orden")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CapituloId");
+
+                    b.HasIndex("LecturaId");
+
+                    b.ToTable("PasoLectura");
                 });
 
             modelBuilder.Entity("EscogeAventura.LogicaNegocios.Entidades.Rol", b =>
@@ -286,22 +313,22 @@ namespace EscogeAventura.LogicaAccesoDatos.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CapDestinoId")
+                    b.Property<int>("CapituloDestinoId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("IntermedioId")
+                    b.Property<int>("CapituloOrigenId")
                         .HasColumnType("int");
 
-                    b.Property<string>("NombreCap")
+                    b.Property<string>("Texto")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CapDestinoId");
+                    b.HasIndex("CapituloDestinoId");
 
-                    b.HasIndex("IntermedioId");
+                    b.HasIndex("CapituloOrigenId");
 
                     b.ToTable("Opcion");
                 });
@@ -327,7 +354,7 @@ namespace EscogeAventura.LogicaAccesoDatos.Migrations
                 {
                     b.HasOne("EscogeAventura.LogicaNegocios.Entidades.Categoria", null)
                         .WithMany()
-                        .HasForeignKey("CatHistoriasId")
+                        .HasForeignKey("CatHistoriaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -340,12 +367,13 @@ namespace EscogeAventura.LogicaAccesoDatos.Migrations
 
             modelBuilder.Entity("EscogeAventura.LogicaNegocios.Entidades.Capitulo", b =>
                 {
-                    b.HasOne("EscogeAventura.LogicaNegocios.Entidades.Intermedio", "CapAnterior")
-                        .WithMany()
-                        .HasForeignKey("CapAnteriorId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                    b.HasOne("EscogeAventura.LogicaNegocios.Entidades.Historia", "Historia")
+                        .WithMany("Capitulos")
+                        .HasForeignKey("HistoriaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("CapAnterior");
+                    b.Navigation("Historia");
                 });
 
             modelBuilder.Entity("EscogeAventura.LogicaNegocios.Entidades.Historia", b =>
@@ -353,8 +381,7 @@ namespace EscogeAventura.LogicaAccesoDatos.Migrations
                     b.HasOne("EscogeAventura.LogicaNegocios.Entidades.Intermedio", "CapInicial")
                         .WithOne()
                         .HasForeignKey("EscogeAventura.LogicaNegocios.Entidades.Historia", "CapInicialId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("CapInicial");
                 });
@@ -364,24 +391,22 @@ namespace EscogeAventura.LogicaAccesoDatos.Migrations
                     b.HasOne("EscogeAventura.LogicaNegocios.Entidades.Capitulo", "CapituloActual")
                         .WithMany()
                         .HasForeignKey("CapituloActualId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("EscogeAventura.LogicaNegocios.Entidades.Final", "Final")
                         .WithMany()
                         .HasForeignKey("FinalId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("EscogeAventura.LogicaNegocios.Entidades.Historia", "historia")
+                    b.HasOne("EscogeAventura.LogicaNegocios.Entidades.Historia", "Historia")
                         .WithMany()
-                        .HasForeignKey("historiaId")
+                        .HasForeignKey("HistoriaId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("EscogeAventura.LogicaNegocios.Entidades.Usuario", "usuario")
+                    b.HasOne("EscogeAventura.LogicaNegocios.Entidades.Usuario", "Usuario")
                         .WithMany("Biblioteca")
-                        .HasForeignKey("usuarioId")
+                        .HasForeignKey("UsuarioId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -389,9 +414,28 @@ namespace EscogeAventura.LogicaAccesoDatos.Migrations
 
                     b.Navigation("Final");
 
-                    b.Navigation("historia");
+                    b.Navigation("Historia");
 
-                    b.Navigation("usuario");
+                    b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("EscogeAventura.LogicaNegocios.Entidades.PasoLectura", b =>
+                {
+                    b.HasOne("EscogeAventura.LogicaNegocios.Entidades.Capitulo", "Capitulo")
+                        .WithMany()
+                        .HasForeignKey("CapituloId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("EscogeAventura.LogicaNegocios.Entidades.Lectura", "Lectura")
+                        .WithMany("Camino")
+                        .HasForeignKey("LecturaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Capitulo");
+
+                    b.Navigation("Lectura");
                 });
 
             modelBuilder.Entity("EscogeAventura.LogicaNegocios.Entidades.Usuario", b =>
@@ -407,18 +451,31 @@ namespace EscogeAventura.LogicaAccesoDatos.Migrations
 
             modelBuilder.Entity("EscogeAventura.LogicaNegocios.ValueObjects.Opcion", b =>
                 {
-                    b.HasOne("EscogeAventura.LogicaNegocios.Entidades.Capitulo", "CapDestino")
+                    b.HasOne("EscogeAventura.LogicaNegocios.Entidades.Capitulo", "CapituloDestino")
                         .WithMany()
-                        .HasForeignKey("CapDestinoId")
+                        .HasForeignKey("CapituloDestinoId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("EscogeAventura.LogicaNegocios.Entidades.Intermedio", null)
-                        .WithMany("SiguienteCap")
-                        .HasForeignKey("IntermedioId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                    b.HasOne("EscogeAventura.LogicaNegocios.Entidades.Intermedio", "CapituloOrigen")
+                        .WithMany("Opciones")
+                        .HasForeignKey("CapituloOrigenId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("CapDestino");
+                    b.Navigation("CapituloDestino");
+
+                    b.Navigation("CapituloOrigen");
+                });
+
+            modelBuilder.Entity("EscogeAventura.LogicaNegocios.Entidades.Historia", b =>
+                {
+                    b.Navigation("Capitulos");
+                });
+
+            modelBuilder.Entity("EscogeAventura.LogicaNegocios.Entidades.Lectura", b =>
+                {
+                    b.Navigation("Camino");
                 });
 
             modelBuilder.Entity("EscogeAventura.LogicaNegocios.Entidades.Rol", b =>
@@ -433,7 +490,7 @@ namespace EscogeAventura.LogicaAccesoDatos.Migrations
 
             modelBuilder.Entity("EscogeAventura.LogicaNegocios.Entidades.Intermedio", b =>
                 {
-                    b.Navigation("SiguienteCap");
+                    b.Navigation("Opciones");
                 });
 #pragma warning restore 612, 618
         }

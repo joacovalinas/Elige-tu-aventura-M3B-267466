@@ -20,7 +20,7 @@ namespace EscogeAventura.LogicaNegocios.Entidades
 
         public void Validar()
         {
-            if (string.IsNullOrEmpty(Nombre))
+            if (string.IsNullOrWhiteSpace(Nombre))
             {
                 throw new DatoVacioException("El nombre del rol no puede estar vacío.");
             }

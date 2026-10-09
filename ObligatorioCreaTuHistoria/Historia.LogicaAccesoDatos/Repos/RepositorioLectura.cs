@@ -25,23 +25,23 @@ namespace EscogeAventura.LogicaAccesoDatos.Repos
 
         public List<Lectura> FindAll()
         {
-            return _context.Lecturas.Include(l => l.usuario).Include(l => l.historia).Include(l => l.CapituloActual).ToList();
+            return _context.Lecturas.Include(l => l.Usuario).Include(l => l.Historia).Include(l => l.CapituloActual).ToList();
         }
 
         public Lectura FindById(int id)
         {
-            return _context.Lecturas.Include(l => l.usuario).Include(l => l.historia).Include(l => l.CapituloActual).Where(l => l.Id == id).SingleOrDefault();
+            return _context.Lecturas.Include(l => l.Usuario).Include(l => l.Historia).Include(l => l.CapituloActual).Where(l => l.Id == id).SingleOrDefault();
         }
 
         public Lectura FindByNombreHistoria(string nombreHistoria)
         {
-            return _context.Lecturas.Include(l => l.usuario).Include(l => l.historia).Include(l => l.CapituloActual).Where(l => l.historia.Titulo == nombreHistoria).SingleOrDefault();
+            return _context.Lecturas.Include(l => l.Usuario).Include(l => l.Historia).Include(l => l.CapituloActual).Where(l => l.Historia.Titulo == nombreHistoria).SingleOrDefault();
         }
         
 
         public Lectura FindByNombreLectura(string nombreLectura)
         {
-            return _context.Lecturas.Include(l => l.usuario).Include(l => l.historia).Include(l => l.CapituloActual).Where(l => l.Nombrelectura == nombreLectura).SingleOrDefault();
+            return _context.Lecturas.Include(l => l.Usuario).Include(l => l.Historia).Include(l => l.CapituloActual).Where(l => l.Nombrelectura == nombreLectura).SingleOrDefault();
         }
 
         public void Remove(Lectura ToEliminar)

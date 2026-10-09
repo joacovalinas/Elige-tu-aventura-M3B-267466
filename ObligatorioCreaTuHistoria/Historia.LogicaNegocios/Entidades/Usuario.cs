@@ -55,11 +55,11 @@ namespace EscogeAventura.LogicaNegocios.Entidades
 
         public void Validar()
         {
-            if (string.IsNullOrEmpty(Email))
+            if (string.IsNullOrWhiteSpace(Email))
             {
                 throw new DatoVacioException("El correo electrónico no puede estar vacío.");
             }
-            if (string.IsNullOrEmpty(NomUsu))
+            if (string.IsNullOrWhiteSpace(NomUsu))
             {
                 throw new DatoVacioException("El nombre de usuario no puede estar vacío.");
             }

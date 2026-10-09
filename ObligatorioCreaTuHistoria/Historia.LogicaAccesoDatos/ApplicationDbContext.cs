@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace EscogeAventura.LogicaAccesoDatos
 {
@@ -32,15 +33,19 @@ namespace EscogeAventura.LogicaAccesoDatos
                 h.Property(x => x.Estado).IsRequired(); // enum EstadoHistoria, se guarda como int por defecto
 
                 // Uno a uno: la Historia arranca en un capítulo Intermedio puntual.
-                // La FK (CapInicialId) va del lado de Historia porque es la entidad "dependiente" de la relación.
+                // La FK (CapInicialId, shadow) va del lado de Historia porque es la entidad "dependiente".
+                // IsRequired(false): la Historia se inserta ANTES que su primer capítulo (y el capítulo
+                // necesita la Historia), así que a nivel de base la FK tiene que poder ser NULL.
+                // Que una historia publicada tenga capítulo inicial se valida en Validar(), no acá.
                 h.HasOne(x => x.CapInicial)
                  .WithOne()
                  .HasForeignKey<Historia>("CapInicialId")
+                 .IsRequired(false)
                  .OnDelete(DeleteBehavior.Restrict);
 
                 // Muchos a muchos con Categoria, unidireccional (Categoria no tiene ICollection<Historia>).
                 // EF Core genera solo, sin que hagas nada más, una tabla puente (por defecto "HistoriaCategoria").
-                h.HasMany(x => x.CatHistorias).WithMany();
+                h.HasMany(x => x.CatHistoria).WithMany();
             });
 
             // ------------------------------------------------------------------
@@ -54,13 +59,14 @@ namespace EscogeAventura.LogicaAccesoDatos
                 c.Property(x => x.Titulo).IsRequired().HasMaxLength(200);
                 c.Property(x => x.Cuerpo).IsRequired();
 
-                // Auto-referencia: el capítulo anterior siempre es un Intermedio (el único tipo
-                // que puede ramificar hacia otros capítulos vía Opcion). Unidireccional: Intermedio
-                // no tiene una colección "CapitulosSiguientes" propia, eso ya lo cubre SiguienteCap más abajo.
-                c.HasOne(x => x.CapAnterior)
-                 .WithMany()
-                 .HasForeignKey("CapAnteriorId")
-                 .OnDelete(DeleteBehavior.Restrict);
+                // Cada capítulo pertenece a UNA historia (RF04: al agregar capítulos se indica la historia).
+                // FK HistoriaId como shadow property. Es una relación distinta a Historia.CapInicial.
+                // Ya no existe CapAnterior: quién lleva a un capítulo se deduce de las Opciones cuyo destino es él.
+                c.HasOne(x => x.Historia)
+                 .WithMany(h => h.Capitulos)
+                 .HasForeignKey("HistoriaId")
+                 .IsRequired()
+                 .OnDelete(DeleteBehavior.Cascade);
 
                 c.HasDiscriminator<string>("TipoCapitulo")
                  .HasValue<Intermedio>("Intermedio")
@@ -69,13 +75,14 @@ namespace EscogeAventura.LogicaAccesoDatos
 
             modelBuilder.Entity<Intermedio>(i =>
             {
-                // Uno (Intermedio) a muchos (Opcion): cada opción de ramificación pertenece a un único Intermedio.
-                // Restrict (en vez del Cascade por defecto) para no generar un segundo "cascade path" hacia
-                // la tabla Capitulos, ya que Opcion también tiene la FK CapDestino apuntando a esa misma tabla.
-                i.HasMany(x => x.SiguienteCap)
-                 .WithOne()
-                 .HasForeignKey("IntermedioId")
-                 .OnDelete(DeleteBehavior.Restrict);
+                // Uno (Intermedio) a muchos (Opcion): cada opción sale de un único Intermedio.
+                // Cascade: si se borra el Intermedio se borran sus opciones de salida. No genera "multiple
+                // cascade paths" porque la otra FK de Opcion (CapituloDestino) está en Restrict.
+                i.HasMany(x => x.Opciones)
+                 .WithOne(o => o.CapituloOrigen)
+                 .HasForeignKey("CapituloOrigenId")
+                 .IsRequired()
+                 .OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<Final>(f =>
@@ -89,14 +96,16 @@ namespace EscogeAventura.LogicaAccesoDatos
             modelBuilder.Entity<Opcion>(o =>
             {
                 o.HasKey(x => x.Id);
-                o.Property(x => x.NombreCap).IsRequired().HasMaxLength(200);
+                o.Property(x => x.Texto).IsRequired().HasMaxLength(200);
 
                 // Muchos a uno hacia Capitulo (el destino al que lleva esta opción), unidireccional.
-                // Restrict por el mismo motivo que arriba: dos FKs (esta y la de Intermedio.SiguienteCap)
-                // apuntando a la tabla Capitulos con Cascade en ambas hace que SQL Server rechace el modelo.
-                o.HasOne(x => x.CapDestino)
+                // Restrict: dos FKs a la tabla Capitulos con Cascade en ambas hace que SQL Server rechace el modelo.
+                // (La FK de origen, CapituloOrigenId, se configura arriba en el bloque de Intermedio.)
+                // Si agregás Capitulo.OpcionesEntrantes, cambiá .WithMany() por .WithMany(c => c.OpcionesEntrantes).
+                o.HasOne(x => x.CapituloDestino)
                  .WithMany()
-                 .HasForeignKey("CapDestinoId")
+                 .HasForeignKey("CapituloDestinoId")
+                 .IsRequired()
                  .OnDelete(DeleteBehavior.Restrict);
             });
 
@@ -177,37 +186,69 @@ namespace EscogeAventura.LogicaAccesoDatos
                 // FechaFin es nullable (DateTime?) en la entidad: queda en null mientras la lectura sigue en curso.
 
                 // Usuario dueño de la lectura <-> Usuario.Biblioteca (uno a muchos, bidireccional).
-                // A propósito NO hay unique index sobre (usuarioId, historiaId): el mismo usuario puede
+                // A propósito NO hay unique index sobre (UsuarioId, HistoriaId): el mismo usuario puede
                 // tener varias Lecturas de la misma Historia (relecturas para llegar a otros finales).
-                l.HasOne(x => x.usuario)
+                l.HasOne(x => x.Usuario)
                  .WithMany(u => u.Biblioteca)
-                 .HasForeignKey("usuarioId")
+                 .HasForeignKey("UsuarioId")
+                 .IsRequired()
                  .OnDelete(DeleteBehavior.Restrict);
 
                 // Historia que se está leyendo, unidireccional (Historia no tiene ICollection<Lectura>).
-                l.HasOne(x => x.historia)
+                l.HasOne(x => x.Historia)
                  .WithMany()
-                 .HasForeignKey("historiaId")
+                 .HasForeignKey("HistoriaId")
+                 .IsRequired()
                  .OnDelete(DeleteBehavior.Restrict);
 
-                // CapituloActual y Final apuntan los dos a la tabla Capitulos (TPH):
-                // Restrict en ambos por la misma razón de "multiple cascade paths" de arriba.
+                // CapituloActual y Final apuntan los dos a la tabla Capitulos (TPH) y son opcionales:
+                // Final solo tiene valor si la lectura llegó a un final; CapituloActual puede ser null
+                // antes de empezar. Restrict en ambos por la razón de "multiple cascade paths".
                 l.HasOne(x => x.CapituloActual)
                  .WithMany()
                  .HasForeignKey("CapituloActualId")
+                 .IsRequired(false)
                  .OnDelete(DeleteBehavior.Restrict);
 
                 l.HasOne(x => x.Final)
                  .WithMany()
                  .HasForeignKey("FinalId")
+                 .IsRequired(false)
+                 .OnDelete(DeleteBehavior.Restrict);
+
+                // Camino recorrido en la lectura (para "volver atrás"). Si se borra la Lectura,
+                // se borran sus pasos.
+                l.HasMany(x => x.Camino)
+                 .WithOne(p => p.Lectura)
+                 .HasForeignKey("LecturaId")
+                 .IsRequired()
+                 .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            // ------------------------------------------------------------------
+            // PASO LECTURA
+            // ------------------------------------------------------------------
+            modelBuilder.Entity<PasoLectura>(p =>
+            {
+                p.HasKey(x => x.Id);
+                p.Property(x => x.Orden).IsRequired();
+
+                // Capítulo por el que pasó la lectura, unidireccional. Restrict por "multiple cascade paths".
+                p.HasOne(x => x.Capitulo)
+                 .WithMany()
+                 .HasForeignKey("CapituloId")
+                 .IsRequired()
                  .OnDelete(DeleteBehavior.Restrict);
             });
 
             //SEED
             modelBuilder.Entity<Rol>().HasData(
-      new Rol { Id = 1, Nombre = "Admin" },
-      new Rol { Id = 2, Nombre = "Usuario" }
-  );
+                new Rol { Id = 1, Nombre = "Admin" },
+                new Rol { Id = 2, Nombre = "Usuario" }
+            );
+
+
+        
         }
 
 

@@ -16,8 +16,11 @@ namespace EscogeAventura.LogicaNegocios.ValueObjects
 
         [Key]
         public int Id { get; set; }
-        public string NombreCap { get; set; }
-        public Capitulo CapDestino { get; set; }
+        public string Texto { get; set; }
+
+        // FKs (CapituloOrigenId y CapituloDestinoId) como shadow properties.
+        public Intermedio CapituloOrigen { get; set; }
+        public Capitulo CapituloDestino { get; set; }
 
 
     }
