@@ -1,5 +1,6 @@
 ﻿using DTOs.DTO.DTOsUsuario;
 using EscogeAventura.LogicaAplicacion.ICasosUso.ICUUsuario;
+using EscogeAventura.LogicaNegocios.CustomExceptions.Genericas;
 using EscogeAventura.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -22,17 +23,29 @@ namespace EscogeAventura.WebApp.Controllers
         [HttpPost]
         public IActionResult Login(LoginViewModel vm)
         {
-
-            DTOUsuario u = _CuVerifExistencia.Ejecutar(vm.Email, vm.Password);
-
-            if (u != null)
+            try
             {
-                HttpContext.Session.SetInt32("LogueadoId", u.Id);
-                HttpContext.Session.SetString("LogueadoEmail", u.Email);
-                HttpContext.Session.SetString("LogueadoRol", u.Rol.Nombre);
-                HttpContext.Session.SetString("LogueadoNombre", u.Nombre);
-                return RedirectToAction("Index", "Home");
+                DTOUsuario u = _CuVerifExistencia.Ejecutar(vm.Email, vm.Password);
+
+                if (u != null)
+                {
+                    HttpContext.Session.SetInt32("LogueadoId", u.Id);
+                    HttpContext.Session.SetString("LogueadoEmail", u.Email);
+                    HttpContext.Session.SetString("LogueadoRol", u.Rol.Nombre);
+                    HttpContext.Session.SetString("LogueadoNombre", u.Nombre);
+                    return RedirectToAction("Index", "Home");
+                }
+            }catch (DatoVacioException e)
+            {
+                ViewBag.ErrorMessage = e.Message;
+                return View();
             }
+            catch (Exception)
+            {
+
+                return View("Error");
+            }
+           
 
 
             return View();

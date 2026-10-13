@@ -1,6 +1,7 @@
 ﻿using DTOs.DTO.DTOsUsuario;
 using DTOs.Mappers;
 using EscogeAventura.LogicaAplicacion.ICasosUso.ICUUsuario;
+using EscogeAventura.LogicaNegocios.CustomExceptions.Genericas;
 using EscogeAventura.LogicaNegocios.Entidades;
 using EscogeAventura.LogicaNegocios.IRepositorios;
 using EscogeAventura.LogicaNegocios.ValueObjects;
@@ -24,21 +25,23 @@ namespace EscogeAventura.LogicaAplicacion.CasosUso.CUUsuario
 
             if (buscado is null)
             {
-                return null;
+                throw new DatoVacioException("Usuario no encontrado");
             }
-
+            if (password is null)
+            {
+                throw new DatoVacioException("Contrasenia Vacia");
+            }
             bool macheaPassword = Contrasena.Verify(password, buscado.Contrasena.Pass);
 
             if (macheaPassword)
             {
 
-                //si llega acá la persona puso bien los datos.
                 DTOUsuario ret = MapperUsuario.ToDtoUsuario(buscado);
                 return ret;
             }
             else
             {
-                return null;
+               throw new DatoVacioException("Contrasenia incorrecta");
             }
         }
     }

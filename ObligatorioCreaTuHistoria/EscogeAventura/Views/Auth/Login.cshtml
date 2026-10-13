@@ -1,6 +1,10 @@
 ﻿@model EscogeAventura.WebApp.Models.LoginViewModel
 
 <h2>Iniciar sesión</h2>
+@if (ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+}
 
 <form asp-action="Login" method="post">
     <div class="form-group">
