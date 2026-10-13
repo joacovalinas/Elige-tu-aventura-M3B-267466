@@ -1,9 +1,13 @@
 using EscogeAventura.LogicaAccesoDatos;
 using EscogeAventura.LogicaAccesoDatos.Repos;
 using EscogeAventura.LogicaAplicacion.CasosUso;
+using EscogeAventura.LogicaAplicacion.CasosUso.CUCapitulo;
+using EscogeAventura.LogicaAplicacion.CasosUso.CUCategoria;
 using EscogeAventura.LogicaAplicacion.CasosUso.CUHistoria;
 using EscogeAventura.LogicaAplicacion.CasosUso.CURol;
 using EscogeAventura.LogicaAplicacion.CasosUso.CUUsuario;
+using EscogeAventura.LogicaAplicacion.ICasosUso.ICUCapitulo;
+using EscogeAventura.LogicaAplicacion.ICasosUso.ICUCategoria;
 using EscogeAventura.LogicaAplicacion.ICasosUso.ICUHistoria;
 using EscogeAventura.LogicaAplicacion.ICasosUso.ICURol;
 using EscogeAventura.LogicaAplicacion.ICasosUso.ICUUsuario;
@@ -40,18 +44,20 @@ namespace EscogeAventura.WebApp
             builder.Services.AddScoped<IRepositorioRol, RepositorioRol>();
             builder.Services.AddScoped<IRepositorioHistoria, RepositorioHistoria>();
             builder.Services.AddScoped<IRepositorioCategoria, RepositorioCategoria>();
-       
+            builder.Services.AddScoped<IRepositorioCapitulo, RepositorioCapitulo>();
+            builder.Services.AddScoped<IRepositorioHistoria, RepositorioHistoria>();
 
             //ID - CU
             builder.Services.AddScoped<ICUAltaUsuario, CUAltaUsuario>();
             builder.Services.AddScoped<ICUVerifExistencia, CUVerifExistencia>();
             builder.Services.AddScoped<ICUObtenerRol, CUObtenerRol>();
             builder.Services.AddScoped<ICUAltaHistoria, CUAltaHistoria>();
+            builder.Services.AddScoped<ICUObtenerCategorias, CUObtenerCategorias>();
+            builder.Services.AddScoped<ICUAltaCapitulo, CUAltaCapitulo>();
+            builder.Services.AddScoped<ICUListarHistoria, CUListarHistoria>();
 
 
 
-
-          
 
             var app = builder.Build();
 

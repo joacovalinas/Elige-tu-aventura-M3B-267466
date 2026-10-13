@@ -1,43 +1,50 @@
-﻿@using DTOs.DTO.DTOsHistoria
-@using EscogeAventura.LogicaNegocios.Entidades
-@model DTOAltaHistoria
+﻿@using EscogeAventura.WebApp.Models
+@model AltaHistoriaViewModel
 
 <h2>Nueva historia</h2>
 
-<form asp-action="Crear" method="post">
+<form asp-action="AltaHistoria" method="post">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
     <div class="mb-3">
-        <label asp-for="Titulo" class="form-label">Título</label>
-        <input asp-for="Titulo" class="form-control" />
+        <label asp-for="Dto.Titulo" class="form-label">Título</label>
+        <input asp-for="Dto.Titulo" class="form-control" />
+        <span asp-validation-for="Dto.Titulo" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
-        <label asp-for="Sinopsis" class="form-label">Sinopsis</label>
-        <textarea asp-for="Sinopsis" class="form-control" rows="3"></textarea>
+        <label asp-for="Dto.Sinopsis" class="form-label">Sinopsis</label>
+        <textarea asp-for="Dto.Sinopsis" class="form-control" rows="3"></textarea>
+        <span asp-validation-for="Dto.Sinopsis" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
-        <label asp-for="CatHistoria" class="form-label">Categorías</label>
-        <select asp-for="CatHistoria" multiple class="form-select">
-            @foreach (Categoria c in (List<Categoria>)ViewBag.Categorias)
+        <label asp-for="Dto.CatHistoria" class="form-label">Categorías</label>
+        <select asp-for="Dto.CatHistoria" multiple class="form-select">
+            @foreach (var c in Model.Categorias)
             {
-                <option value="@c.Nombre" selected="@Model.CatHistoria.Contains(c.Nombre)">@c.Nombre</option>
+                <option value="@c.Nombre"
+                        selected="@(Model.Dto?.CatHistoria?.Contains(c.Nombre) ?? false)">
+                    @c.Nombre
+                </option>
             }
         </select>
+        <span asp-validation-for="Dto.CatHistoria" class="text-danger"></span>
     </div>
 
     <h4>Capítulo inicial</h4>
 
     <div class="mb-3">
-        <label asp-for="TituloCapInicial" class="form-label">Título</label>
-        <input asp-for="TituloCapInicial" class="form-control" />
+        <label asp-for="Dto.TituloCapInicial" class="form-label">Título</label>
+        <input asp-for="Dto.TituloCapInicial" class="form-control" />
+        <span asp-validation-for="Dto.TituloCapInicial" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
-        <label asp-for="CuerpoCapInicial" class="form-label">Texto</label>
-        <textarea asp-for="CuerpoCapInicial" class="form-control" rows="6"></textarea>
+        <label asp-for="Dto.CuerpoCapInicial" class="form-label">Texto</label>
+        <textarea asp-for="Dto.CuerpoCapInicial" class="form-control" rows="6"></textarea>
+        <span asp-validation-for="Dto.CuerpoCapInicial" class="text-danger"></span>
     </div>
 
-    <button type="submit" class="btn btn-primary">Crear historia</button>
+    <button type="submit" class="btn btn-primary">Crear</button>
 </form>

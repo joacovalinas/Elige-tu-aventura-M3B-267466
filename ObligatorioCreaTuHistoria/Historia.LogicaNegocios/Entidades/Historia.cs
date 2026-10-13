@@ -19,7 +19,7 @@ namespace EscogeAventura.LogicaNegocios.Entidades
         public string Titulo { get; set; }
         public string Sinopsis { get; set; }
         public EstadoHistoria Estado { get; set; }
-        public List<Categoria> CatHistoria { get; set; } 
+        public List<Categoria> CatHistoria { get; set; } = new List<Categoria>();
 
         public Intermedio CapInicial { get; set; }
 
@@ -38,24 +38,7 @@ namespace EscogeAventura.LogicaNegocios.Entidades
                 throw new DatoVacioException("La historia debe pertenecer al menos a una categoría.");
         }
 
-        public void AsignarCapituloInicial(string titulo, string cuerpo)
-        {
-            if (CapInicial != null)
-                throw new DominioException("La historia ya tiene un capítulo inicial.");
-
-            Intermedio inicial = new Intermedio
-            {
-                Titulo = titulo?.Trim(),
-                Cuerpo = cuerpo?.Trim(),
-                Historia = this
-            };
-
-
-            inicial.Validar();
-
-            CapInicial = inicial;
-            Capitulos.Add(inicial);
-        }
+        
 
 
     }

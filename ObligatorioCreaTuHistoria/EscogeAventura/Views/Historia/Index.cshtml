@@ -1,0 +1,75 @@
+﻿@using DTOs.DTO.DTOsHistoria
+@using EscogeAventura.LogicaNegocios.Entidades
+@model List<DTOHistoria>
+@{
+    ViewData["Title"] = "Historias";
+}
+
+<h2>Historias</h2>
+
+@if (TempData["Exito"] != null)
+{
+    <div class="alert alert-success">@TempData["Exito"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+@if (!Model.Any())
+{
+    <p>No hay historias cargadas.</p>
+}
+else
+{
+    <form method="post">
+        
+
+        <div class="mb-3 d-flex gap-2 flex-wrap">
+            <button type="submit" class="btn btn-primary"
+                    formmethod="get" asp-action="Editar">
+                Editar
+            </button>
+
+            <button type="submit" class="btn btn-danger"
+                    asp-action="Eliminar"
+                    onclick="return confirm('¿Seguro que querés eliminar la historia seleccionada?');">
+                Eliminar
+            </button>
+
+            <div class="dropdown">
+                <button type="button" class="btn btn-secondary dropdown-toggle"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                    Más opciones
+                </button>
+                <ul class="dropdown-menu">
+                    <li>
+                        <button type="submit" class="dropdown-item" asp-action="AgregarCapitulo">
+                            Agregar capítulo
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <table class="table table-hover align-middle">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Título</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var h in Model)
+                {
+                    <tr>
+                        <td>
+                            <input type="radio" name="id" value="@h.Id" required />
+                        </td>
+                        <td>@h.Titulo</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </form>
+}

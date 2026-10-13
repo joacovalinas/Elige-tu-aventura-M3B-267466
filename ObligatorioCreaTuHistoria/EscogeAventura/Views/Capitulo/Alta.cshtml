@@ -1,0 +1,52 @@
+﻿@using DTOs.DTO.DTOsCapitulo
+@using EscogeAventura.LogicaNegocios.Entidades
+@model DTOAltaCapitulo
+
+
+<h2>Agregar capítulo a "@(((Historia)ViewBag.Historia).Titulo)"</h2>
+
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-success">@TempData["Mensaje"]</div>
+}
+
+<form asp-action="Alta" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <input type="hidden" asp-for="HistoriaId" />
+
+    <div class="mb-3">
+        <label asp-for="AntecedenteId" class="form-label">Capítulo antecedente</label>
+        <select asp-for="AntecedenteId" class="form-select">
+            @foreach (Intermedio c in (List<Intermedio>)ViewBag.Intermedios)
+            {
+                <option value="@c.Id">@c.Titulo</option>
+            }
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Tipo de capítulo</label>
+        <select asp-for="TipoCapitulo" class="form-select">
+            <option value="Intermedio">Intermedio</option>
+            <option value="Final">Final</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="TextoOpcion" class="form-label">Texto de la opción que lleva a este capítulo</label>
+        <input asp-for="TextoOpcion" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Titulo" class="form-label">Título</label>
+        <input asp-for="Titulo" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Cuerpo" class="form-label">Texto</label>
+        <textarea asp-for="Cuerpo" class="form-control" rows="6"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Agregar capítulo</button>
+</form>

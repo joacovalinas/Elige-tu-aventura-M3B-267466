@@ -7,7 +7,9 @@ namespace EscogeAventura.LogicaNegocios.IRepositorios
 {
     public interface IRepositorioHistoria : IRepositorio<Historia>
     {
-
+        void Actualizar(Historia historia);
         Historia FindByNombreHistoria(string nombreHistoria);
+
+        Historia ObtenerPorIdConCapitulos(int historiaId);
     }
 }

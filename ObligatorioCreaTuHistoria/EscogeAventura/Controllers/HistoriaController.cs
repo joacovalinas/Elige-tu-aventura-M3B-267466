@@ -1,7 +1,10 @@
 ﻿using DTOs.DTO.DTOsHistoria;
+using EscogeAventura.Controllers;
+using EscogeAventura.LogicaAplicacion.ICasosUso.ICUCategoria;
 using EscogeAventura.LogicaAplicacion.ICasosUso.ICUHistoria;
 using EscogeAventura.LogicaNegocios.CustomExceptions.Genericas;
 using EscogeAventura.LogicaNegocios.IRepositorios;
+using EscogeAventura.WebApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -9,43 +12,62 @@ using System.Security.Claims;
 //[Authorize(Roles = "Admin")]
 public class HistoriaController : Controller
 {
-    private readonly ICUAltaHistoria _CuAltaHistoria;
-    private readonly IRepositorioCategoria _RepoCategorias;
+    private  ICUAltaHistoria _CuAltaHistoria;
+    private  IRepositorioCategoria _RepoCategorias;
+    private ICUObtenerCategorias _cuObtenerCategorias;
+    private  ICUListarHistoria _listarHistorias;
 
-    public HistoriaController(ICUAltaHistoria cuAltaHistoria, IRepositorioCategoria categorias)
+    public HistoriaController(ICUListarHistoria cUListarHistoria, ICUAltaHistoria cuAltaHistoria, IRepositorioCategoria categorias, ICUObtenerCategorias cuObtenerCategorias)
     {
         _CuAltaHistoria = cuAltaHistoria;
         _RepoCategorias = categorias;
+        _cuObtenerCategorias = cuObtenerCategorias;
+        _listarHistorias = cUListarHistoria;
     }
 
     [HttpGet]
     public IActionResult AltaHistoria()
     {
-        CargarCategorias();
-        return View(new DTOAltaHistoria());
+        AltaHistoriaViewModel vm = new AltaHistoriaViewModel();
+        vm.Categorias = _cuObtenerCategorias.Ejecutar();
+        
+
+        return View(vm);
     }
 
     [HttpPost]
     
-    public IActionResult AltaHistoria(DTOAltaHistoria dto)
+    public IActionResult AltaHistoria(AltaHistoriaViewModel vm)
     {
         try
         {
             
-            _CuAltaHistoria.Ejecutar(dto);
-            TempData["Mensaje"] = "Historia creada en estado BORRADOR.";
-            return RedirectToAction("Index"); // el Index del listado (RF03 consulta)
+            _CuAltaHistoria.Ejecutar(vm.Dto);
+
+            return RedirectToAction("Index", "Home"); // el Index del listado (RF03 consulta)
         }
         catch (DominioException ex)
         {
             ModelState.AddModelError(string.Empty, ex.Message);
-            CargarCategorias();
-            return View(dto);
+            vm.Categorias = _cuObtenerCategorias.Ejecutar();
+            return View(vm);
         }
     }
-
-    private void CargarCategorias()
+    [HttpGet]
+    public IActionResult Index()
     {
-        ViewBag.Categorias = _RepoCategorias.FindAll();
+        List<DTOHistoria> historias = _listarHistorias.Ejecutar();
+        return View(historias);
     }
+
+
+    [HttpPost]
+   
+    public IActionResult AgregarCapitulo(int id)
+    {
+       
+        return RedirectToAction("Alta", "Capitulo", new { historiaId  = id});
+    }
+
+
 }

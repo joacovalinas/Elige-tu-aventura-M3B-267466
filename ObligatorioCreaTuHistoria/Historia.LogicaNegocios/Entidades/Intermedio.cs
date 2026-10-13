@@ -7,7 +7,7 @@ namespace EscogeAventura.LogicaNegocios.Entidades
 {
     public class Intermedio: Capitulo
     {
-        public List<Opcion> Opciones { get; set; }
+        public List<Opcion> Opciones { get; set; } = new List<Opcion>();
 
         public override void Validar()
         {

@@ -56,12 +56,32 @@ namespace EscogeAventura.LogicaAplicacion.CasosUso.CUHistoria
             historia.CatHistoria.AddRange(categorias);
 
             historia.Validar();
-            historia.AsignarCapituloInicial(dto.TituloCapInicial, dto.CuerpoCapInicial);
 
-            _repoHistorias.Add(historia);
+        
+            if (historia.CapInicial != null)
+                throw new DominioException("La historia ya tiene un capítulo inicial.");
+
+            Intermedio inicial = new Intermedio
+            {
+                Titulo = dto.TituloCapInicial?.Trim(),
+                Cuerpo = dto.CuerpoCapInicial?.Trim(),
+                Historia = historia
+            };
+
+
+            inicial.Validar();
+
+            historia.CapInicial = inicial;
+            historia.Capitulos.Add(inicial);
+        
+
+        _repoHistorias.Add(historia);
 
             // RF05: acá registrarías la Auditoria (acción "Creación", fecha, adminId).
         }
+
+
+
     }
     
 }
