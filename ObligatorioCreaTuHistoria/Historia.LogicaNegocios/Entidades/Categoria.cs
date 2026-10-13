@@ -6,7 +6,7 @@ using System.Text;
 
 namespace EscogeAventura.LogicaNegocios.Entidades
 {
-    public record Categoria 
+    public class Categoria 
     {
         [Key]
 

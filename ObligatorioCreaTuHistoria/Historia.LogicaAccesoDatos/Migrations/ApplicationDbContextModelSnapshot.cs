@@ -46,7 +46,35 @@ namespace EscogeAventura.LogicaAccesoDatos.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Accion")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Detalle")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Entidad")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("HistoriaId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UsuarioId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("HistoriaId");
+
+                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Auditorias");
                 });
@@ -363,6 +391,25 @@ namespace EscogeAventura.LogicaAccesoDatos.Migrations
                         .HasForeignKey("HistoriaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("EscogeAventura.LogicaNegocios.Entidades.Auditoria", b =>
+                {
+                    b.HasOne("EscogeAventura.LogicaNegocios.Entidades.Historia", "Historia")
+                        .WithMany()
+                        .HasForeignKey("HistoriaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EscogeAventura.LogicaNegocios.Entidades.Usuario", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Historia");
+
+                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("EscogeAventura.LogicaNegocios.Entidades.Capitulo", b =>

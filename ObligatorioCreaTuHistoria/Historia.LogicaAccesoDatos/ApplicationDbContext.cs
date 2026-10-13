@@ -127,7 +127,24 @@ namespace EscogeAventura.LogicaAccesoDatos
             modelBuilder.Entity<Auditoria>(a =>
             {
                 a.HasKey(x => x.Id);
+                a.Property(x => x.Fecha).IsRequired();
+                a.Property(x => x.Accion).IsRequired().HasMaxLength(50);
+                a.Property(x => x.Entidad).IsRequired().HasMaxLength(50);
+                a.Property(x => x.Detalle).HasMaxLength(500);
+
+                a.HasOne(x => x.Historia)
+                 .WithMany()
+                 .HasForeignKey("HistoriaId")
+                 .IsRequired()
+                 .OnDelete(DeleteBehavior.Cascade);
+
+                a.HasOne(x => x.Usuario)
+                 .WithMany()
+                 .HasForeignKey("UsuarioId")
+                 .IsRequired()
+                 .OnDelete(DeleteBehavior.Restrict);
             });
+
 
             // ------------------------------------------------------------------
             // ROL
