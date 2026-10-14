@@ -11,17 +11,21 @@ using System.Text;
 
 namespace EscogeAventura.LogicaAplicacion.CasosUso.CUUsuario
 {
-    public class CUVerifExistencia : ICUVerifExistencia
+    public class CUVerifExistenciaAdmin : ICUVerifExistenciaAdmin
     {
         private IRepositorioUsuario _repoUsuario;
 
-        public CUVerifExistencia(IRepositorioUsuario repoUsuario)
+        public CUVerifExistenciaAdmin(IRepositorioUsuario repoUsuario)
         {
             _repoUsuario = repoUsuario;
         }
         public DTOUsuario Ejecutar(string email, string password)
         {
             Usuario buscado = _repoUsuario.FindByEmail(email);
+            if (buscado.Rol.Nombre != "Admin")
+            {
+                throw new DominioException("Solo administradores pueden hacer login aca");
+            }
 
             if (buscado is null)
             {

@@ -258,18 +258,6 @@ namespace EscogeAventura.LogicaAccesoDatos.Migrations
                         .IsUnique();
 
                     b.ToTable("Roles");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Nombre = "Admin"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Nombre = "Usuario"
-                        });
                 });
 
             modelBuilder.Entity("EscogeAventura.LogicaNegocios.Entidades.Usuario", b =>

@@ -1,8 +1,10 @@
 ﻿using DTOs.DTO.DTOsCapitulo;
+using DTOs.Mappers;
 using EscogeAventura.LogicaAplicacion.ICasosUso.ICUCapitulo;
 using EscogeAventura.LogicaNegocios.CustomExceptions.Genericas;
 using EscogeAventura.LogicaNegocios.Entidades;
 using EscogeAventura.LogicaNegocios.IRepositorios;
+using EscogeAventura.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -10,56 +12,65 @@ namespace EscogeAventura.WebApp.Controllers
 {
     public class CapituloController : Controller
     {
-        private readonly ICUAltaCapitulo _agregar;
+        private readonly ICUAltaCapitulo _CuAltaCapitulo;
         private readonly IRepositorioHistoria _historias;
 
-        public CapituloController(ICUAltaCapitulo agregar, IRepositorioHistoria historias)
+        public CapituloController(ICUAltaCapitulo cuAltaCapitulo, IRepositorioHistoria historias)
         {
-            _agregar = agregar;
+            _CuAltaCapitulo = cuAltaCapitulo;
             _historias = historias;
         }
 
         [HttpGet]
-        public IActionResult Alta(int historiaId)
+        public IActionResult AltaCapitulo(int historiaId)
          {
-            if (!CargarDatosFormulario(historiaId))
+
+
+            if (_historias.FindById(historiaId) == null)
                return NotFound();
 
-            DTOAltaCapitulo dto = new DTOAltaCapitulo();
-            dto.HistoriaId = historiaId;
-            return View(dto);
+            AltaCapituloViewModel vm = CargarDatosFormulario(historiaId);
+
+            return View(vm);
         }
 
         [HttpPost]
         
-        public IActionResult Alta(DTOAltaCapitulo dto)
+        public IActionResult AltaCapitulo(DTOAltaCapitulo dto)
         {
             try
             {
                 //int adminId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-                _agregar.Ejecutar(dto);
+                _CuAltaCapitulo.Ejecutar(dto);
                 TempData["Mensaje"] = "Capítulo agregado.";
-                return RedirectToAction("Crear", new { historiaId = dto.HistoriaId });
+                AltaCapituloViewModel vm = CargarDatosFormulario(dto.HistoriaId);
+
+                return View(vm);
             }
             catch (DominioException ex)
             {
                 ModelState.AddModelError(string.Empty, ex.Message);
-                if (!CargarDatosFormulario(dto.HistoriaId))
-                    return NotFound();
-                return View(dto);
+                AltaCapituloViewModel vm = CargarDatosFormulario(dto.HistoriaId);
+                return View(vm);
             }
         }
 
         // Carga la historia y sus capitulos intermedios (los unicos que pueden ser antecedente).
-        private bool CargarDatosFormulario(int historiaId)
+        private AltaCapituloViewModel CargarDatosFormulario(int historiaId)
         {
-            Historia historia = _historias.ObtenerPorIdConCapitulos(historiaId);
-            if (historia == null)
-                return false;
+            AltaCapituloViewModel vm = new AltaCapituloViewModel();
 
-            ViewBag.Historia = historia;
-            ViewBag.Intermedios = historia.Capitulos.OfType<Intermedio>().ToList();
-            return true;
+            Historia historia = _historias.FindById(historiaId);
+            if (historia == null)
+                throw new DominioException("Historia no encontrada.");
+
+
+            vm.DtoHistoria = MapperHistoria.ToDtoHistoria(historia);
+            vm.Dto = new DTOAltaCapitulo();
+            
+            vm.CapitulosIntermedios = MapperCapitulo.ToListDtoCapitulo(historia.Capitulos); 
+
+            return vm;
         }
     }
 }

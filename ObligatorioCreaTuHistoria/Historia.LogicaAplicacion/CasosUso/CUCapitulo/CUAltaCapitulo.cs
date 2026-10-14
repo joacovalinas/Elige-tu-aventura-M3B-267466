@@ -85,6 +85,7 @@ namespace EscogeAventura.LogicaAplicacion.CasosUso.CUCapitulo
                 // 7) Recién acá, con todo validado, se enlaza y se guarda.
                 //    Si alguna validación anterior falla, la historia queda intacta.
                 nuevo.Historia = historia;
+          
                 historia.Capitulos.Add(nuevo);
                 origen.Opciones.Add(opcion);
 

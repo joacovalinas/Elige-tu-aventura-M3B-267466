@@ -19,7 +19,7 @@
     </div>
 
     <div class="mb-3">
-        <label asp-for="Dto.CatHistoria" class="form-label">Categorías</label>
+        <label asp-for="Dto.CatHistoria" class="form-label">Categorías (Mantene Ctrl para seleccionar mas de una)</label>
         <select asp-for="Dto.CatHistoria" multiple class="form-select">
             @foreach (var c in Model.Categorias)
             {

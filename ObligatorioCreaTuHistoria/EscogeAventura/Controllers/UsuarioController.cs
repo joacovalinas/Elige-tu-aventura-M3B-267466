@@ -59,6 +59,7 @@ namespace EscogeAventura.WebApp.Controllers
                 ViewBag.msg = "Error";
 
             }
+            
             vm.TodosLosRoles = _CUObtenerRol.Ejecutar();
 
             return View(vm);

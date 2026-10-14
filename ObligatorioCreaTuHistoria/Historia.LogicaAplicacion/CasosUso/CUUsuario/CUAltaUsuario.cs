@@ -57,15 +57,17 @@ namespace EscogeAventura.LogicaAplicacion.CasosUso.CUUsuario
             catch (UsuarioYaExisteException ex)
             {
                 //auditoria
-                throw new UsuarioYaExisteException("Ya existe este usuario.");
+                throw ex;
             }
             catch (DatoVacioException ex)
             {
                 //auditoria
+                throw ex;
             }
             catch (Exception ex)
             {
                 //auditoria
+                throw ex;
             }
 
 

@@ -66,12 +66,13 @@ namespace EscogeAventura.LogicaAccesoDatos.Repos
 
         public Historia FindById(int id)
         {
-            return _context.Historias.Include(u => u.Estado).Include(u => u.CapInicial).Include(u => u.CatHistoria).Where(a => a.Id.Equals(id)).SingleOrDefault();
+            return _context.Historias.Include(u => u.CapInicial).Include(u => u.CatHistoria).Include(h => h.Capitulos)
+                    .ThenInclude(c => ((Intermedio)c).Opciones).Where(a => a.Id.Equals(id)).SingleOrDefault();
         }
 
         public Historia FindByNombreHistoria(string nombreHistoria)
         {
-            return _context.Historias.Include(u => u.Estado).Include(u => u.CapInicial).Include(u => u.CatHistoria).Where(a => a.Titulo.Equals(nombreHistoria)).SingleOrDefault();
+            return _context.Historias.Include(u => u.CapInicial).Include(u => u.CatHistoria).Where(a => a.Titulo.Equals(nombreHistoria)).SingleOrDefault();
         }
 
         public void Remove(Historia ToEliminar)

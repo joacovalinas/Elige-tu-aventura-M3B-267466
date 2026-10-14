@@ -44,7 +44,7 @@ public class HistoriaController : Controller
             
             _CuAltaHistoria.Ejecutar(vm.Dto);
 
-            return RedirectToAction("Index", "Home"); // el Index del listado (RF03 consulta)
+            return RedirectToAction("Index"); // el Index del listado (RF03 consulta)
         }
         catch (DominioException ex)
         {
@@ -66,7 +66,7 @@ public class HistoriaController : Controller
     public IActionResult AgregarCapitulo(int id)
     {
        
-        return RedirectToAction("Alta", "Capitulo", new { historiaId  = id});
+        return RedirectToAction("AltaCapitulo", "Capitulo", new { historiaId  = id});
     }
 
 

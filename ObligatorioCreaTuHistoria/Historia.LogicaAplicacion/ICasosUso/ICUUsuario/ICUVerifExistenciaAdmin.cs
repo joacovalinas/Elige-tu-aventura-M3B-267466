@@ -5,7 +5,7 @@ using System.Text;
 
 namespace EscogeAventura.LogicaAplicacion.ICasosUso.ICUUsuario
 {
-    public interface ICUVerifExistencia
+    public interface ICUVerifExistenciaAdmin
     {
         DTOUsuario Ejecutar(string email, string password);
     }

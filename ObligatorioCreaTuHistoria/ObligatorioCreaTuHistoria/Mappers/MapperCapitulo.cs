@@ -14,6 +14,7 @@ namespace DTOs.Mappers
         {
 
             DTOCapitulo dto = new DTOCapitulo();
+            dto.Id = c.Id;
             dto.Titulo = c.Titulo;
             dto.Cuerpo = c.Cuerpo;
             dto.HistoriaId = c.Historia.Id;

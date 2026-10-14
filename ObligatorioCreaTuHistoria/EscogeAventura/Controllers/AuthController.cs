@@ -9,11 +9,11 @@ namespace EscogeAventura.WebApp.Controllers
     public class AuthController : Controller
     {
 
-        private ICUVerifExistencia _CuVerifExistencia;
+        private ICUVerifExistenciaAdmin _CuVerifExistenciaAdmin;
 
-        public AuthController(ICUVerifExistencia CuVerificarExistencia)
+        public AuthController(ICUVerifExistenciaAdmin CuVerificarExistenciaAdmin)
         {
-            _CuVerifExistencia = CuVerificarExistencia;
+            _CuVerifExistenciaAdmin = CuVerificarExistenciaAdmin;
         }
         public IActionResult Login()
         {
@@ -25,7 +25,7 @@ namespace EscogeAventura.WebApp.Controllers
         {
             try
             {
-                DTOUsuario u = _CuVerifExistencia.Ejecutar(vm.Email, vm.Password);
+                DTOUsuario u = _CuVerifExistenciaAdmin.Ejecutar(vm.Email, vm.Password);
 
                 if (u != null)
                 {
@@ -36,6 +36,11 @@ namespace EscogeAventura.WebApp.Controllers
                     return RedirectToAction("Index", "Home");
                 }
             }catch (DatoVacioException e)
+            {
+                ViewBag.ErrorMessage = e.Message;
+                return View();
+            }
+            catch (DominioException e)
             {
                 ViewBag.ErrorMessage = e.Message;
                 return View();

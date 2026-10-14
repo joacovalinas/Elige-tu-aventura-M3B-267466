@@ -49,7 +49,7 @@ namespace EscogeAventura.WebApp
 
             //ID - CU
             builder.Services.AddScoped<ICUAltaUsuario, CUAltaUsuario>();
-            builder.Services.AddScoped<ICUVerifExistencia, CUVerifExistencia>();
+            builder.Services.AddScoped<ICUVerifExistenciaAdmin,CUVerifExistenciaAdmin>();
             builder.Services.AddScoped<ICUObtenerRol, CUObtenerRol>();
             builder.Services.AddScoped<ICUAltaHistoria, CUAltaHistoria>();
             builder.Services.AddScoped<ICUObtenerCategorias, CUObtenerCategorias>();
@@ -63,20 +63,56 @@ namespace EscogeAventura.WebApp
 
 
 
-            //CREAR USUARIO ADMINISTRADOR SI NO EXISTE
+            //SEED
 
             using (var scope = app.Services.CreateScope())
             {
                 var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
                 db.Database.Migrate();
 
+                // Seed de roles
+                if (!db.Roles.Any())
+                {
+                    db.Roles.AddRange(
+                        new Rol { Nombre = "Admin" },
+                        new Rol { Nombre = "Usuario" }
+                    );
+                    db.SaveChanges();
+                }
+
+                // Seed del usuario admin
                 if (!db.Usuarios.Any(u => u.Email == "admin@admin.com"))
                 {
-                    var rol = db.Roles.First(r => r.Id == 1);
-                    var rolAdmin = db.Roles.FirstOrDefault(r => r.Nombre == "admin");
-                    var admin = new Usuario( "nombre",  "apellido",  "admin@admin.com",  "admin", "1234",  rolAdmin);
+                    var rolAdmin = db.Roles.First(r => r.Nombre == "Admin");
+                    var admin = new Usuario("nombre", "apellido", "admin@admin.com", "admin", "1234", rolAdmin);
 
                     db.Usuarios.Add(admin);
+                    db.SaveChanges();
+                }
+                var nombresCategorias = new[]
+   {
+        "Aventura",
+        "Fantasía",
+        "Ciencia ficción",
+        "Terror",
+        "Misterio",
+        "Romance",
+        "Histórica",
+        "Humor",
+        "Drama",
+        "Acción"
+    };
+
+                var existentes = db.Categorias.Select(c => c.Nombre).ToHashSet();
+
+                var nuevas = nombresCategorias
+                    .Where(n => !existentes.Contains(n))
+                    .Select(n => new Categoria { Nombre = n })
+                    .ToList();
+
+                if (nuevas.Count > 0)
+                {
+                    db.Categorias.AddRange(nuevas);
                     db.SaveChanges();
                 }
             }

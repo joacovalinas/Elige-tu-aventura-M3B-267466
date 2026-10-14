@@ -259,11 +259,11 @@ namespace EscogeAventura.LogicaAccesoDatos
             });
 
             //SEED
-            modelBuilder.Entity<Rol>().HasData(
+           /* modelBuilder.Entity<Rol>().HasData(
                 new Rol { Id = 1, Nombre = "Admin" },
                 new Rol { Id = 2, Nombre = "Usuario" }
             );
-
+           */
 
         
         }
