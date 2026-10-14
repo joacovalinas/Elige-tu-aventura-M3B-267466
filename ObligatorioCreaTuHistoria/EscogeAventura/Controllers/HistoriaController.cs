@@ -3,6 +3,8 @@ using EscogeAventura.Controllers;
 using EscogeAventura.LogicaAplicacion.ICasosUso.ICUCategoria;
 using EscogeAventura.LogicaAplicacion.ICasosUso.ICUHistoria;
 using EscogeAventura.LogicaNegocios.CustomExceptions.Genericas;
+using EscogeAventura.LogicaNegocios.CustomExceptions.Historia;
+using EscogeAventura.LogicaNegocios.CustomExceptions.Usuario;
 using EscogeAventura.LogicaNegocios.IRepositorios;
 using EscogeAventura.WebApp.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -46,12 +48,39 @@ public class HistoriaController : Controller
 
             return RedirectToAction("Index"); // el Index del listado (RF03 consulta)
         }
-        catch (DominioException ex)
+        catch (DominioException e)
         {
-            ModelState.AddModelError(string.Empty, ex.Message);
+            ViewBag.msg = e.Message;
             vm.Categorias = _cuObtenerCategorias.Ejecutar();
             return View(vm);
         }
+        catch (DatoVacioException e)
+        {
+
+            ViewBag.msg = e.Message;
+            vm.Categorias = _cuObtenerCategorias.Ejecutar();
+            return View(vm);
+
+        }
+        catch (HistoriaYaExisteException e)
+        {
+            ViewBag.msg = e.Message;
+            vm.Categorias = _cuObtenerCategorias.Ejecutar();
+            return View(vm);
+        }
+        catch (Exception e)
+        {
+
+            ViewBag.msg = "Error";
+            vm.Categorias = _cuObtenerCategorias.Ejecutar();
+            return View(vm);
+
+        }
+
+
+
+
+
     }
     [HttpGet]
     public IActionResult Index()

@@ -1,6 +1,7 @@
 ﻿using DTOs.DTO.DTOsHistoria;
 using EscogeAventura.LogicaAplicacion.ICasosUso.ICUHistoria;
 using EscogeAventura.LogicaNegocios.CustomExceptions.Genericas;
+using EscogeAventura.LogicaNegocios.CustomExceptions.Historia;
 using EscogeAventura.LogicaNegocios.Entidades;
 using EscogeAventura.LogicaNegocios.IRepositorios;
 using System;
@@ -27,20 +28,26 @@ namespace EscogeAventura.LogicaAplicacion.CasosUso.CUHistoria
 
         public void Ejecutar(DTOAltaHistoria dto)
         {
+            // 1. DTO nulo
             if (dto == null)
                 throw new DominioException("Los datos de la historia son obligatorios.");
 
-            // Nombres pedidos: sin vacíos, sin espacios sobrantes y sin repetidos
+            // 2. Normalizar el título
+            string titulo = dto.Titulo?.Trim();
+
+            // 3. Unicidad del título (consulta a la base)
+            if (_repoHistorias.FindByNombreHistoria(titulo) != null)
+                throw new HistoriaYaExisteException("Ya existe una historia con ese título.");
+
+            // 4. Categorías: normalizar, consultar y verificar existencia
             List<string> nombresPedidos = (dto.CatHistoria ?? new List<string>())
                 .Where(n => !string.IsNullOrWhiteSpace(n))
                 .Select(n => n.Trim())
                 .Distinct(StringComparer.OrdinalIgnoreCase)
                 .ToList();
 
-            // Una sola consulta a la base
             List<Categoria> categorias = _repoCategorias.ObtenerPorNombres(nombresPedidos);
 
-            // Nombres que vinieron del DTO pero no existen
             List<string> inexistentes = nombresPedidos
                 .Except(categorias.Select(c => c.Nombre), StringComparer.OrdinalIgnoreCase)
                 .ToList();
@@ -48,36 +55,31 @@ namespace EscogeAventura.LogicaAplicacion.CasosUso.CUHistoria
             if (inexistentes.Any())
                 throw new DominioException("No existen las categorías: " + string.Join(", ", inexistentes) + ".");
 
+            // 5. Construir la historia CON sus categorías y recién ahí validar
             Historia historia = new Historia
             {
-                Titulo = dto.Titulo?.Trim(),
+                Titulo = titulo,
                 Sinopsis = dto.Sinopsis?.Trim()
             };
             historia.CatHistoria.AddRange(categorias);
-
             historia.Validar();
 
-        
-            if (historia.CapInicial != null)
-                throw new DominioException("La historia ya tiene un capítulo inicial.");
-
+            // 6. Capítulo inicial: construir y validar
             Intermedio inicial = new Intermedio
             {
                 Titulo = dto.TituloCapInicial?.Trim(),
                 Cuerpo = dto.CuerpoCapInicial?.Trim(),
                 Historia = historia
             };
-
-
             inicial.Validar();
 
+            // 7. Armar el grafo y persistir
             historia.CapInicial = inicial;
             historia.Capitulos.Add(inicial);
-        
 
-        _repoHistorias.Add(historia);
+            _repoHistorias.Add(historia);
 
-            // RF05: acá registrarías la Auditoria (acción "Creación", fecha, adminId).
+            // RF05: registrar Auditoria (acción "Creación", fecha, adminId).
         }
 
 

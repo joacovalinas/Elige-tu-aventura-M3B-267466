@@ -5,7 +5,10 @@
     ViewData["Title"] = "Historias";
 }
 
-<h2>Historias</h2>
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
+    <h2 class="mb-0">Historias</h2>
+    <a asp-controller="Historia" asp-action="AltaHistoria" class="btn btn-primary">Nueva Historia</a>
+</div>
 
 @if (TempData["Exito"] != null)
 {
@@ -19,20 +22,12 @@
 @if (!Model.Any())
 {
     <p>No hay historias cargadas.</p>
-
-    <a asp-controller="Historia" asp-action="AltaHistoria" class="btn btn-primary">Nueva Historia</a>
 }
 else
 {
-
-    
-        <a asp-controller="Historia" asp-action="AltaHistoria" class="btn btn-primary">Nueva Historia</a>
-   
-
     <form method="post">
-        
 
-        <div class="mb-3 d-flex gap-2 flex-wrap">
+        <div class="acciones mb-3">
             <button type="submit" class="btn btn-primary"
                     formmethod="get" asp-action="Editar">
                 Editar
@@ -44,35 +39,31 @@ else
                 Eliminar
             </button>
 
-            
-            <div class="dropdown">
-          
-                        <button type="submit" class="btn btn-secondary" asp-action="AgregarCapitulo">
-                            Agregar capítulo
-                        </button>
-                   
-                
-            </div>
+            <button type="submit" class="btn btn-secondary" asp-action="AgregarCapitulo">
+                Agregar capítulo
+            </button>
         </div>
 
-        <table class="table table-hover align-middle">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>Título</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var h in Model)
-                {
+        <div class="form-card">
+            <table class="table table-hover align-middle mb-0">
+                <thead>
                     <tr>
-                        <td>
-                            <input type="radio" name="id" value="@h.Id" required />
-                        </td>
-                        <td>@h.Titulo</td>
+                        <th style="width: 3rem;"></th>
+                        <th>Título</th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var h in Model)
+                    {
+                        <tr>
+                            <td>
+                                <input type="radio" name="id" value="@h.Id" class="form-check-input" required />
+                            </td>
+                            <td>@h.Titulo</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </form>
 }

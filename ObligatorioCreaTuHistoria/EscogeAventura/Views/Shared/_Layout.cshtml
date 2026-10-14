@@ -47,17 +47,13 @@
                         {
                             if (LogueadoRol == "Admin")
                             {
-                                // Solo botones para el admin
-                                // <li class="nav-item"><a class="nav-link" asp-controller="..." asp-action="...">...</a></li>
+                                // Links para el admin
                                 <li class="nav-item">
-                                    <a asp-controller="Usuario" asp-action="AltaUsuario" class="btn btn-primary">Alta Usuario</a>
+                                    <a class="nav-link @Activo("Usuario", "AltaUsuario")" asp-controller="Usuario" asp-action="AltaUsuario">Alta usuario</a>
                                 </li>
-
-                                 <li class="nav-item">
-                                    <a asp-controller="Historia" asp-action="Index" class="btn btn-primary">listado Historias</a>
+                                <li class="nav-item">
+                                    <a class="nav-link @Activo("Historia", "Index")" asp-controller="Historia" asp-action="Index">Listado de historias</a>
                                 </li>
-
-                              
                             }
                             else
                             {
@@ -68,7 +64,7 @@
                     </ul>
 
 
-                    <ul class="navbar-nav align-items-sm-center gap-sm-2">
+                    <ul class="navbar-nav align-items-sm-center gap-sm-3">
                         @if (LogueadoId != null)
                         {
                             <li class="nav-item user-chip">
@@ -95,7 +91,7 @@
         </nav>
     </header>
     <div class="container flex-grow-1">
-        <main role="main" class="pb-3">
+        <main role="main" class="pb-4">
             @RenderBody()
         </main>
     </div>

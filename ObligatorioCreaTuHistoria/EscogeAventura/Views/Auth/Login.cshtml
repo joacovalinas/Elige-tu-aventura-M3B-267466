@@ -1,23 +1,30 @@
 ﻿@model EscogeAventura.WebApp.Models.LoginViewModel
 
-<h2>Iniciar sesión</h2>
-@if (ViewBag.ErrorMessage != null)
-{
-    <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
-}
+<div class="form-wrapper form-wrapper-sm mt-4">
 
-<form asp-action="Login" method="post">
-    <div class="form-group">
-        <label asp-for="Email"></label>
-        <input asp-for="Email" class="form-control" />
-        <span asp-validation-for="Email" class="text-danger"></span>
-    </div>
+    <h2 class="mb-3">Iniciar sesión</h2>
 
-    <div class="form-group">
-        <label asp-for="Password"></label>
-        <input asp-for="Password" type="password" class="form-control" />
-        <span asp-validation-for="Password" class="text-danger"></span>
-    </div>
+    @if (ViewBag.ErrorMessage != null)
+    {
+        <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+    }
 
-    <button type="submit" class="btn btn-primary">Entrar</button>
-</form>
+    <form asp-action="Login" method="post" class="form-card">
+        <div class="mb-3">
+            <label asp-for="Email" class="form-label"></label>
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Password" class="form-label"></label>
+            <input asp-for="Password" type="password" class="form-control" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Entrar</button>
+        </div>
+    </form>
+
+</div>
