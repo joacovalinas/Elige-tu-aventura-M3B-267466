@@ -21,12 +21,15 @@ namespace EscogeAventura.LogicaAplicacion.CasosUso.CUUsuario
         }
         public DTOUsuario Ejecutar(string email, string password)
         {
-            Usuario buscado = _repoUsuario.FindByEmail(email);
-            if (buscado.Rol.Nombre != "Admin")
-            {
-                throw new DominioException("Solo administradores pueden hacer login aca");
-            }
 
+            Usuario buscado = _repoUsuario.FindByEmail(email);
+
+              
+              if (buscado.Rol.Nombre != "Admin")
+              {
+                  throw new DominioException("Solo administradores pueden hacer login aca");
+              }
+              
             if (buscado is null)
             {
                 throw new DatoVacioException("Usuario no encontrado");

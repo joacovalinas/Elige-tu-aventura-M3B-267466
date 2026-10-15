@@ -24,7 +24,8 @@ namespace EscogeAventura.WebApp.Controllers
         [HttpGet]
         public IActionResult AltaCapitulo(int historiaId)
          {
-
+            if (HttpContext.Session.GetString("LogueadoRol") != "Admin")
+                return RedirectToAction("Login", "Auth");
 
             if (_historias.FindById(historiaId) == null)
                return NotFound();
@@ -38,21 +39,41 @@ namespace EscogeAventura.WebApp.Controllers
         
         public IActionResult AltaCapitulo(DTOAltaCapitulo dto)
         {
+            if (HttpContext.Session.GetString("LogueadoRol") != "Admin")
+               return RedirectToAction("Login", "Auth");
             try
             {
                 //int adminId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
                 _CuAltaCapitulo.Ejecutar(dto);
-                TempData["Mensaje"] = "Capítulo agregado.";
-                AltaCapituloViewModel vm = CargarDatosFormulario(dto.HistoriaId);
+                TempData["Exito"] = "Capítulo agregado.";
+               
 
-                return View(vm);
-            }
-            catch (DominioException ex)
+                return RedirectToAction("AltaCapitulo", new { historiaId = dto.HistoriaId });
+            } 
+            catch (DominioException e)
             {
-                ModelState.AddModelError(string.Empty, ex.Message);
+                TempData["Error"] = e.Message;
                 AltaCapituloViewModel vm = CargarDatosFormulario(dto.HistoriaId);
                 return View(vm);
             }
+            catch (DatoVacioException e)
+            {
+                TempData["Error"] = e.Message;
+                AltaCapituloViewModel vm = CargarDatosFormulario(dto.HistoriaId);
+                return View(vm);
+            }
+            catch (Exception e)
+            {
+                TempData["Error"] = e.Message;
+                AltaCapituloViewModel vm = CargarDatosFormulario(dto.HistoriaId);
+                return View(vm);
+            }
+
+
+
+
+
+
         }
 
         // Carga la historia y sus capitulos intermedios (los unicos que pueden ser antecedente).

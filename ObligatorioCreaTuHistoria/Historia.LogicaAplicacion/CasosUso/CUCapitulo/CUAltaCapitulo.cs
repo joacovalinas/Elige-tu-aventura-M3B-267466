@@ -35,6 +35,9 @@ namespace EscogeAventura.LogicaAplicacion.CasosUso.CUCapitulo
                 if (historia == null)
                     throw new DominioException("La historia no existe.");
 
+                if(dto.Titulo == historia.Capitulos.FirstOrDefault()?.Titulo)
+                    throw new DominioException("Ya existe un capítulo con ese título en esta historia.");
+
                 // 2) Antecedente: se busca entre los capítulos de ESTA historia, así que
                 //    un id de otra historia (o inexistente) no aparece. Esto cubre la regla
                 //    "no se comparten capítulos entre historias".

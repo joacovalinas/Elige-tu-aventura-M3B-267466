@@ -7,9 +7,13 @@
 
 <h2>Agregar capítulo a "@(Model.DtoHistoria.Titulo)"</h2>
 
-@if (TempData["Mensaje"] != null)
+@if (TempData["Exito"] != null)
 {
-    <div class="alert alert-success">@TempData["Mensaje"]</div>
+    <div class="alert alert-success">@TempData["Exito"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
 }
 
 <form asp-action="AltaCapitulo" method="post">

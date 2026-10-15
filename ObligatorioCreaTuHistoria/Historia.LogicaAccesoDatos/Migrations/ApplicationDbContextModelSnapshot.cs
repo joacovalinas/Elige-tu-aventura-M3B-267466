@@ -166,6 +166,9 @@ namespace EscogeAventura.LogicaAccesoDatos.Migrations
                         .IsUnique()
                         .HasFilter("[CapInicialId] IS NOT NULL");
 
+                    b.HasIndex("Titulo")
+                        .IsUnique();
+
                     b.ToTable("Historias");
                 });
 

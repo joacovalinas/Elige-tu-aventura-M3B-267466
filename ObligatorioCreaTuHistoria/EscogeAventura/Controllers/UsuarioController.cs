@@ -23,6 +23,9 @@ namespace EscogeAventura.WebApp.Controllers
 
         public IActionResult AltaUsuario()
         {
+            if (HttpContext.Session.GetString("LogueadoRol") != "Admin")
+                return RedirectToAction("Login", "Auth");
+
             List<DTORol> roles = _CUObtenerRol.Ejecutar();
 
             AltaUsuarioViewModel vm = new AltaUsuarioViewModel();
@@ -35,6 +38,8 @@ namespace EscogeAventura.WebApp.Controllers
         [HttpPost]
         public IActionResult AltaUsuario(AltaUsuarioViewModel vm)
         {
+            if (HttpContext.Session.GetString("LogueadoRol") != "Admin")
+                return RedirectToAction("Login", "Auth");
             try
             {
                 _CuAltaUsuario.Ejecutar(vm.Dto);

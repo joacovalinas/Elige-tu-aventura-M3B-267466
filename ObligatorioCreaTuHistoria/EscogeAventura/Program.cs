@@ -55,8 +55,9 @@ namespace EscogeAventura.WebApp
             builder.Services.AddScoped<ICUObtenerCategorias, CUObtenerCategorias>();
             builder.Services.AddScoped<ICUAltaCapitulo, CUAltaCapitulo>();
             builder.Services.AddScoped<ICUListarHistoria, CUListarHistoria>();
-
-
+            builder.Services.AddScoped<ICUEditarHistoria, CUEditarHistoria>();
+            builder.Services.AddScoped<ICUObtenerHistoria, CUObtenerHistoria>();
+            builder.Services.AddScoped<ICUPublicar, CUPublicar>();  
 
 
             var app = builder.Build();

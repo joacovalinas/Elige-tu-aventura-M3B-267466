@@ -29,6 +29,7 @@ namespace EscogeAventura.LogicaAccesoDatos
             {
                 h.HasKey(x => x.Id);
                 h.Property(x => x.Titulo).IsRequired().HasMaxLength(200);
+                h.HasIndex(x => x.Titulo).IsUnique();
                 h.Property(x => x.Sinopsis).HasMaxLength(2000);
                 h.Property(x => x.Estado).IsRequired(); // enum EstadoHistoria, se guarda como int por defecto
 
