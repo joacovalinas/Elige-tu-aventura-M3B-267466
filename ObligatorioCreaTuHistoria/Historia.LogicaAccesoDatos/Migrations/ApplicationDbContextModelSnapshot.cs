@@ -216,32 +216,6 @@ namespace EscogeAventura.LogicaAccesoDatos.Migrations
                     b.ToTable("Lecturas");
                 });
 
-            modelBuilder.Entity("EscogeAventura.LogicaNegocios.Entidades.PasoLectura", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CapituloId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("LecturaId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Orden")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CapituloId");
-
-                    b.HasIndex("LecturaId");
-
-                    b.ToTable("PasoLectura");
-                });
-
             modelBuilder.Entity("EscogeAventura.LogicaNegocios.Entidades.Rol", b =>
                 {
                     b.Property<int>("Id")
@@ -457,25 +431,6 @@ namespace EscogeAventura.LogicaAccesoDatos.Migrations
                     b.Navigation("Usuario");
                 });
 
-            modelBuilder.Entity("EscogeAventura.LogicaNegocios.Entidades.PasoLectura", b =>
-                {
-                    b.HasOne("EscogeAventura.LogicaNegocios.Entidades.Capitulo", "Capitulo")
-                        .WithMany()
-                        .HasForeignKey("CapituloId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("EscogeAventura.LogicaNegocios.Entidades.Lectura", "Lectura")
-                        .WithMany("Camino")
-                        .HasForeignKey("LecturaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Capitulo");
-
-                    b.Navigation("Lectura");
-                });
-
             modelBuilder.Entity("EscogeAventura.LogicaNegocios.Entidades.Usuario", b =>
                 {
                     b.HasOne("EscogeAventura.LogicaNegocios.Entidades.Rol", "Rol")
@@ -509,11 +464,6 @@ namespace EscogeAventura.LogicaAccesoDatos.Migrations
             modelBuilder.Entity("EscogeAventura.LogicaNegocios.Entidades.Historia", b =>
                 {
                     b.Navigation("Capitulos");
-                });
-
-            modelBuilder.Entity("EscogeAventura.LogicaNegocios.Entidades.Lectura", b =>
-                {
-                    b.Navigation("Camino");
                 });
 
             modelBuilder.Entity("EscogeAventura.LogicaNegocios.Entidades.Rol", b =>

@@ -1,5 +1,6 @@
 ﻿using EscogeAventura.LogicaNegocios.Entidades;
 using EscogeAventura.LogicaNegocios.IRepositorios;
+using EscogeAventura.LogicaNegocios.ValueObjects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using System;
@@ -77,9 +78,31 @@ namespace EscogeAventura.LogicaAccesoDatos.Repos
 
         public void Remove(Historia ToEliminar)
         {
-            _context.Historias.Remove(ToEliminar);
+            Historia historia = FindById(ToEliminar.Id);
+            if (historia == null)
+                return;
+
+            using var tx = _context.Database.BeginTransaction();
+
+            // 1) Romper el ciclo Historia <-> Capitulo inicial
+            historia.CapInicial = null;
             _context.SaveChanges();
+
+            // 2) Borrar opciones, capítulos e historia en un solo SaveChanges.
+            //    EF ordena solo los DELETE: opciones -> capítulos -> historia.
+            List<Opcion> opciones = historia.Capitulos
+                .OfType<Intermedio>()
+                .SelectMany(i => i.Opciones)
+                .ToList();
+
+            _context.Set<Opcion>().RemoveRange(opciones);
+            _context.Set<Capitulo>().RemoveRange(historia.Capitulos);
+            _context.Historias.Remove(historia);
+            _context.SaveChanges();
+
+            tx.Commit();
         }
+        
 
         public void Update(Historia ToEditar)
         {

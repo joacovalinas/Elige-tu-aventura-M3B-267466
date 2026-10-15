@@ -234,38 +234,10 @@ namespace EscogeAventura.LogicaAccesoDatos
                  .IsRequired(false)
                  .OnDelete(DeleteBehavior.Restrict);
 
-                // Camino recorrido en la lectura (para "volver atrás"). Si se borra la Lectura,
-                // se borran sus pasos.
-                l.HasMany(x => x.Camino)
-                 .WithOne(p => p.Lectura)
-                 .HasForeignKey("LecturaId")
-                 .IsRequired()
-                 .OnDelete(DeleteBehavior.Cascade);
+               
             });
 
-            // ------------------------------------------------------------------
-            // PASO LECTURA
-            // ------------------------------------------------------------------
-            modelBuilder.Entity<PasoLectura>(p =>
-            {
-                p.HasKey(x => x.Id);
-                p.Property(x => x.Orden).IsRequired();
-
-                // Capítulo por el que pasó la lectura, unidireccional. Restrict por "multiple cascade paths".
-                p.HasOne(x => x.Capitulo)
-                 .WithMany()
-                 .HasForeignKey("CapituloId")
-                 .IsRequired()
-                 .OnDelete(DeleteBehavior.Restrict);
-            });
-
-            //SEED
-           /* modelBuilder.Entity<Rol>().HasData(
-                new Rol { Id = 1, Nombre = "Admin" },
-                new Rol { Id = 2, Nombre = "Usuario" }
-            );
-           */
-
+           
         
         }
 

@@ -28,9 +28,6 @@ namespace EscogeAventura.LogicaNegocios.Entidades
         // Donde va quedando parada la lectura (coincide con el ultimo paso de Camino).
         public Capitulo? CapituloActual { get; set; }
 
-        // Camino recorrido: al avanzar se agrega un PasoLectura, al retroceder se quita el ultimo.
-        public List<PasoLectura> Camino { get; set; } 
-
         public void Validar()
         {
             // TODO

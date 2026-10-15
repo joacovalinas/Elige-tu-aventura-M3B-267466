@@ -45,7 +45,7 @@ namespace EscogeAventura.WebApp
             builder.Services.AddScoped<IRepositorioHistoria, RepositorioHistoria>();
             builder.Services.AddScoped<IRepositorioCategoria, RepositorioCategoria>();
             builder.Services.AddScoped<IRepositorioCapitulo, RepositorioCapitulo>();
-            builder.Services.AddScoped<IRepositorioHistoria, RepositorioHistoria>();
+            builder.Services.AddScoped<IRepositorioLectura, RepositorioLectura>();
 
             //ID - CU
             builder.Services.AddScoped<ICUAltaUsuario, CUAltaUsuario>();
@@ -58,7 +58,7 @@ namespace EscogeAventura.WebApp
             builder.Services.AddScoped<ICUEditarHistoria, CUEditarHistoria>();
             builder.Services.AddScoped<ICUObtenerHistoria, CUObtenerHistoria>();
             builder.Services.AddScoped<ICUPublicar, CUPublicar>();  
-
+            builder.Services.AddScoped<ICUBajaHistoria, CUBajaHistoria>();
 
             var app = builder.Build();
 

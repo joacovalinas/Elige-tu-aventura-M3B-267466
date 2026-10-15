@@ -21,10 +21,11 @@ public class HistoriaController : Controller
     private ICUEditarHistoria _cuEditarHistoria;
     private ICUObtenerHistoria _cuObtenerHistoria;
     private ICUPublicar _cuPublicar;
-
+    private ICUBajaHistoria _cuBajaHistoria;
+    
     public HistoriaController(ICUListarHistoria cUListarHistoria, ICUAltaHistoria cuAltaHistoria, 
         ICUObtenerCategorias cuObtenerCategorias, ICUEditarHistoria cuEditarHistoria, ICUObtenerHistoria cuObtenerHistoria,
-        ICUPublicar cuPublicar)
+        ICUPublicar cuPublicar, ICUBajaHistoria cuBajaHistoria)
     {
         _CuAltaHistoria = cuAltaHistoria;
 
@@ -33,6 +34,8 @@ public class HistoriaController : Controller
         _cuObtenerHistoria = cuObtenerHistoria;
         _listarHistorias = cUListarHistoria;
         _cuPublicar = cuPublicar;
+        _cuBajaHistoria = cuBajaHistoria;
+        
     }
     [HttpGet]
     public IActionResult Index()
@@ -180,6 +183,35 @@ public class HistoriaController : Controller
             return RedirectToAction("Index");
         }
     }
+
+    public IActionResult BajaHistoria(int id)
+    {
+
+        if (HttpContext.Session.GetString("LogueadoRol") != "Admin")
+            return RedirectToAction("Login", "Auth");
+
+        
+
+        try
+        {
+            _cuBajaHistoria.Ejecutar(id);
+            TempData["Exito"] = "Historia dada de baja correctamente.";
+            return RedirectToAction("Index");
+        }
+        catch (DbUpdateException e)
+        {
+
+            TempData["Error"] = "El nombre de esta historia ya existe";
+            return RedirectToAction("Index");
+        }
+        catch (Exception e)
+        {
+
+            TempData["Error"] = e.Message;
+            return RedirectToAction("Index");
+        }
+    }
+   
 
     [HttpPost]
     public IActionResult AgregarCapitulo(int id)
