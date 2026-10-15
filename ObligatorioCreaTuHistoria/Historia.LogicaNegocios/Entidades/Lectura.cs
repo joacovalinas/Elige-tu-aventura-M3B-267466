@@ -1,3 +1,5 @@
+using EscogeAventura.LogicaNegocios.CustomExceptions.Genericas;
+using EscogeAventura.LogicaNegocios.IRepositorios;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -30,7 +32,23 @@ namespace EscogeAventura.LogicaNegocios.Entidades
 
         public void Validar()
         {
-            // TODO
+
+            if (Usuario == null)
+            {
+                throw new DominioException("Usuario no valido.");
+            }
+
+            if (Historia == null)
+            {
+                throw new DominioException("Historia no valida.");
+            }
+
+            if(string.IsNullOrWhiteSpace(Nombrelectura))
+            {
+                throw new DominioException("Nombre de lectura no valido.");
+            }
+
+
         }
     }
 }

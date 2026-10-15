@@ -9,11 +9,11 @@ namespace EscogeAventura.WebApp.Controllers
     public class AuthController : Controller
     {
 
-        private ICUVerifExistenciaAdmin _CuVerifExistenciaAdmin;
+        private ICUVerifExistencia _CuVerifExistencia;
 
-        public AuthController(ICUVerifExistenciaAdmin CuVerificarExistenciaAdmin)
+        public AuthController(ICUVerifExistencia CuVerificarExistencia)
         {
-            _CuVerifExistenciaAdmin = CuVerificarExistenciaAdmin;
+            _CuVerifExistencia = CuVerificarExistencia;
         }
         public IActionResult Login()
         {
@@ -25,8 +25,9 @@ namespace EscogeAventura.WebApp.Controllers
         {
             try
             {
-                DTOUsuario u = _CuVerifExistenciaAdmin.Ejecutar(vm.Email, vm.Password);
-
+                DTOUsuario u = _CuVerifExistencia.Ejecutar(vm.Email, vm.Password);
+                if (u.Rol.Nombre != "Admin")
+                    throw new DominioException("Solo los admin pueden acceder");
                 if (u != null)
                 {
                     HttpContext.Session.SetInt32("LogueadoId", u.Id);

@@ -49,7 +49,7 @@ namespace EscogeAventura.WebApp
 
             //ID - CU
             builder.Services.AddScoped<ICUAltaUsuario, CUAltaUsuario>();
-            builder.Services.AddScoped<ICUVerifExistenciaAdmin,CUVerifExistenciaAdmin>();
+            builder.Services.AddScoped<ICUVerifExistencia,CUVerifExistencia>();
             builder.Services.AddScoped<ICUObtenerRol, CUObtenerRol>();
             builder.Services.AddScoped<ICUAltaHistoria, CUAltaHistoria>();
             builder.Services.AddScoped<ICUObtenerCategorias, CUObtenerCategorias>();

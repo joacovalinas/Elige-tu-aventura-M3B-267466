@@ -1,4 +1,5 @@
 <Solution>
+  <Project Path="EscogeAventura.API/EscogeAventura.API.csproj" Id="ee354fd4-a358-435b-a892-02f386a298bd" />
   <Project Path="EscogeAventura/EscogeAventura.WebApp.csproj" Id="ad7f41fe-203d-4d67-82d1-1461301dd82b" />
   <Project Path="Historia.LogicaAccesoDatos/EscogeAventura.LogicaAccesoDatos.csproj" />
   <Project Path="Historia.LogicaAplicacion/EscogeAventura.LogicaAplicacion.csproj" />
