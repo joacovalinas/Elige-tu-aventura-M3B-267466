@@ -116,6 +116,9 @@ namespace EscogeAventura.WebApp
                     db.Categorias.AddRange(nuevas);
                     db.SaveChanges();
                 }
+
+                
+            
             }
 
 

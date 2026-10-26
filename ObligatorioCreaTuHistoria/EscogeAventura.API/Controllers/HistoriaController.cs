@@ -1,4 +1,4 @@
-﻿using DTOs.DTO.DTOsHistoria;
+﻿    using DTOs.DTO.DTOsHistoria;
 using EscogeAventura.LogicaAplicacion.ICasosUso.ICUCategoria;
 using EscogeAventura.LogicaAplicacion.ICasosUso.ICUHistoria;
 using Microsoft.AspNetCore.Http;
@@ -10,12 +10,12 @@ namespace EscogeAventura.API.Controllers
     [ApiController]
     public class HistoriaController : ControllerBase
     {
-        private ICUListarHistoria _cuListarHistoria;
+        private ICUListarHistoriasPublicadas _cuListarHistoriasPublicadas;
         private ICUObtenerCategorias _cuObtenerCategorias;
 
-        public HistoriaController(ICUListarHistoria cuListarHistoria, ICUObtenerCategorias cuObtenerCategorias)
+        public HistoriaController(ICUListarHistoriasPublicadas cuListarHistoriasPublicadas, ICUObtenerCategorias cuObtenerCategorias)
         {
-            _cuListarHistoria = cuListarHistoria;
+            _cuListarHistoriasPublicadas = cuListarHistoriasPublicadas;
             _cuObtenerCategorias = cuObtenerCategorias;
         }
 
@@ -26,7 +26,7 @@ namespace EscogeAventura.API.Controllers
             try
             {
                 DTOIndexHistoria dto = new DTOIndexHistoria();
-                dto.historias = _cuListarHistoria.Ejecutar();
+                dto.historias = _cuListarHistoriasPublicadas.Ejecutar();
                 dto.categorias = _cuObtenerCategorias.Ejecutar();
                 return StatusCode(200, dto);
             }
@@ -35,11 +35,6 @@ namespace EscogeAventura.API.Controllers
                 return StatusCode(500, "Error interno del servidor.");
             }
         }
-
-
-
-
-
 
 
 

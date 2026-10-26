@@ -1,4 +1,5 @@
-﻿using DTOs.DTO.DTOsUsuario;
+﻿using DTOs.DTO.DTOsAuth;
+using DTOs.DTO.DTOsUsuario;
 using EscogeAventura.LogicaAplicacion.ICasosUso.ICUUsuario;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -23,18 +24,20 @@ namespace EscogeAventura.API.Controllers
        
 
         [HttpPost("login")]
-        public IActionResult Login(string email, string password)
+        public IActionResult Login(DTOLogin dto)
         {
-
-            DTOUsuario u = _CuVerifExistencia.Ejecutar(email, password);
-
-            if (u != null)
+            try
             {
 
-                var clave = "UTzl^7yPl$5xrT6&{o89$CW1XXRrN(>XqIp{W4s2S5$>KT$6CG!2M]'ZlrqH-t%eI4.X9W~u#qO+oX£+[?7QDAa";
-                var claveCodificada = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(clave));
+                DTOUsuario u = _CuVerifExistencia.Ejecutar(dto.Email, dto.Contrasena);
 
-                List<Claim> claims = new List<Claim>
+                if (u != null)
+                {
+
+                    var clave = "UTzl^7yPl$5xrT6&{o89$CW1XXRrN(>XqIp{W4s2S5$>KT$6CG!2M]'ZlrqH-t%eI4.X9W~u#qO+oX£+[?7QDAa";
+                    var claveCodificada = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(clave));
+
+                    List<Claim> claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, u.Nombre),
                     new Claim(ClaimTypes.Email, u.Email),
@@ -42,20 +45,34 @@ namespace EscogeAventura.API.Controllers
                     new Claim(ClaimTypes.Sid, u.Id.ToString())
                 };
 
-                var credenciales = new SigningCredentials(claveCodificada, SecurityAlgorithms.HmacSha512Signature);
-                var token = new JwtSecurityToken(claims: claims, expires: DateTime.Now.AddDays(3), signingCredentials: credenciales);
-                var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+                    var credenciales = new SigningCredentials(claveCodificada, SecurityAlgorithms.HmacSha512Signature);
+                    var token = new JwtSecurityToken(claims: claims, expires: DateTime.Now.AddDays(3), signingCredentials: credenciales);
+                    var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+
+                    DTOLoginRespuesta respuesta = new DTOLoginRespuesta
+                    {
+                        Nombre = u.Nombre,
+                        Rol = u.Rol.Nombre,
+                        Token = jwt,
+                        IdUsuario = u.Id
+                    };
 
 
+                    return Ok(respuesta);
+                }
+                else
+                {
+                    return Unauthorized("No autorizado");
 
-                return Ok(new { Nombre = u.Nombre, Apellido = u.Apellido, Rol = u.Rol.Nombre, Token = jwt, IdUsuario = u.Id.ToString() });
+
+                }
+
             }
-            else
+            catch (Exception ex)
             {
-                return Unauthorized("No autorizado");
-
-
+                return BadRequest(ex.Message);
             }
+                
         }
     }
 }

@@ -1,0 +1,63 @@
+﻿@using EscogeAventura.Cliente.Models.DTOs.DTOsHistoria
+
+@model DTOIndexHistoria
+@{
+    ViewData["Title"] = "Historias";
+
+}
+
+
+@if (TempData["Exito"] != null)
+{
+    <div class="alert alert-success">@TempData["Exito"]</div>
+    @if (!Model.Historias.Any())
+    {
+        <p>No hay historias cargadas.</p>
+    }
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+
+else
+{
+
+    <form method="post">
+
+        <div class="acciones mb-3">
+           
+            <button type="submit" class="btn btn-secondary" asp-action="AgregarCapitulo">
+               Leer Historia(No implementado)
+            </button>
+
+
+        </div>
+
+        <div class="form-card">
+            <table class="table table-hover align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th style="width: 3rem;"></th>
+                        <th>Título</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var h in Model.Historias)
+                    {
+                        <tr>
+                            <td>
+                                <input type="radio" name="id" value="@h.Id" class="form-check-input" required />
+                            </td>
+                            <td>@h.Titulo</td>
+                            <td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </form>
+}

@@ -1,6 +1,7 @@
 ﻿using DTOs.DTO.DTOsCapitulo;
 using DTOs.DTO.DTOsCategoria;
 using EscogeAventura.LogicaNegocios.Entidades;
+using EscogeAventura.LogicaNegocios.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -18,6 +19,15 @@ namespace DTOs.Mappers
             dto.Titulo = c.Titulo;
             dto.Cuerpo = c.Cuerpo;
             dto.HistoriaId = c.Historia.Id;
+            if(c.GetType() == typeof(Intermedio))
+            {
+                Intermedio co = (Intermedio)c;
+                foreach (Opcion o in co.Opciones)
+                {
+                    dto.opciones.Add(o.Texto);
+                }
+            }
+
             return dto;
 
         }

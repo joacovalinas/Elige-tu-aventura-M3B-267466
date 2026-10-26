@@ -1,4 +1,5 @@
 ﻿using EscogeAventura.LogicaNegocios.Entidades;
+using EscogeAventura.LogicaNegocios.Enums;
 using EscogeAventura.LogicaNegocios.IRepositorios;
 using EscogeAventura.LogicaNegocios.ValueObjects;
 using Microsoft.EntityFrameworkCore;
@@ -50,15 +51,7 @@ namespace EscogeAventura.LogicaAccesoDatos.Repos
             _context.SaveChanges();
         }
 
-        public Historia ObtenerPorIdConCapitulos(int id)
-        {
-         
-            return _context.Historias
-                .Include(h => h.CapInicial)
-                .Include(h => h.Capitulos)
-                    .ThenInclude(c => ((Intermedio)c).Opciones)
-                .FirstOrDefault(h => h.Id == id);
-        }
+     
 
         public List<Historia> FindAll()
         {
@@ -75,6 +68,25 @@ namespace EscogeAventura.LogicaAccesoDatos.Repos
         {
             return _context.Historias.Include(u => u.CapInicial).Include(u => u.CatHistoria).Where(a => a.Titulo.Equals(nombreHistoria)).SingleOrDefault();
         }
+
+
+
+
+        public List<Historia> ObtenerHistoriasPublicadas()
+        {
+
+            
+
+            
+
+            return _context.Historias
+                .Include(h => h.CatHistoria)
+                .Include(u => u.CapInicial)
+                .Where(h => h.Estado == EstadoHistoria.Publicado).ToList();
+        }
+
+
+
 
         public void Remove(Historia ToEliminar)
         {
@@ -109,5 +121,7 @@ namespace EscogeAventura.LogicaAccesoDatos.Repos
             _context.Historias.Update(ToEditar);
             _context.SaveChanges();
         }
+
+   
     }
 }

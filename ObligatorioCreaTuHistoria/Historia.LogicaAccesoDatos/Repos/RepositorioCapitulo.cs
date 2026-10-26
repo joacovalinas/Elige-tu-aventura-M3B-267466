@@ -25,12 +25,17 @@ namespace EscogeAventura.LogicaAccesoDatos.Repos
 
         public List<Capitulo> FindAll()
         {
-            return _context.Capitulos.Include(c => c.Historia).ToList();
+            return _context.Capitulos.Include(c => c.Historia).Include(c => (c as Intermedio).Opciones).ToList();
         }
 
         public Capitulo FindById(int id)
         {
-            return _context.Capitulos.Include(c => c.Historia).Where(c => c.Id == id).SingleOrDefault();
+            return _context.Capitulos.Include(c => c.Historia).Include(c => (c as Intermedio).Opciones).Where(c => c.Id == id).SingleOrDefault();
+        }
+
+        public Capitulo FindByNombreCapitulo(string nombreCapitulo)
+        {
+            return _context.Capitulos.Include(c => c.Historia).Include(c  =>(c as Intermedio).Opciones).Where(c => c.Titulo == nombreCapitulo).SingleOrDefault();
         }
 
         public void Remove(Capitulo ToEliminar)

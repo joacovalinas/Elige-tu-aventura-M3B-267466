@@ -47,11 +47,11 @@ namespace EscogeAventura.API
 
 
             builder.Services.AddScoped<ICUVerifExistencia, CUVerifExistencia>();
-            builder.Services.AddScoped<ICUListarHistoria, CUListarHistoria>();
+            builder.Services.AddScoped<ICUListarHistoriasPublicadas, CUListarHistoriasPublicadas>();
             builder.Services.AddScoped<ICUObtenerCategorias, CUObtenerCategorias>();
             builder.Services.AddScoped<ICUAltaLectura, CUAltaLectura>();
-
-
+            builder.Services.AddScoped<ICUObtenerLectura, CUObtenerLectura>();
+            builder.Services.AddScoped<ICUAvanzarLectura, CUAvanzarLectura>();
             //JWT
 
 
@@ -74,7 +74,7 @@ namespace EscogeAventura.API
             });
 
 
-
+            builder.Services.AddAuthorization();
 
 
             // Add services to the container.

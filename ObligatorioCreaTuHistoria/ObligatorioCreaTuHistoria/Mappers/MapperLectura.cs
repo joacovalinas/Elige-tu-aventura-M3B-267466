@@ -1,6 +1,7 @@
 ﻿using DTOs.DTO.DTOsCapitulo;
 using DTOs.DTO.DTOsLectura;
 using EscogeAventura.LogicaNegocios.Entidades;
+using EscogeAventura.LogicaNegocios.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -26,6 +27,20 @@ namespace DTOs.Mappers
             return dto;
 
         }
+
+
+
+        public static DTOOpcionLectura ToDtoOpcionLectura(Opcion p)
+        {
+
+            DTOOpcionLectura dto = new DTOOpcionLectura();
+            dto.Id =p.Id;
+            dto.Texto = p.Texto;
+            return dto;
+
+        }
+
+          
 
         public static List<DTOLectura> ToListDtoLectura(List<Lectura> l)
         {

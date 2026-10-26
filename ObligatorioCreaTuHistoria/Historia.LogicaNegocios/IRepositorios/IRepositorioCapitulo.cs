@@ -8,6 +8,6 @@ namespace EscogeAventura.LogicaNegocios.IRepositorios
 {
     public interface IRepositorioCapitulo : IRepositorio<Capitulo>
     {
-
+        Capitulo FindByNombreCapitulo(string nombreCapitulo);
     }
 }

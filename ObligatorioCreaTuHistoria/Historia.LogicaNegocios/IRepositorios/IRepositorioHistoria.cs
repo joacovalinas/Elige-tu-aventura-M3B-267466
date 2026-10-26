@@ -10,6 +10,8 @@ namespace EscogeAventura.LogicaNegocios.IRepositorios
         void Actualizar(Historia historia);
         Historia FindByNombreHistoria(string nombreHistoria);
 
-        Historia ObtenerPorIdConCapitulos(int historiaId);
+        
+
+        List<Historia> ObtenerHistoriasPublicadas();
     }
 }

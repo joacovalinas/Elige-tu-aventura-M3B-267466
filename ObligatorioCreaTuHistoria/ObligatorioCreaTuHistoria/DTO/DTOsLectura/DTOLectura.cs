@@ -20,7 +20,6 @@ namespace DTOs.DTO.DTOsLectura
 
         public DTOCapitulo? Final { get; set; }
 
-        // Donde va quedando parada la lectura (coincide con el ultimo paso de Camino).
         public DTOCapitulo? CapituloActual { get; set; }
 
 
