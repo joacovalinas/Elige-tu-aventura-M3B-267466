@@ -24,8 +24,6 @@ namespace EscogeAventura.LogicaAplicacion.CasosUso.CUUsuario
         }
         public void Ejecutar(DTOAltaUsuario dto)
         {
-            try
-            {
                 Usuario verif = _repoUsuario.FindByEmail(dto.Email);
                 if (verif != null)
                 {
@@ -53,23 +51,7 @@ namespace EscogeAventura.LogicaAplicacion.CasosUso.CUUsuario
                 _repoUsuario.Add(nuevoUsu);
 
 
-            }
-            catch (UsuarioYaExisteException ex)
-            {
-                //auditoria
-                throw ex;
-            }
-            catch (DatoVacioException ex)
-            {
-                //auditoria
-                throw ex;
-            }
-            catch (Exception ex)
-            {
-                //auditoria
-                throw ex;
-            }
-
+            
 
         }
     }

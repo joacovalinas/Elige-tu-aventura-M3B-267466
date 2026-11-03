@@ -24,18 +24,11 @@ namespace EscogeAventura.Cliente.Controllers
         public async Task<IActionResult> Index(DTOIndexHistoria dto)
         {
 
-            
-               
-
                 string token = HttpContext.Session.GetString("Token");
                 _cliente.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-
-     
+   
                 var response = await _cliente.GetAsync("Historia/Listar");
-
-
-
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -59,11 +52,17 @@ namespace EscogeAventura.Cliente.Controllers
                 TempData["ErrorMessage"] = "Error al obtener las historias. Por favor, inténtelo de nuevo";
             }
             return View();
-            
-           
-
 
           
         }
+
+
+      
+
+
+
+
+
+
     }
 }

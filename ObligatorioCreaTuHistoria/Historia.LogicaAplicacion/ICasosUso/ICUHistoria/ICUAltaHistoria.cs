@@ -1,4 +1,5 @@
 ﻿using DTOs.DTO.DTOsHistoria;
+using DTOs.DTO.DTOsUsuario;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,6 +8,6 @@ namespace EscogeAventura.LogicaAplicacion.ICasosUso.ICUHistoria
 {
     public interface ICUAltaHistoria
     {
-        public void Ejecutar(DTOAltaHistoria dto);
+        public void Ejecutar(DTOAltaHistoria dto, int usuId);
     }
 }

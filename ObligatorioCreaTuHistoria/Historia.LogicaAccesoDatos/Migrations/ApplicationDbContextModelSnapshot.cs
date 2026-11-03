@@ -51,20 +51,10 @@ namespace EscogeAventura.LogicaAccesoDatos.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("Detalle")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<string>("Entidad")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
                     b.Property<DateTime>("Fecha")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("HistoriaId")
+                    b.Property<int?>("HistoriaId")
                         .HasColumnType("int");
 
                     b.Property<int>("UsuarioId")
@@ -159,6 +149,9 @@ namespace EscogeAventura.LogicaAccesoDatos.Migrations
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<bool>("activo")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -363,13 +356,12 @@ namespace EscogeAventura.LogicaAccesoDatos.Migrations
                     b.HasOne("EscogeAventura.LogicaNegocios.Entidades.Historia", "Historia")
                         .WithMany()
                         .HasForeignKey("HistoriaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("EscogeAventura.LogicaNegocios.Entidades.Usuario", "Usuario")
                         .WithMany()
                         .HasForeignKey("UsuarioId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Historia");

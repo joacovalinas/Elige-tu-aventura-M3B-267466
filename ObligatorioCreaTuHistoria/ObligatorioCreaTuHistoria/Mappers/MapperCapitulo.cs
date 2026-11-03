@@ -19,6 +19,7 @@ namespace DTOs.Mappers
             dto.Titulo = c.Titulo;
             dto.Cuerpo = c.Cuerpo;
             dto.HistoriaId = c.Historia.Id;
+            dto.opciones = new List<string>();
             if(c.GetType() == typeof(Intermedio))
             {
                 Intermedio co = (Intermedio)c;

@@ -2,6 +2,7 @@
 using EscogeAventura.Controllers;
 using EscogeAventura.LogicaAplicacion.ICasosUso.ICUCategoria;
 using EscogeAventura.LogicaAplicacion.ICasosUso.ICUHistoria;
+using EscogeAventura.LogicaNegocios.CustomExceptions;
 using EscogeAventura.LogicaNegocios.CustomExceptions.Genericas;
 using EscogeAventura.LogicaNegocios.CustomExceptions.Historia;
 using EscogeAventura.LogicaNegocios.CustomExceptions.Usuario;
@@ -67,8 +68,8 @@ public class HistoriaController : Controller
             return RedirectToAction("Login", "Auth");
         try
         {
-            
-            _CuAltaHistoria.Ejecutar(vm.Dto);
+            int id = (int)HttpContext.Session.GetInt32("LogueadoId");
+            _CuAltaHistoria.Ejecutar(vm.Dto,id);
             TempData["Exito"] = "Historia creada correctamente.";
             return RedirectToAction("Index"); // el Index del listado (RF03 consulta)
         }
@@ -87,6 +88,12 @@ public class HistoriaController : Controller
 
         }
         catch (HistoriaYaExisteException e)
+        {
+            TempData["Error"] = e.Message;
+            vm.Categorias = _cuObtenerCategorias.Ejecutar();
+            return View(vm);
+        }
+        catch (AuditoriaException e)
         {
             TempData["Error"] = e.Message;
             vm.Categorias = _cuObtenerCategorias.Ejecutar();
@@ -134,7 +141,8 @@ public class HistoriaController : Controller
 
         try
         {
-            _cuEditarHistoria.Ejecutar(dto);
+            int id = (int)HttpContext.Session.GetInt32("LogueadoId");
+            _cuEditarHistoria.Ejecutar(dto,id);
             TempData["Exito"] = "Historia editada correctamente.";
             return RedirectToAction("Index");
         }
@@ -166,7 +174,8 @@ public class HistoriaController : Controller
 
         try
         {
-            _cuPublicar.Ejecutar(dto);
+            int usuid = (int)HttpContext.Session.GetInt32("LogueadoId");
+            _cuPublicar.Ejecutar(dto,usuid);
             TempData["Exito"] = "Historia publicada correctamente.";
             return RedirectToAction("Index");
         }
@@ -194,7 +203,8 @@ public class HistoriaController : Controller
 
         try
         {
-            _cuBajaHistoria.Ejecutar(id);
+            int usuid = (int)HttpContext.Session.GetInt32("LogueadoId");
+            _cuBajaHistoria.Ejecutar(id,usuid);
             TempData["Exito"] = "Historia dada de baja correctamente.";
             return RedirectToAction("Index");
         }

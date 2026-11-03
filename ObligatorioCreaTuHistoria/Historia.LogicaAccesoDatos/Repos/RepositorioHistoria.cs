@@ -1,4 +1,5 @@
-﻿using EscogeAventura.LogicaNegocios.Entidades;
+﻿using EscogeAventura.LogicaNegocios.CustomExceptions.Genericas;
+using EscogeAventura.LogicaNegocios.Entidades;
 using EscogeAventura.LogicaNegocios.Enums;
 using EscogeAventura.LogicaNegocios.IRepositorios;
 using EscogeAventura.LogicaNegocios.ValueObjects;
@@ -55,7 +56,7 @@ namespace EscogeAventura.LogicaAccesoDatos.Repos
 
         public List<Historia> FindAll()
         {
-            return _context.Historias.Include(u => u.CapInicial).Include(u => u.CatHistoria).OrderBy(h => h.Titulo).ToList();
+            return _context.Historias.Include(u => u.CapInicial).Include(u => u.CatHistoria).Where(h => h.activo==true).OrderBy(h => h.Titulo).ToList();
         }
 
         public Historia FindById(int id)
@@ -75,13 +76,10 @@ namespace EscogeAventura.LogicaAccesoDatos.Repos
         public List<Historia> ObtenerHistoriasPublicadas()
         {
 
-            
-
-            
-
             return _context.Historias
                 .Include(h => h.CatHistoria)
                 .Include(u => u.CapInicial)
+                .Where(h => h.activo == true)
                 .Where(h => h.Estado == EstadoHistoria.Publicado).ToList();
         }
 
@@ -92,10 +90,16 @@ namespace EscogeAventura.LogicaAccesoDatos.Repos
         {
             Historia historia = FindById(ToEliminar.Id);
             if (historia == null)
-                return;
+                throw new DominioException("Historia no encontrada");
 
-            using var tx = _context.Database.BeginTransaction();
+            ToEliminar.activo = false;
+            _context.Historias.Update(ToEliminar);
+            _context.SaveChanges();
 
+
+            /*
+  
+           using var tx = _context.Database.BeginTransaction();
             // 1) Romper el ciclo Historia <-> Capitulo inicial
             historia.CapInicial = null;
             _context.SaveChanges();
@@ -113,8 +117,10 @@ namespace EscogeAventura.LogicaAccesoDatos.Repos
             _context.SaveChanges();
 
             tx.Commit();
+
+            */
         }
-        
+
 
         public void Update(Historia ToEditar)
         {

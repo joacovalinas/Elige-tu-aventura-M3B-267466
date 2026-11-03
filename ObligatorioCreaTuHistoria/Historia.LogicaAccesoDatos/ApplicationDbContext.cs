@@ -27,6 +27,9 @@ namespace EscogeAventura.LogicaAccesoDatos
             // ------------------------------------------------------------------
             modelBuilder.Entity<Historia>(h =>
             {
+
+
+
                 h.HasKey(x => x.Id);
                 h.Property(x => x.Titulo).IsRequired().HasMaxLength(200);
                 h.HasIndex(x => x.Titulo).IsUnique();
@@ -130,20 +133,18 @@ namespace EscogeAventura.LogicaAccesoDatos
                 a.HasKey(x => x.Id);
                 a.Property(x => x.Fecha).IsRequired();
                 a.Property(x => x.Accion).IsRequired().HasMaxLength(50);
-                a.Property(x => x.Entidad).IsRequired().HasMaxLength(50);
-                a.Property(x => x.Detalle).HasMaxLength(500);
+
 
                 a.HasOne(x => x.Historia)
-                 .WithMany()
-                 .HasForeignKey("HistoriaId")
-                 .IsRequired()
-                 .OnDelete(DeleteBehavior.Cascade);
+                .WithMany()
+                .HasForeignKey("HistoriaId")
+                .IsRequired(false)                    
+                .OnDelete(DeleteBehavior.NoAction);
 
                 a.HasOne(x => x.Usuario)
                  .WithMany()
                  .HasForeignKey("UsuarioId")
-                 .IsRequired()
-                 .OnDelete(DeleteBehavior.Restrict);
+                 .IsRequired();
             });
 
 

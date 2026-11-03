@@ -1,0 +1,59 @@
+﻿@using EscogeAventura.Cliente.Models.DTOsLectura
+@* Cliente -> Views/Lectura/Leer.cshtml *@
+@model DTOLeer
+@{
+    ViewData["Title"] = Model.HistoriaTitulo;
+    var cap = Model.capituloActual;
+    string error = TempData["Error"] as string;
+}
+
+<div class="lectura-wrapper">
+
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+        <span class="badge-story">@Model.HistoriaTitulo</span>
+        <small class="lectura-meta">Lectura: @Model.nombreLectura</small>
+    </div>
+
+    @if (!string.IsNullOrEmpty(error))
+    {
+        <div class="alert alert-danger">@error</div>
+    }
+
+    <article class="lectura-card">
+        <h2 class="lectura-titulo">@cap.Titulo</h2>
+        <div class="lectura-cuerpo">@cap.Cuerpo</div>
+    </article>
+
+    @if (Model.tipoCapitulo == "Intermedio")
+    {
+        <section class="lectura-opciones">
+            <h5>¿Qué hacés?</h5>
+
+            
+
+            @foreach (var op in cap.opciones)
+            {
+                <form asp-action="Avanzar" asp-route-id="@Model.opcionElegida" method="post">
+                    <input type="hidden" name="op" value="@op" />
+                    <button type="submit" class="btn-opcion">@op</button>
+                </form>
+            }
+        </section>
+    }
+    else
+    {
+        <section class="lectura-final">
+            <div class="lectura-final-icono" aria-hidden="true">🏁</div>
+            <h4>¡Llegaste a un final!</h4>
+            <p>
+                Terminaste esta lectura el @Model.fechafin?.ToString("dd/MM/yyyy HH:mm").
+                Si querés probar otro camino, empezá una lectura nueva.
+            </p>
+            <div class="acciones justify-content-center">
+                <a class="btn btn-primary" asp-controller="Lectura" asp-action="Iniciar" asp-route-historiaId="@Model.HistoriaTitulo">Probar otro camino</a>
+                <a class="btn btn-secondary" asp-controller="Historia" asp-action="Index">Volver al listado</a>
+            </div>
+        </section>
+    }
+
+</div>

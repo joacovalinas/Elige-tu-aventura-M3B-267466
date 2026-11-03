@@ -17,11 +17,9 @@ namespace EscogeAventura.LogicaNegocios.Entidades
         public int Id { get; set; }
         public DateTime Fecha { get; set; }
         public string Accion { get; set; }
-        public string Entidad { get; set; }
         public Historia Historia { get; set; }
         public Usuario Usuario { get; set; }
-        public string Detalle { get; set; }
-
+        
 
         public void Validar()
         {
@@ -31,14 +29,6 @@ namespace EscogeAventura.LogicaNegocios.Entidades
             if (string.IsNullOrWhiteSpace(Accion))
                 throw new DatoVacioException("La acción de la auditoría es obligatoria.");
 
-            if (Accion != AccionesAuditoria.Creacion &&
-                Accion != AccionesAuditoria.Edicion &&
-                Accion != AccionesAuditoria.Publicacion)
-                throw new DominioException("La acción de la auditoría no es válida.");
-
-            if (string.IsNullOrWhiteSpace(Entidad))
-                throw new DatoVacioException("La entidad de la auditoría es obligatoria.");
-
             if (Historia == null)
                 throw new DatoVacioException("La historia de la auditoría es obligatoria.");
 
@@ -47,10 +37,8 @@ namespace EscogeAventura.LogicaNegocios.Entidades
         }
     }
 
-    public static class AccionesAuditoria
-    {
-        public const string Creacion = "Creacion";
-        public const string Edicion = "Edicion";
-        public const string Publicacion = "Publicacion";
-    }
+ 
+
+
+    
 }

@@ -1,4 +1,5 @@
 ﻿using DTOs.DTO.DTOsHistoria;
+using EscogeAventura.LogicaAplicacion.ICasosUso.ICUAuditoria;
 using EscogeAventura.LogicaAplicacion.ICasosUso.ICUHistoria;
 using EscogeAventura.LogicaNegocios.CustomExceptions.Genericas;
 using EscogeAventura.LogicaNegocios.Entidades;
@@ -15,11 +16,14 @@ namespace EscogeAventura.LogicaAplicacion.CasosUso.CUHistoria
     public class CUPublicar : ICUPublicar
     {
         private IRepositorioHistoria _repoHistorias;
-        public CUPublicar(IRepositorioHistoria historias)
+        private ICUAltaAuditoria cuAltaAuditoria;
+        public CUPublicar(IRepositorioHistoria historias, ICUAltaAuditoria AltaAudi)
         {
             _repoHistorias = historias;
+            cuAltaAuditoria = AltaAudi;
+
         }
-        public void Ejecutar(DTOHistoria dto)
+        public void Ejecutar(DTOHistoria dto, int usuId)
         {
                Historia  historia = _repoHistorias.FindById(dto.Id);
 
@@ -46,7 +50,7 @@ namespace EscogeAventura.LogicaAplicacion.CasosUso.CUHistoria
 
             historia.Estado = EstadoHistoria.Publicado;
                 _repoHistorias.Actualizar(historia);
-
+            cuAltaAuditoria.Ejecutar("publicar Historia", historia.Id, usuId);
         }
     }
 }

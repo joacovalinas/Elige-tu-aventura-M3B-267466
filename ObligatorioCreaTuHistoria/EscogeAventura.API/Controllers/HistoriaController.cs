@@ -22,7 +22,7 @@ namespace EscogeAventura.API.Controllers
 
         [HttpGet("listar")]
         public IActionResult ListarHistorias()
-        {
+          {
             try
             {
                 DTOIndexHistoria dto = new DTOIndexHistoria();
@@ -32,7 +32,7 @@ namespace EscogeAventura.API.Controllers
             }
             catch (Exception e)
             {
-                return StatusCode(500, "Error interno del servidor.");
+                return StatusCode(500, e.Message);
             }
         }
 

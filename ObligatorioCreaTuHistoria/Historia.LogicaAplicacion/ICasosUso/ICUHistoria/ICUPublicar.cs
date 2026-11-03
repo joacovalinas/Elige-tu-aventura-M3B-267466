@@ -7,6 +7,6 @@ namespace EscogeAventura.LogicaAplicacion.ICasosUso.ICUHistoria
 {
     public interface ICUPublicar
     {
-       public void Ejecutar(DTOHistoria dto);
+       public void Ejecutar(DTOHistoria dto, int usuId);
     }
 }

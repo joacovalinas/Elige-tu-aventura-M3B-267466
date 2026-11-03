@@ -1,31 +1,490 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
 }
 
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+    color: var(--bs-secondary-color);
+    text-align: end;
 }
 
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
-  text-align: start;
+    text-align: start;
 }
+
+:root {
+    --color-primary: #0B3D2E; /* verde oscuro */
+    --color-secondary: #10A37F; /* verde esmeralda */
+    --color-accent: #2ED9A3; /* verde claro / detalles */
+    --color-purple: #12294D; /* azul noche */
+    --color-dark: #E8F1EC; /* texto claro sobre fondo oscuro */
+    --color-bg: #0A1929; /* fondo azul muy oscuro */
+    --color-card: #102A43; /* tarjetas azul oscuro */
+    --font-heading: 'Fredoka', sans-serif;
+    --font-body: 'Nunito', sans-serif;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    font-family: var(--font-body);
+    background-color: var(--color-bg);
+    color: var(--color-dark);
+}
+
+h1, h2, h3, h4, h5, h6,
+.navbar-brand {
+    font-family: var(--font-heading);
+    color: var(--color-dark);
+}
+
+/* Navbar */
+.app-navbar {
+    background: linear-gradient(90deg, var(--color-purple), var(--color-primary));
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+    border-bottom: 1px solid rgba(46, 217, 163, 0.25);
+}
+
+    .app-navbar .navbar-brand {
+        color: var(--color-accent);
+        font-weight: 700;
+        font-size: 1.4rem;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+
+    .app-navbar .brand-icon {
+        font-size: 1.5rem;
+    }
+
+    .app-navbar .nav-link {
+        color: rgba(232, 241, 236, 0.85);
+        font-weight: 600;
+        margin: 0 0.25rem;
+        border-radius: 8px;
+        padding: 0.4rem 0.8rem;
+        transition: background-color 0.2s ease, color 0.2s ease;
+    }
+
+        .app-navbar .nav-link:hover {
+            background-color: rgba(46, 217, 163, 0.15);
+            color: var(--color-accent);
+        }
+
+        .app-navbar .nav-link.active {
+            background-color: rgba(46, 217, 163, 0.22);
+            color: var(--color-accent);
+        }
+
+/* Botones */
+.btn-primary {
+    background-color: var(--color-secondary);
+    border-color: var(--color-secondary);
+    font-weight: 700;
+    border-radius: 12px;
+    color: #fff;
+}
+
+    .btn-primary:hover {
+        background-color: #0d8a6a;
+        border-color: #0d8a6a;
+    }
+
+.btn-secondary {
+    background-color: var(--color-purple);
+    border-color: var(--color-purple);
+    font-weight: 700;
+    border-radius: 12px;
+    color: var(--color-dark);
+}
+
+    .btn-secondary:hover {
+        background-color: #0d1f3c;
+        border-color: #0d1f3c;
+        color: #fff;
+    }
+
+.btn-accent {
+    background-color: var(--color-accent);
+    border-color: var(--color-accent);
+    color: var(--color-bg);
+    font-weight: 700;
+    border-radius: 12px;
+}
+
+/* Tarjetas de historias */
+.card {
+    background-color: var(--color-card);
+    border: 1px solid rgba(46, 217, 163, 0.15);
+    border-radius: 16px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    overflow: hidden;
+    color: var(--color-dark);
+}
+
+    .card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+        border-color: var(--color-accent);
+    }
+
+.card-title {
+    font-family: var(--font-heading);
+    color: var(--color-accent);
+}
+
+/* Badges de estado / genero */
+.badge-story {
+    background-color: var(--color-secondary);
+    color: #fff;
+    border-radius: 20px;
+    padding: 0.35em 0.8em;
+    font-weight: 700;
+}
+
+.badge-estado {
+    display: inline-block;
+    border-radius: 20px;
+    padding: 0.25em 0.75em;
+    font-size: 0.8rem;
+    font-weight: 700;
+}
+
+.badge-publicada {
+    background-color: rgba(46, 217, 163, 0.18);
+    color: var(--color-accent);
+    border: 1px solid var(--color-accent);
+}
+
+.badge-no-publicada {
+    background-color: rgba(232, 241, 236, 0.08);
+    color: rgba(232, 241, 236, 0.7);
+    border: 1px solid rgba(232, 241, 236, 0.3);
+}
+
+/* Footer */
+.app-footer {
+    background-color: var(--color-purple);
+    color: rgba(232, 241, 236, 0.75);
+    font-size: 0.9rem;
+    border-top: 1px solid rgba(46, 217, 163, 0.2);
+}
+
+    .app-footer a {
+        color: var(--color-accent);
+        text-decoration: none;
+    }
+
+        .app-footer a:hover {
+            text-decoration: underline;
+        }
+
+/* Utilidades de color rápido */
+.text-brand-navy {
+    color: var(--color-purple);
+}
+
+.text-brand-green {
+    color: var(--color-secondary);
+}
+
+.bg-brand-green {
+    background-color: var(--color-secondary);
+}
+
+/* =====================================================
+   MEJORAS VISUALES
+   ===================================================== */
+
+/* ---------- Contenido principal ---------- */
+main {
+    padding-top: 1rem;
+}
+
+/* ---------- Formularios: ancho limitado y centrado ---------- */
+/* Uso: <div class="form-wrapper"> ... </div>                   (640px) */
+/*      <div class="form-wrapper form-wrapper-sm"> ... </div>   (420px, ej: login) */
+.form-wrapper {
+    max-width: 640px;
+    margin-inline: auto;
+}
+
+.form-wrapper-sm {
+    max-width: 420px;
+}
+
+.form-wrapper-lg {
+    max-width: 860px;
+}
+
+/* Tarjeta que envuelve el formulario */
+.form-card {
+    background-color: var(--color-card);
+    border: 1px solid rgba(46, 217, 163, 0.15);
+    border-radius: 16px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+    padding: 1.75rem;
+}
+
+    .form-card h4 {
+        color: var(--color-accent);
+        margin-top: 1.5rem;
+        margin-bottom: 1rem;
+        padding-top: 1.25rem;
+        border-top: 1px solid rgba(46, 217, 163, 0.15);
+    }
+
+/* ---------- Campos (tema oscuro) ---------- */
+.form-label {
+    font-weight: 600;
+    margin-bottom: 0.35rem;
+}
+
+.form-control,
+.form-select {
+    background-color: var(--color-bg);
+    border: 1px solid rgba(46, 217, 163, 0.25);
+    color: var(--color-dark);
+    border-radius: 10px;
+    padding: 0.55rem 0.8rem;
+}
+
+    .form-control:focus,
+    .form-select:focus {
+        background-color: var(--color-bg);
+        color: var(--color-dark);
+        border-color: var(--color-accent);
+        box-shadow: 0 0 0 0.2rem rgba(46, 217, 163, 0.25);
+    }
+
+    .form-control::placeholder {
+        color: rgba(232, 241, 236, 0.45);
+    }
+
+    .form-select option {
+        background-color: var(--color-card);
+        color: var(--color-dark);
+    }
+
+/* Mensajes de validación más legibles sobre fondo oscuro */
+.text-danger,
+.field-validation-error {
+    color: #ff7b86 !important;
+    font-size: 0.875rem;
+}
+
+.input-validation-error {
+    border-color: #ff7b86 !important;
+}
+
+/* ---------- Botones con separación ---------- */
+/* Uso: <div class="form-actions"> <button/> <a/> </div> */
+.form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+}
+
+/* Grupo de botones suelto (listados, detalle, etc.) */
+.acciones {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Red de seguridad: botones/forms pegados dentro de tablas */
+table .btn + .btn,
+table .btn + form,
+table form + .btn,
+table form + form {
+    margin-left: 0.5rem;
+}
+
+/* Botón secundario con borde visible sobre el fondo oscuro */
+.btn-secondary {
+    border-color: rgba(46, 217, 163, 0.35);
+}
+
+/* Botón contorno (cerrar sesión, etc.) */
+.btn-outline-accent {
+    background-color: transparent;
+    color: var(--color-accent);
+    border: 1px solid var(--color-accent);
+    border-radius: 12px;
+    font-weight: 700;
+}
+
+    .btn-outline-accent:hover {
+        background-color: var(--color-accent);
+        color: var(--color-bg);
+    }
+
+/* ---------- Usuario logueado en la navbar ---------- */
+.user-chip {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.user-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: var(--color-secondary);
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-heading);
+    font-weight: 700;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.15;
+}
+
+.user-name {
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--color-dark);
+}
+
+.user-role {
+    font-size: 0.75rem;
+    color: var(--color-accent);
+}
+
+/* ---------- Tablas (tema oscuro) ---------- */
+.table {
+    --bs-table-bg: transparent;
+    --bs-table-color: var(--color-dark);
+    --bs-table-striped-bg: rgba(46, 217, 163, 0.05);
+    --bs-table-striped-color: var(--color-dark);
+    --bs-table-hover-bg: rgba(46, 217, 163, 0.1);
+    --bs-table-hover-color: var(--color-dark);
+    --bs-table-border-color: rgba(46, 217, 163, 0.15);
+    vertical-align: middle;
+}
+
+    .table thead th {
+        font-family: var(--font-heading);
+        color: var(--color-accent);
+        border-bottom: 2px solid rgba(46, 217, 163, 0.35);
+    }
+
+/* ---------- Alertas ---------- */
+.alert {
+    border-radius: 12px;
+}
+/* =====================================================
+   LECTURA DE CAPÍTULOS
+   ===================================================== */
+
+.lectura-wrapper {
+    max-width: 760px;
+    margin-inline: auto;
+}
+
+.lectura-meta {
+    color: rgba(232, 241, 236, 0.6);
+}
+
+.lectura-card {
+    background-color: var(--color-card);
+    border: 1px solid rgba(46, 217, 163, 0.15);
+    border-radius: 16px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+    padding: 2rem;
+}
+
+.lectura-titulo {
+    color: var(--color-accent);
+    margin-bottom: 1.25rem;
+}
+
+.lectura-cuerpo {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    white-space: pre-line; /* respeta los saltos de línea que escribió el admin */
+}
+
+.lectura-opciones {
+    margin-top: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+    .lectura-opciones h5 {
+        color: var(--color-accent);
+        margin-bottom: 0.25rem;
+    }
+
+    .lectura-opciones form {
+        margin: 0;
+    }
+
+.btn-opcion {
+    width: 100%;
+    text-align: left;
+    background-color: var(--color-purple);
+    border: 1px solid rgba(46, 217, 163, 0.35);
+    color: var(--color-dark);
+    border-radius: 12px;
+    padding: 0.85rem 1.1rem;
+    font-weight: 700;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+    .btn-opcion:hover,
+    .btn-opcion:focus-visible {
+        background-color: rgba(46, 217, 163, 0.15);
+        border-color: var(--color-accent);
+        color: var(--color-accent);
+        transform: translateX(4px);
+    }
+
+.lectura-final {
+    margin-top: 1.5rem;
+    text-align: center;
+    background-color: rgba(46, 217, 163, 0.08);
+    border: 1px solid var(--color-accent);
+    border-radius: 16px;
+    padding: 1.75rem 1.5rem;
+}
+
+.lectura-final-icono {
+    font-size: 2.5rem;
+}
+
+.lectura-final h4 {
+    color: var(--color-accent);
+}
+ 

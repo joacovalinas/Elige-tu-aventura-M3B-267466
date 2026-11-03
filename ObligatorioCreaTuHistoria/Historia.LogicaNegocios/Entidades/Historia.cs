@@ -19,6 +19,8 @@ namespace EscogeAventura.LogicaNegocios.Entidades
         public string Titulo { get; set; }
         public string Sinopsis { get; set; }
         public EstadoHistoria Estado { get; set; }
+
+        public bool activo { get; set; } = true;
         public List<Categoria> CatHistoria { get; set; } = new List<Categoria>();
 
         public Intermedio CapInicial { get; set; }

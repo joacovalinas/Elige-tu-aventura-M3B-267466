@@ -8,6 +8,7 @@
         public string Cuerpo { get; set; }
         public int HistoriaId { get; set; }
 
+        public List<string>? opciones { get; set; }
 
     }
 }

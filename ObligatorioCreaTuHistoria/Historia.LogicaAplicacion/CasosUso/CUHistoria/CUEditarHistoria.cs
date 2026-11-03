@@ -1,4 +1,5 @@
 ﻿using DTOs.DTO.DTOsHistoria;
+using EscogeAventura.LogicaAplicacion.ICasosUso.ICUAuditoria;
 using EscogeAventura.LogicaAplicacion.ICasosUso.ICUHistoria;
 using EscogeAventura.LogicaNegocios.CustomExceptions.Genericas;
 using EscogeAventura.LogicaNegocios.CustomExceptions.Historia;
@@ -17,17 +18,20 @@ namespace EscogeAventura.LogicaAplicacion.CasosUso.CUHistoria
 
         private IRepositorioCapitulo _repoCapitulos;
 
-        public CUEditarHistoria(IRepositorioHistoria historias, IRepositorioCategoria categorias, IRepositorioCapitulo capitulos)
+        private ICUAltaAuditoria cuAltaAuditoria;
+        public CUEditarHistoria(IRepositorioHistoria historias, IRepositorioCategoria categorias, IRepositorioCapitulo capitulos, ICUAltaAuditoria AltaAudi)
         {
             _repoHistorias = historias;
             _repoCategorias = categorias;
             _repoCapitulos = capitulos;
+            cuAltaAuditoria = AltaAudi;
+
         }
 
 
 
 
-        public void Ejecutar(DTOHistoria dto)
+        public void Ejecutar(DTOHistoria dto, int usuId)
         {
             // 1. DTO nulo
             if (dto == null)
@@ -91,7 +95,7 @@ namespace EscogeAventura.LogicaAplicacion.CasosUso.CUHistoria
 
             _repoHistorias.Update(historia);
 
-            // RF05: registrar Auditoria (acción "Creación", fecha, adminId).
+            cuAltaAuditoria.Ejecutar("Editar Historia", historia.Id, usuId);
         }
     }
 }

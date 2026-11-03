@@ -1,11 +1,13 @@
 using EscogeAventura.LogicaAccesoDatos;
 using EscogeAventura.LogicaAccesoDatos.Repos;
 using EscogeAventura.LogicaAplicacion.CasosUso;
+using EscogeAventura.LogicaAplicacion.CasosUso.CUAuditoria;
 using EscogeAventura.LogicaAplicacion.CasosUso.CUCapitulo;
 using EscogeAventura.LogicaAplicacion.CasosUso.CUCategoria;
 using EscogeAventura.LogicaAplicacion.CasosUso.CUHistoria;
 using EscogeAventura.LogicaAplicacion.CasosUso.CURol;
 using EscogeAventura.LogicaAplicacion.CasosUso.CUUsuario;
+using EscogeAventura.LogicaAplicacion.ICasosUso.ICUAuditoria;
 using EscogeAventura.LogicaAplicacion.ICasosUso.ICUCapitulo;
 using EscogeAventura.LogicaAplicacion.ICasosUso.ICUCategoria;
 using EscogeAventura.LogicaAplicacion.ICasosUso.ICUHistoria;
@@ -46,6 +48,8 @@ namespace EscogeAventura.WebApp
             builder.Services.AddScoped<IRepositorioCategoria, RepositorioCategoria>();
             builder.Services.AddScoped<IRepositorioCapitulo, RepositorioCapitulo>();
             builder.Services.AddScoped<IRepositorioLectura, RepositorioLectura>();
+            builder.Services.AddScoped<IRepositorioAuditoria, RepositorioAuditoria>();
+
 
             //ID - CU
             builder.Services.AddScoped<ICUAltaUsuario, CUAltaUsuario>();
@@ -59,6 +63,9 @@ namespace EscogeAventura.WebApp
             builder.Services.AddScoped<ICUObtenerHistoria, CUObtenerHistoria>();
             builder.Services.AddScoped<ICUPublicar, CUPublicar>();  
             builder.Services.AddScoped<ICUBajaHistoria, CUBajaHistoria>();
+            builder.Services.AddScoped<ICUAltaAuditoria, CUAltaAuditoria>();
+            builder.Services.AddScoped<ICUListarAuditoria, CUListarAuditoria>();
+
 
             var app = builder.Build();
 
