@@ -53,13 +53,12 @@ namespace EscogeAventura.Cliente.Controllers
         }
 
 
-          public async Task<IActionResult> Leer(string nombreLectura)
+          public async Task<IActionResult> Leer(int nombreLectura, int IdLectura)
           {
               string token = HttpContext.Session.GetString("Token");
               _cliente.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
            
-            int idUsuario = (int)HttpContext.Session.GetInt32("LogueadoId");
-            var response = await _cliente.GetAsync($"Lectura/{nombreLectura}?idUsuario={idUsuario}");
+            var response = await _cliente.GetAsync($"Lectura/{nombreLectura}?idUsuario={IdLectura}");
 
            if (response.IsSuccessStatusCode)
               {
