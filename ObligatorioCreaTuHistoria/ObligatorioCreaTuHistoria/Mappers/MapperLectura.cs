@@ -40,7 +40,19 @@ namespace DTOs.Mappers
 
         }
 
-          
+
+        public static DTOLeer ToDtoLeer(Lectura l)
+        {
+
+            DTOLeer dto = new DTOLeer();
+            dto.Id = l.Id;
+            dto.nombreLectura = l.Nombrelectura;
+            dto.HistoriaTitulo = l.Historia.Titulo;
+            dto.capituloActual = MapperCapitulo.ToDtoCapituloLectura(l.CapituloActual);
+            dto.tipoCapitulo = l.CapituloActual.GetType().Name;
+            return dto;
+
+        }
 
         public static List<DTOLectura> ToListDtoLectura(List<Lectura> l)
         {

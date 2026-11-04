@@ -41,6 +41,7 @@ namespace EscogeAventura.API
             builder.Services.AddScoped<IRepositorioCategoria, RepositorioCategoria>();
             builder.Services.AddScoped<IRepositorioCapitulo, RepositorioCapitulo>();
             builder.Services.AddScoped<IRepositorioLectura, RepositorioLectura>();
+            builder.Services.AddScoped<IRepositorioAuditoria, RepositorioAuditoria>();
 
 
             // CASOS DE USO
@@ -52,6 +53,7 @@ namespace EscogeAventura.API
             builder.Services.AddScoped<ICUAltaLectura, CUAltaLectura>();
             builder.Services.AddScoped<ICUObtenerLectura, CUObtenerLectura>();
             builder.Services.AddScoped<ICUAvanzarLectura, CUAvanzarLectura>();
+            builder.Services.AddScoped<ICULeerLectura, CULeerLectura>();
             //JWT
 
 

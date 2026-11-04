@@ -11,10 +11,9 @@ namespace DTOs.DTO.DTOsLectura
     public class DTOAltaLectura
     {
         public string Nombrelectura { get; set; }
-        public DTOUsuario Usuario { get; set; }
-        public DTOHistoria Historia { get; set; }
+        public int UsuarioId { get; set; }
+        public int HistoriaId { get; set; }
         public DateTime FechaInicio { get; set; }
-        public DTOCapitulo? CapituloActual { get; set; }
 
     }
 }

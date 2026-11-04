@@ -24,12 +24,9 @@ namespace EscogeAventura.LogicaAplicacion.CasosUso.CULectura
         {
             
             Lectura l= _repositorioLectura.FindByNombreLectura(dto.nombreLectura);
-            Intermedio aux = (Intermedio)_repositorioCapitulo.FindByNombreCapitulo(dto.capituloActual.Titulo);
+            Capitulo aux = _repositorioCapitulo.FindByNombreCapitulo(dto.opcionElegida);
 
-
-            Capitulo destino = aux.Opciones.Find(x => x.Id == dto.opcionElegida).CapituloDestino;
-
-            if (destino is Final final)
+            if (aux is Final final)
             {
                 l.FechaFin = DateTime.Now;
                 l.Final = final;
@@ -38,15 +35,16 @@ namespace EscogeAventura.LogicaAplicacion.CasosUso.CULectura
             }
             else
             {
-                l.CapituloActual = destino;
+               
+                l.CapituloActual = aux;
             }
 
             _repositorioLectura.Update(l);
 
-            dto.capituloActual = MapperCapitulo.ToDtoCapitulo(l.CapituloActual);
-            dto.tipoCapitulo = l.CapituloActual.GetType().Name;
+            dto.capituloActual = MapperCapitulo.ToDtoCapituloLectura(aux);
+            dto.tipoCapitulo = aux.GetType().Name;
             dto.fechafin = l.FechaFin; // null si todavía no terminó
-  
+   
 
             return dto;
         }

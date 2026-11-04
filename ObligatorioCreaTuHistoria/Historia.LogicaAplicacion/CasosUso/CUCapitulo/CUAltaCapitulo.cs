@@ -50,9 +50,7 @@ namespace EscogeAventura.LogicaAplicacion.CasosUso.CUCapitulo
                 if (origen == null)
                     throw new DominioException("Solo se pueden agregar capítulos a continuación de capítulos intermedios.");
 
-                // 4) Texto de la opción
-                if (string.IsNullOrWhiteSpace(dto.TextoOpcion))
-                    throw new DatoVacioException("El texto de la opción es obligatorio.");
+              
 
                 // 5) Crear el capítulo según el tipo
                 Capitulo nuevo;
@@ -80,7 +78,7 @@ namespace EscogeAventura.LogicaAplicacion.CasosUso.CUCapitulo
                 // 6) Crear la opción que une el antecedente con el capítulo nuevo
                 Opcion opcion = new Opcion
                 {
-                    Texto = dto.TextoOpcion.Trim(),
+                    Texto = dto.Titulo.Trim(),
                     CapituloOrigen = origen,
                     CapituloDestino = nuevo
                 };

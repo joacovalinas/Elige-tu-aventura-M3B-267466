@@ -33,6 +33,29 @@ namespace DTOs.Mappers
 
         }
 
+
+        public static DTOCapituloLectura ToDtoCapituloLectura(Capitulo c)
+        {
+
+            DTOCapituloLectura dto = new DTOCapituloLectura();
+            dto.Id = c.Id;
+            dto.Titulo = c.Titulo;
+            dto.Cuerpo = c.Cuerpo;
+            dto.opciones = new List<string>();
+            if (c.GetType() == typeof(Intermedio))
+            {
+                Intermedio co = (Intermedio)c;
+                foreach (Opcion o in co.Opciones)
+                {
+                    dto.opciones.Add(o.Texto);
+                }
+            }
+
+            return dto;
+
+        }
+
+
         public static List<DTOCapitulo> ToListDtoCapitulo(List<Capitulo> l)
         {
 

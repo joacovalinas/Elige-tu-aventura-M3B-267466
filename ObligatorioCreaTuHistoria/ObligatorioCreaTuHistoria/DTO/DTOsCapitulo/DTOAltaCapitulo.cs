@@ -17,7 +17,7 @@ namespace DTOs.DTO.DTOsCapitulo
         public int HistoriaId { get; set; }
         public int AntecedenteId { get; set; }
      
-        public string TextoOpcion { get; set; } 
+ 
 
     }
 }

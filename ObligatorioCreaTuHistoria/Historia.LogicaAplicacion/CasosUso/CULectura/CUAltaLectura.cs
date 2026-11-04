@@ -27,29 +27,35 @@ namespace EscogeAventura.LogicaAplicacion.CasosUso.CULectura
         {
 
 
-            Usuario usu = _repositorioUsuario.FindByEmail(dto.Usuario.Email);
+            Usuario usu = _repositorioUsuario.FindById(dto.UsuarioId);
             if (usu == null)
             {
                 throw new DominioException("No existe este usuario.");
             }
 
 
-            Historia hist = _repositorioHistoria.FindById(dto.Historia.Id);
+            Historia hist = _repositorioHistoria.FindById(dto.HistoriaId);
             if (hist == null)
             {
                 throw new DominioException("No existe esta historia.");
             }
 
-            Lectura lectura = new Lectura();
-            lectura.Usuario = usu;
-            lectura.Historia = hist;    
-            lectura.Nombrelectura = dto.Nombrelectura;
-            lectura.FechaInicio = DateTime.Now;
-            lectura.CapituloActual = hist.CapInicial;
-            lectura.Validar();
+            Lectura aux = _repositorioLectura.FindAll().FirstOrDefault(l => l.Usuario.Id == dto.UsuarioId && l.Nombrelectura == dto.Nombrelectura);
+
+            if (aux == null)
+            {
+                Lectura lectura = new Lectura();
+                lectura.Usuario = usu;
+                lectura.Historia = hist;
+                lectura.Nombrelectura = dto.Nombrelectura;
+                lectura.FechaInicio = DateTime.Now;
+                lectura.CapituloActual = hist.CapInicial;
+                lectura.Validar();
+
+
+                _repositorioLectura.Add(lectura);
+            }
             
-            
-            _repositorioLectura.Add(lectura);
 
 
 

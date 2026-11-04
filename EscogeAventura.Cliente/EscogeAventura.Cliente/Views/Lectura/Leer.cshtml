@@ -1,5 +1,5 @@
-﻿@using EscogeAventura.Cliente.Models.DTOsLectura
-@* Cliente -> Views/Lectura/Leer.cshtml *@
+﻿@using EscogeAventura.Cliente.Models.DTOs.DTOsLectura
+@using EscogeAventura.Cliente.Models.DTOsLectura
 @model DTOLeer
 @{
     ViewData["Title"] = Model.HistoriaTitulo;
@@ -29,15 +29,28 @@
         <section class="lectura-opciones">
             <h5>¿Qué hacés?</h5>
 
-            
+            <form asp-controller="Lectura" asp-action="Avanzar" method="post">
 
-            @foreach (var op in cap.opciones)
-            {
-                <form asp-action="Avanzar" asp-route-id="@Model.opcionElegida" method="post">
-                    <input type="hidden" name="op" value="@op" />
-                    <button type="submit" class="btn-opcion">@op</button>
-                </form>
-            }
+                @* Todo lo que trajo el modelo vuelve igual *@
+                <input type="hidden" asp-for="HistoriaTitulo" />
+                <input type="hidden" asp-for="nombreLectura" />
+                <input type="hidden" asp-for="tipoCapitulo" />
+                <input type="hidden" asp-for="fechafin" />
+                <input type="hidden" asp-for="capituloActual.Titulo" />
+                <input type="hidden" asp-for="capituloActual.Cuerpo" />
+                <input type="hidden" asp-for="capituloActual.Id" />
+
+                @for (int i = 0; i < cap.opciones.Count; i++)
+                {
+                    <input type="hidden" name="capituloActual.opciones[@i]" value="@cap.opciones[i]" />
+                }
+
+                @* Cada botón aporta SOLO su valor a opcionElegida *@
+                @foreach (var op in cap.opciones)
+                {
+                    <button type="submit" name="opcionElegida" value="@op" class="btn-opcion">@op</button>
+                }
+            </form>
         </section>
     }
     else

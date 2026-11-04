@@ -1,38 +1,34 @@
-﻿@using EscogeAventura.Cliente.Models.DTOs.DTOsHistoria
+﻿@* Cliente -> Views/Historia/Index.cshtml *@
+@using EscogeAventura.Cliente.Models.DTOs.DTOsHistoria
 
 @model DTOIndexHistoria
 @{
     ViewData["Title"] = "Historias";
-
 }
-
 
 @if (TempData["Exito"] != null)
 {
     <div class="alert alert-success">@TempData["Exito"]</div>
-    @if (!Model.Historias.Any())
-    {
-        <p>No hay historias cargadas.</p>
-    }
 }
+
 @if (TempData["Error"] != null)
 {
     <div class="alert alert-danger">@TempData["Error"]</div>
 }
 
-
+@if (!Model.Historias.Any())
+{
+    <p>No hay historias cargadas.</p>
+}
 else
 {
-
-    <form method="post">
+    <form id="formLectura" asp-controller="Lectura" asp-action="AltaLectura" method="post">
 
         <div class="acciones mb-3">
-           
-            <button type="submit" class="btn btn-secondary" asp-controller="Lectura" asp-action="AltaLectura">
-               Leer Historia
+            @* type="button": no envía el form, abre el modal que pide el nombre de la lectura *@
+            <button type="button" id="btnLeer" class="btn btn-secondary">
+                Leer Historia
             </button>
-
-
         </div>
 
         <div class="form-card">
@@ -41,7 +37,6 @@ else
                     <tr>
                         <th style="width: 3rem;"></th>
                         <th>Título</th>
-
                     </tr>
                 </thead>
                 <tbody>
@@ -49,15 +44,77 @@ else
                     {
                         <tr>
                             <td>
-                                <input type="radio" name="id" value="@h.Id" class="form-check-input" required />
+                                @* name="HistoriaId": viaja en el post como el id de la historia elegida *@
+                                <input type="radio" name="histId" value="@h.Id" data-titulo="@h.Titulo" class="form-check-input" required />
                             </td>
                             <td>@h.Titulo</td>
-                            <td>
-
                         </tr>
                     }
                 </tbody>
             </table>
         </div>
+
+        @* Ventana emergente: pide el nombre de la lectura y lo envía junto con HistoriaId *@
+        <div class="modal fade" id="modalNombreLectura" tabindex="-1" aria-labelledby="modalNombreLecturaLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content" style="background-color: var(--color-card); color: var(--color-dark); border: 1px solid rgba(46, 217, 163, 0.25); border-radius: 16px;">
+                    <div class="modal-header" style="border-bottom: 1px solid rgba(46, 217, 163, 0.15);">
+                        <h5 class="modal-title" id="modalNombreLecturaLabel">Nueva lectura</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="mb-3">Vas a leer: <strong id="tituloSeleccionado"></strong></p>
+                        <label for="Nombrelectura" class="form-label">Nombre de la lectura</label>
+                        <input type="text" id="Nombrelectura" name="Nombrelectura" class="form-control"
+                               maxlength="60" placeholder="Ej: Mi primera aventura" required />
+                    </div>
+                    <div class="modal-footer" style="border-top: 1px solid rgba(46, 217, 163, 0.15);">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Empezar a leer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </form>
+}
+
+@section Scripts {
+    <script>
+        (function () {
+            const form = document.getElementById('formLectura');
+            if (!form) return;
+
+            const modalEl = document.getElementById('modalNombreLectura');
+            const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+            const inputNombre = document.getElementById('Nombrelectura');
+            const tituloEl = document.getElementById('tituloSeleccionado');
+
+            function abrirModal() {
+                const seleccionada = form.querySelector('input[name="histId"]:checked');
+
+                // Si no eligió ninguna historia, muestra el aviso del navegador y no abre el modal
+                if (!seleccionada) {
+                    form.querySelector('input[name="histId"]').reportValidity();
+                    return;
+                }
+
+                tituloEl.textContent = seleccionada.dataset.titulo;
+                modal.show();
+            }
+
+            document.getElementById('btnLeer').addEventListener('click', abrirModal);
+
+            modalEl.addEventListener('shown.bs.modal', function () { inputNombre.focus(); });
+            modalEl.addEventListener('hidden.bs.modal', function () { inputNombre.value = ''; });
+
+            // Si apretan Enter con el modal cerrado, se abre el modal en vez de enviar el form
+            form.addEventListener('submit', function (e) {
+                if (!modalEl.classList.contains('show')) {
+                    e.preventDefault();
+                    abrirModal();
+                }
+            });
+        })();
+    </script>
 }
