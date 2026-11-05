@@ -38,6 +38,11 @@ namespace EscogeAventura.LogicaAccesoDatos.Repos
             return _context.Capitulos.Include(c => c.Historia).Include(c  =>(c as Intermedio).Opciones).Where(c => c.Titulo == nombreCapitulo).SingleOrDefault();
         }
 
+        public Capitulo FindByNombreCapituloYHistoria(string nombreCapitulo, string nombreHistoria)
+        {
+            return _context.Capitulos.Include(c => c.Historia).Include(c => (c as Intermedio).Opciones).Where(c => c.Titulo == nombreCapitulo && c.Historia.Titulo == nombreHistoria).SingleOrDefault();
+        }
+
         public void Remove(Capitulo ToEliminar)
         {
             _context.Capitulos.Remove(ToEliminar);

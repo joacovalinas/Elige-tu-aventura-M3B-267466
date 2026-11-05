@@ -39,6 +39,7 @@
                 <input type="hidden" asp-for="capituloActual.Titulo" />
                 <input type="hidden" asp-for="capituloActual.Cuerpo" />
                 <input type="hidden" asp-for="capituloActual.Id" />
+                <input type="hidden" asp-for="Id" />
 
                 @for (int i = 0; i < cap.opciones.Count; i++)
                 {
@@ -63,7 +64,6 @@
                 Si querés probar otro camino, empezá una lectura nueva.
             </p>
             <div class="acciones justify-content-center">
-                <a class="btn btn-primary" asp-controller="Lectura" asp-action="Iniciar" asp-route-historiaId="@Model.HistoriaTitulo">Probar otro camino</a>
                 <a class="btn btn-secondary" asp-controller="Historia" asp-action="Index">Volver al listado</a>
             </div>
         </section>

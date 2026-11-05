@@ -23,7 +23,7 @@ namespace EscogeAventura.LogicaAplicacion.CasosUso.CULectura
             _repositorioHistoria = repositorioHistoria;
         }
 
-        public void Ejecutar(DTOAltaLectura dto)
+        public int Ejecutar(DTOAltaLectura dto)
         {
 
 
@@ -52,12 +52,11 @@ namespace EscogeAventura.LogicaAplicacion.CasosUso.CULectura
                 lectura.CapituloActual = hist.CapInicial;
                 lectura.Validar();
 
-
                 _repositorioLectura.Add(lectura);
+                return lectura.Id;
             }
-            
 
-
+            return aux.Id;
 
         }
     }

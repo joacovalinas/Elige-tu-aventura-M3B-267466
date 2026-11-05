@@ -25,6 +25,7 @@ namespace EscogeAventura.LogicaNegocios.Entidades
         public DateTime FechaInicio { get; set; }
         public DateTime? FechaFin { get; set; }
     
+        public bool finalizado { get; set; } = false;
         public Final? Final { get; set; }
 
         // Donde va quedando parada la lectura (coincide con el ultimo paso de Camino).

@@ -35,8 +35,9 @@ namespace EscogeAventura.API.Controllers
             try
             {
 
-                  _cuAltaLectura.Ejecutar(dto);
-                   return Ok();
+                 int IdLectura = _cuAltaLectura.Ejecutar(dto);
+
+                   return Ok(new { IdLectura = IdLectura });
 
             }
             catch (Exception e)
@@ -45,14 +46,14 @@ namespace EscogeAventura.API.Controllers
             }
         }
 
-        [HttpGet("{nombre}")]
+        [HttpGet("{IdLectura:int}")]
         public IActionResult LeerLectura(int IdLectura)
         {
             try
             {
                 DTOLeer dto = _cuLeerLectura.Ejecutar(IdLectura);
 
-                return StatusCode(200,dto);
+                return Ok(dto);
             }
             catch (Exception e)
             {
@@ -61,13 +62,13 @@ namespace EscogeAventura.API.Controllers
         }
 
 
-        [HttpPost("Avanzar/{nombre}")]
+        [HttpPost("Avanzar")]
         public IActionResult AvanzarLectura(DTOLeer dto)
         {
             try
             {
                  _cuAvanzarLectura.Ejecutar(dto);
-                return StatusCode(200,dto);
+                return Ok(dto);
             }
             catch (Exception e)
             {

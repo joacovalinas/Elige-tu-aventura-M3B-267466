@@ -196,6 +196,9 @@ namespace EscogeAventura.LogicaAccesoDatos.Migrations
                     b.Property<int>("UsuarioId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("finalizado")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CapituloActualId");

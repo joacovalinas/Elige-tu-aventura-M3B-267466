@@ -13,7 +13,6 @@ namespace DTOs.DTO.DTOsLectura
         public DTOCapituloLectura capituloActual { get; set; }
         public string tipoCapitulo { get; set; }
         public string? opcionElegida { get; set; }
-
         public DateTime? fechafin { get; set; }
 
     }

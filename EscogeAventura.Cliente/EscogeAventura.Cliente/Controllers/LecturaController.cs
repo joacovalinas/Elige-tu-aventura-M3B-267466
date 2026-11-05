@@ -42,7 +42,13 @@ namespace EscogeAventura.Cliente.Controllers
             var response = await _cliente.PostAsync("Lectura/AltaLectura", content);
 
             if (response.IsSuccessStatusCode)
-                return RedirectToAction("Leer", new { nombreLectura = Nombrelectura });
+            {
+                var body = await response.Content.ReadAsStringAsync();
+                var opciones = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+                var resultado = JsonSerializer.Deserialize<DTORespuestaAltaLectura>(body, opciones);
+
+                return RedirectToAction("Leer", new { idLectura = resultado.IdLectura });
+            }
 
             if (response.StatusCode == HttpStatusCode.Unauthorized)
                 return RedirectToAction("Login", "Auth");
@@ -53,12 +59,12 @@ namespace EscogeAventura.Cliente.Controllers
         }
 
 
-          public async Task<IActionResult> Leer(int nombreLectura, int IdLectura)
+          public async Task<IActionResult> Leer(int nombreLectura, int idLectura)
           {
               string token = HttpContext.Session.GetString("Token");
               _cliente.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
            
-            var response = await _cliente.GetAsync($"Lectura/{nombreLectura}?idUsuario={IdLectura}");
+            var response = await _cliente.GetAsync($"Lectura/{idLectura}");
 
            if (response.IsSuccessStatusCode)
               {
@@ -87,6 +93,7 @@ namespace EscogeAventura.Cliente.Controllers
             return View();
         }
 
+        [HttpPost]
         public async Task<IActionResult> Avanzar(DTOLeer dto)
         {
 
@@ -99,10 +106,10 @@ namespace EscogeAventura.Cliente.Controllers
             _cliente.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
 
-            var response = await _cliente.PostAsync("Lectura/Avanzar/" + dto.nombreLectura, content);
+            var response = await _cliente.PostAsync("Lectura/Avanzar", content);
 
             if (response.IsSuccessStatusCode)
-                return RedirectToAction("Leer", new { nombreLectura = dto.nombreLectura });
+                return RedirectToAction("Leer", new { idLectura = dto.Id });
 
             if (response.StatusCode == HttpStatusCode.Unauthorized)
                 return RedirectToAction("Login", "Auth");

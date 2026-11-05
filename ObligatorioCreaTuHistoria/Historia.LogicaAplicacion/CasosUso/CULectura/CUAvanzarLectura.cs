@@ -24,7 +24,7 @@ namespace EscogeAventura.LogicaAplicacion.CasosUso.CULectura
         {
             
             Lectura l= _repositorioLectura.FindByNombreLectura(dto.nombreLectura);
-            Capitulo aux = _repositorioCapitulo.FindByNombreCapitulo(dto.opcionElegida);
+            Capitulo aux = _repositorioCapitulo.FindByNombreCapituloYHistoria(dto.opcionElegida, dto.HistoriaTitulo);
 
             if (aux is Final final)
             {

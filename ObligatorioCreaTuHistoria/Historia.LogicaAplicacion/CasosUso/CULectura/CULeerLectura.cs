@@ -29,12 +29,8 @@ namespace EscogeAventura.LogicaAplicacion.CasosUso.CULectura
             Lectura? lecturaAux = _repositorioLectura.FindById(IdLectura);
 
 
-            if (lecturaAux == null)
-            {
-                throw new DominioException("No existe esta lectura.");
-            }
 
-            if (lecturaAux != null && lecturaAux.Final != null)
+            if (lecturaAux != null && lecturaAux.finalizado)
             {
                 throw new DominioException("Ya has finalizado esta lectura. final: "+ lecturaAux.Final.Titulo);
             }
@@ -45,8 +41,16 @@ namespace EscogeAventura.LogicaAplicacion.CasosUso.CULectura
                 dto.HistoriaTitulo = lecturaAux.Historia.Titulo;
                 dto.nombreLectura = lecturaAux.Nombrelectura;
                 dto.tipoCapitulo = lecturaAux.CapituloActual.GetType().Name;
+           
+            if(dto.tipoCapitulo == "Final")
+            {
+                lecturaAux.finalizado = true;
+                _repositorioLectura.Update(lecturaAux);
 
-                return dto;
+            }
+                
+           
+            return dto;
             
 
          

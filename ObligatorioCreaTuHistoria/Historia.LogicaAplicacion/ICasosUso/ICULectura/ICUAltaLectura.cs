@@ -7,6 +7,6 @@ namespace EscogeAventura.LogicaAplicacion.ICasosUso.ICULectura
 {
     public interface ICUAltaLectura
     {
-        public void Ejecutar(DTOAltaLectura dto);
+        public int Ejecutar(DTOAltaLectura dto);
     }
 }
