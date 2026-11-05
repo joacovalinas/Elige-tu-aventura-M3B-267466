@@ -7,11 +7,12 @@ namespace EscogeAventura.LogicaNegocios.IRepositorios
 {
     public interface IRepositorioHistoria : IRepositorio<Historia>
     {
-        void Actualizar(Historia historia);
-        Historia FindByNombreHistoria(string nombreHistoria);
+        public void Actualizar(Historia historia);
+        public Historia FindByNombreHistoria(string nombreHistoria);
+        public List<Historia> ObtenerHistoriasPublicadas();
 
-        
+        public List<Historia> ObtenerHistoriasPorCategoria(int CategoriaId);
 
-        List<Historia> ObtenerHistoriasPublicadas();
+
     }
 }

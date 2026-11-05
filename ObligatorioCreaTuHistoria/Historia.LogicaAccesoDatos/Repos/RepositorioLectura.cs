@@ -44,6 +44,11 @@ namespace EscogeAventura.LogicaAccesoDatos.Repos
             return _context.Lecturas.Include(l => l.Usuario).Include(l => l.Historia).Include(l => l.CapituloActual).Where(l => l.Nombrelectura == nombreLectura).SingleOrDefault();
         }
 
+        public List<Lectura> Obtenerhistorial(int usuarioId, DateTime fechaInicio)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Remove(Lectura ToEliminar)
         {
             _context.Lecturas.Remove(ToEliminar);

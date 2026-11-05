@@ -9,6 +9,6 @@ namespace EscogeAventura.LogicaNegocios.IRepositorios
     {
         Lectura FindByNombreLectura(string nombreLectura);
         Lectura FindByNombreHistoria(string nombreHistoria);
-
+        public List<Lectura> Obtenerhistorial(int usuarioId, DateTime fechaInicio);
     }
 }

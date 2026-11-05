@@ -7,6 +7,7 @@ namespace EscogeAventura.LogicaNegocios.IRepositorios
 {
     public interface IRepositorioAuditoria : IRepositorio<Auditoria>
     {
-
+        public List<Auditoria> ObtenerPorUsuario(int usuarioId);
+        public List<Auditoria> ObtenerPorHistoria(int historiaId);
     }
 }

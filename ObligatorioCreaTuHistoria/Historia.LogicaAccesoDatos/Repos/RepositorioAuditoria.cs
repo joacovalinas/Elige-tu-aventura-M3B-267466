@@ -33,6 +33,16 @@ namespace EscogeAventura.LogicaAccesoDatos.Repos
             return _context.Auditorias.Include(a => a.Historia).Include(a => a.Usuario).Where(a=>a.Id == id).SingleOrDefault();
         }
 
+        public List<Auditoria> ObtenerPorHistoria(int historiaId)
+        {
+            return _context.Auditorias.Include(a => a.Historia).Include(a => a.Usuario).Where(a => a.Historia.Id == historiaId).ToList();
+        }
+
+        public List<Auditoria> ObtenerPorUsuario(int usuarioId)
+        {
+            return _context.Auditorias.Include(a => a.Historia).Include(a => a.Usuario).Where(a => a.Usuario.Id == usuarioId).ToList();
+        }
+
         public void Remove(Auditoria ToEliminar)
         {
             _context.Auditorias.Remove(ToEliminar);
@@ -46,9 +56,5 @@ namespace EscogeAventura.LogicaAccesoDatos.Repos
         }
     
 
-   
-
-    
-       
     }
 }

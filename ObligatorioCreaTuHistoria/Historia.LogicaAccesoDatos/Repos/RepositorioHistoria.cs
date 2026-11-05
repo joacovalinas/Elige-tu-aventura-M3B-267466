@@ -128,6 +128,9 @@ namespace EscogeAventura.LogicaAccesoDatos.Repos
             _context.SaveChanges();
         }
 
-   
+        public List<Historia> ObtenerHistoriasPorCategoria(int CategoriaId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

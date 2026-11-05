@@ -1,9 +1,14 @@
 ﻿@using DTOs.DTO.DTOsAuditoria
 @model List<DTOAuditoria>
 
-
 @{
     ViewData["Title"] = "Auditoría";
+
+    string usuarioFiltro = Context.Request.Query["usuario"].ToString();
+    string historiaFiltro = Context.Request.Query["historia"].ToString();
+
+    // Si vino filtro por historia se preselecciona ese, si no, usuario
+    string tipoFiltro = !string.IsNullOrWhiteSpace(historiaFiltro) ? "historia" : "usuario";
 }
 
 <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-4">
@@ -18,6 +23,35 @@
 {
     <div class="alert alert-danger">@TempData["Error"]</div>
 }
+
+<form method="get" asp-controller="Auditoria" asp-action="Index" class="form-card mb-3">
+    <div class="row g-2 align-items-end">
+        <div class="col-12 col-md-3">
+            <label for="tipoFiltro" class="form-label">Filtrar por</label>
+            <select id="tipoFiltro" class="form-select">
+                <option value="usuario" selected="@(tipoFiltro == "usuario")">Usuario</option>
+                <option value="historia" selected="@(tipoFiltro == "historia")">Historia</option>
+            </select>
+        </div>
+
+        <div class="col-12 col-md-5" id="grupoUsuario">
+            <label for="usuario" class="form-label">Nombre de usuario</label>
+            <input type="text" id="usuario" name="usuario" value="@usuarioFiltro"
+                   class="form-control" placeholder="Ej: joaquin" />
+        </div>
+
+        <div class="col-12 col-md-5" id="grupoHistoria">
+            <label for="historia" class="form-label">Nombre de historia</label>
+            <input type="text" id="historia" name="historia" value="@historiaFiltro"
+                   class="form-control" placeholder="Ej: El bosque oscuro" />
+        </div>
+
+        <div class="col-12 col-md-4 d-flex gap-2">
+            <button type="submit" class="btn btn-primary">Filtrar</button>
+            <a asp-controller="Auditoria" asp-action="Index" class="btn btn-secondary">Limpiar</a>
+        </div>
+    </div>
+</form>
 
 @if (!Model.Any())
 {
@@ -50,4 +84,28 @@ else
     </div>
 }
 
+<script>
+    (function () {
+        const tipo = document.getElementById('tipoFiltro');
+        const grupos = {
+            usuario: document.getElementById('grupoUsuario'),
+            historia: document.getElementById('grupoHistoria')
+        };
+        const inputs = {
+            usuario: document.getElementById('usuario'),
+            historia: document.getElementById('historia')
+        };
 
+        function actualizar() {
+            Object.keys(grupos).forEach(function (k) {
+                const activo = (k === tipo.value);
+                grupos[k].classList.toggle('d-none', !activo);
+                inputs[k].disabled = !activo;   // un input deshabilitado no se envía
+                if (!activo) inputs[k].value = '';
+            });
+        }
+
+        tipo.addEventListener('change', actualizar);
+        actualizar();
+    })();
+</script>
