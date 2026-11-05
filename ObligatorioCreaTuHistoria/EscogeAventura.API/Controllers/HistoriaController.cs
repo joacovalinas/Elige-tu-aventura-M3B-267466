@@ -19,16 +19,19 @@ namespace EscogeAventura.API.Controllers
             _cuObtenerCategorias = cuObtenerCategorias;
         }
 
-
         [HttpGet("listar")]
-        public IActionResult ListarHistorias()
-          {
+        public IActionResult ListarHistorias( int? categoriaId)
+        {
             try
             {
                 DTOIndexHistoria dto = new DTOIndexHistoria();
-                dto.historias = _cuListarHistoriasPublicadas.Ejecutar();
-                dto.categorias = _cuObtenerCategorias.Ejecutar();
+                dto.Historias = _cuListarHistoriasPublicadas.Ejecutar(categoriaId);
+                dto.Categorias = _cuObtenerCategorias.Ejecutar();
                 return StatusCode(200, dto);
+            }
+            catch (ArgumentException e)
+            {
+                return StatusCode(400, e.Message);
             }
             catch (Exception e)
             {

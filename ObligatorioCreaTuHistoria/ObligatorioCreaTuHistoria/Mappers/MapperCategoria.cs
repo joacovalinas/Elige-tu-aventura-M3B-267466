@@ -13,6 +13,7 @@ namespace DTOs.Mappers
         {
 
             DTOCategoria dto = new DTOCategoria();
+            dto.Id = c.Id;
             dto.Nombre = c.Nombre;
             return dto;
 

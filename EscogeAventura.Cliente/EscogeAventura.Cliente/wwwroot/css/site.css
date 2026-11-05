@@ -487,4 +487,7 @@ table form + form {
 .lectura-final h4 {
     color: var(--color-accent);
 }
- 
+
+.fila-historia:has(input:checked) {
+    background-color: rgba(46, 217, 163, 0.12);
+}

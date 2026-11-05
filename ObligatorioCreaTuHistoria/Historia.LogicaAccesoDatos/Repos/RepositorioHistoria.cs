@@ -73,18 +73,22 @@ namespace EscogeAventura.LogicaAccesoDatos.Repos
 
 
 
-        public List<Historia> ObtenerHistoriasPublicadas()
+        public List<Historia> ObtenerHistoriasPublicadas(int? CategoriaId)
         {
+            var query = _context.Historias
+      .Include(h => h.CatHistoria)
+      .Include(h => h.CapInicial)
+      .Where(h => h.activo && h.Estado == EstadoHistoria.Publicado);
 
-            return _context.Historias
-                .Include(h => h.CatHistoria)
-                .Include(u => u.CapInicial)
-                .Where(h => h.activo == true)
-                .Where(h => h.Estado == EstadoHistoria.Publicado).ToList();
+            if (CategoriaId != 0)
+                query = query.Where(h => h.CatHistoria.Any(ch => ch.Id == CategoriaId));
+
+            return query.ToList();
         }
 
 
 
+      
 
         public void Remove(Historia ToEliminar)
         {
@@ -95,30 +99,6 @@ namespace EscogeAventura.LogicaAccesoDatos.Repos
             ToEliminar.activo = false;
             _context.Historias.Update(ToEliminar);
             _context.SaveChanges();
-
-
-            /*
-  
-           using var tx = _context.Database.BeginTransaction();
-            // 1) Romper el ciclo Historia <-> Capitulo inicial
-            historia.CapInicial = null;
-            _context.SaveChanges();
-
-            // 2) Borrar opciones, capítulos e historia en un solo SaveChanges.
-            //    EF ordena solo los DELETE: opciones -> capítulos -> historia.
-            List<Opcion> opciones = historia.Capitulos
-                .OfType<Intermedio>()
-                .SelectMany(i => i.Opciones)
-                .ToList();
-
-            _context.Set<Opcion>().RemoveRange(opciones);
-            _context.Set<Capitulo>().RemoveRange(historia.Capitulos);
-            _context.Historias.Remove(historia);
-            _context.SaveChanges();
-
-            tx.Commit();
-
-            */
         }
 
 
@@ -128,9 +108,6 @@ namespace EscogeAventura.LogicaAccesoDatos.Repos
             _context.SaveChanges();
         }
 
-        public List<Historia> ObtenerHistoriasPorCategoria(int CategoriaId)
-        {
-            throw new NotImplementedException();
-        }
+   
     }
 }

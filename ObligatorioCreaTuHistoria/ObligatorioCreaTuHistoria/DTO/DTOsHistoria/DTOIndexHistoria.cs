@@ -7,8 +7,8 @@ namespace DTOs.DTO.DTOsHistoria
 {
     public class DTOIndexHistoria
     {
-        public List<DTOHistoria> historias { get; set; }
-        public List<DTOCategoria> categorias { get; set; }
-
+        public List<DTOHistoria> Historias { get; set; } 
+        public List<DTOCategoria> Categorias { get; set; } 
+        public int? CategoriaId { get; set; }
     }
 }

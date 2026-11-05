@@ -9,9 +9,7 @@ namespace EscogeAventura.LogicaNegocios.IRepositorios
     {
         public void Actualizar(Historia historia);
         public Historia FindByNombreHistoria(string nombreHistoria);
-        public List<Historia> ObtenerHistoriasPublicadas();
-
-        public List<Historia> ObtenerHistoriasPorCategoria(int CategoriaId);
+        public List<Historia> ObtenerHistoriasPublicadas(int? CategoriaId);
 
 
     }

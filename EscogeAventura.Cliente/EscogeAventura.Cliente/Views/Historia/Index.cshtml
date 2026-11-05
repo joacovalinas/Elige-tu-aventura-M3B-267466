@@ -16,16 +16,28 @@
     <div class="alert alert-danger">@TempData["Error"]</div>
 }
 
+@* Filtro por categoría (GET, form aparte del de lectura). Solo se puede elegir una *@
+<form method="get" asp-controller="Historia" asp-action="Index" class="d-flex align-items-center gap-2 mb-3">
+    <label for="categoriaId" class="form-label mb-0">Categoría</label>
+    <select id="categoriaId" name="categoriaId" class="form-select w-auto" onchange="this.form.submit()">
+        <option value="">Todas</option>
+        @foreach (var c in Model.Categorias)
+        {
+            <option value="@c.Id" selected="@(Model.CategoriaId == c.Id)">@c.Nombre</option>
+        }
+    </select>
+    <noscript><button type="submit" class="btn btn-secondary">Filtrar</button></noscript>
+</form>
+
 @if (!Model.Historias.Any())
 {
-    <p>No hay historias cargadas.</p>
+    <p>@(Model.CategoriaId.HasValue ? "No hay historias en esta categoría." : "No hay historias cargadas.")</p>
 }
 else
 {
     <form id="formLectura" asp-controller="Lectura" asp-action="AltaLectura" method="post">
 
         <div class="acciones mb-3">
-            @* type="button": no envía el form, abre el modal que pide el nombre de la lectura *@
             <button type="button" id="btnLeer" class="btn btn-secondary">
                 Leer Historia
             </button>
@@ -37,24 +49,35 @@ else
                     <tr>
                         <th style="width: 3rem;"></th>
                         <th>Título</th>
+                        <th>Categorías</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var h in Model.Historias)
                     {
-                        <tr>
+                        <tr class="fila-historia position-relative" style="cursor: pointer;">
                             <td>
-                                @* name="HistoriaId": viaja en el post como el id de la historia elegida *@
-                                <input type="radio" name="histId" value="@h.Id" data-titulo="@h.Titulo" class="form-check-input" required />
+                                <input type="radio" id="hist-@h.Id" name="histId" value="@h.Id"
+                                       data-titulo="@h.Titulo" class="form-check-input" required />
                             </td>
-                            <td>@h.Titulo</td>
+                            <td>
+                                <label for="hist-@h.Id" class="stretched-link mb-0" style="cursor: pointer;">@h.Titulo</label>
+                            </td>
+                            <td>
+                                @foreach (var c in h.CatHistoria)
+                                {
+                                    <span class="badge rounded-pill me-1"
+                                          style="background-color: rgba(46, 217, 163, 0.15); color: var(--color-dark); border: 1px solid rgba(46, 217, 163, 0.4);">
+                                        @c
+                                    </span>
+                                }
+                            </td>
                         </tr>
                     }
                 </tbody>
             </table>
         </div>
 
-        @* Ventana emergente: pide el nombre de la lectura y lo envía junto con HistoriaId *@
         <div class="modal fade" id="modalNombreLectura" tabindex="-1" aria-labelledby="modalNombreLecturaLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content" style="background-color: var(--color-card); color: var(--color-dark); border: 1px solid rgba(46, 217, 163, 0.25); border-radius: 16px;">
@@ -80,7 +103,9 @@ else
 }
 
 @section Scripts {
+
     <script>
+        // Script para abrir el cuadro que pide el nombre de lectura y validar que haya una historia seleccionada
         (function () {
             const form = document.getElementById('formLectura');
             if (!form) return;
@@ -93,7 +118,6 @@ else
             function abrirModal() {
                 const seleccionada = form.querySelector('input[name="histId"]:checked');
 
-                // Si no eligió ninguna historia, muestra el aviso del navegador y no abre el modal
                 if (!seleccionada) {
                     form.querySelector('input[name="histId"]').reportValidity();
                     return;
@@ -108,7 +132,6 @@ else
             modalEl.addEventListener('shown.bs.modal', function () { inputNombre.focus(); });
             modalEl.addEventListener('hidden.bs.modal', function () { inputNombre.value = ''; });
 
-            // Si apretan Enter con el modal cerrado, se abre el modal en vez de enviar el form
             form.addEventListener('submit', function (e) {
                 if (!modalEl.classList.contains('show')) {
                     e.preventDefault();

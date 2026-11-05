@@ -7,6 +7,6 @@ namespace EscogeAventura.LogicaAplicacion.ICasosUso.ICUHistoria
 {
     public interface ICUListarHistoriasPublicadas
     {
-        List<DTOHistoria> Ejecutar();
+        List<DTOHistoria> Ejecutar(int? CategoriaId);
     }
 }

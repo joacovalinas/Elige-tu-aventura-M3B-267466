@@ -1,4 +1,5 @@
 ﻿using EscogeAventura.Cliente.Models;
+using EscogeAventura.Cliente.Models.DTOs.DTOsCategoria;
 using EscogeAventura.Cliente.Models.DTOs.DTOsHistoria;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -21,39 +22,46 @@ namespace EscogeAventura.Cliente.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> Index(DTOIndexHistoria dto)
+        public async Task<IActionResult> Index(int? categoriaId)
         {
+            string token = HttpContext.Session.GetString("Token");
+            _cliente.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
-                string token = HttpContext.Session.GetString("Token");
-                _cliente.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 
-   
-                var response = await _cliente.GetAsync("Historia/Listar");
+            // Solo manda el parámetro si hay una categoría válida
+            var url = categoriaId is > 0
+                ? $"Historia/Listar?categoriaId={categoriaId}"
+                : "Historia/Listar";
 
-                if (response.IsSuccessStatusCode)
-                {
-                    var json = await response.Content.ReadAsStringAsync();
+            var response = await _cliente.GetAsync(url);
 
-                    var options = new JsonSerializerOptions
-                    {
-                        PropertyNameCaseInsensitive = true
-                    };
-
-                    DTOIndexHistoria historias = JsonSerializer.Deserialize<DTOIndexHistoria>(json, options);
-
-                    return View(historias);
-                }
-                else if (response.StatusCode == HttpStatusCode.Unauthorized)
-                {
-                    return RedirectToAction("Login", "Auth");
-                }
-            else
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
             {
-                TempData["ErrorMessage"] = "Error al obtener las historias. Por favor, inténtelo de nuevo";
+                return RedirectToAction("Login", "Auth");
             }
-            return View();
 
-          
+            if (!response.IsSuccessStatusCode)
+            {
+                TempData["Error"] = "Error al obtener las historias. Por favor, inténtelo de nuevo";
+                return View(new DTOIndexHistoria());
+            }
+
+            var json = await response.Content.ReadAsStringAsync();
+            var modelo = JsonSerializer.Deserialize<DTOIndexHistoria>(json, options) ?? new DTOIndexHistoria();
+
+            // Categorías para el desplegable
+            var respCat = await _cliente.GetAsync("Categoria/Listar");
+            if (respCat.IsSuccessStatusCode)
+            {
+                var jsonCat = await respCat.Content.ReadAsStringAsync();
+                modelo.Categorias = JsonSerializer.Deserialize<List<DTOCategoria>>(jsonCat, options) ?? new();
+            }
+
+            modelo.CategoriaId = categoriaId;
+            return View(modelo);
+
+
         }
 
 

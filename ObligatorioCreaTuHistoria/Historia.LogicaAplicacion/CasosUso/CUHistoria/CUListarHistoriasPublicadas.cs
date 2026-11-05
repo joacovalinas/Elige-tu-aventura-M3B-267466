@@ -18,9 +18,11 @@ namespace EscogeAventura.LogicaAplicacion.CasosUso.CUHistoria
         {
             _repoHistoria = repoHistoria;
         }
-        public List<DTOHistoria> Ejecutar()
+        public List<DTOHistoria> Ejecutar(int? CategoriaId)
         {
-            List<Historia> historias = _repoHistoria.ObtenerHistoriasPublicadas();
+
+
+            List<Historia> historias = _repoHistoria.ObtenerHistoriasPublicadas(CategoriaId ?? 0);
             return MapperHistoria.ToListDtoHistoria(historias);
         }
     }

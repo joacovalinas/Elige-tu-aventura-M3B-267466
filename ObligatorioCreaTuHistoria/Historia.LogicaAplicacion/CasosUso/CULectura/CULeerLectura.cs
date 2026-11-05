@@ -29,11 +29,6 @@ namespace EscogeAventura.LogicaAplicacion.CasosUso.CULectura
             Lectura? lecturaAux = _repositorioLectura.FindById(IdLectura);
 
 
-
-            if (lecturaAux != null && lecturaAux.finalizado)
-            {
-                throw new DominioException("Ya has finalizado esta lectura. final: "+ lecturaAux.Final.Titulo);
-            }
             DTOLeer dto = new DTOLeer();
                 Capitulo cap = _repositorioCapitulo.FindById(lecturaAux.CapituloActual.Id);
                 dto.Id = lecturaAux.Id;
@@ -45,7 +40,9 @@ namespace EscogeAventura.LogicaAplicacion.CasosUso.CULectura
             if(dto.tipoCapitulo == "Final")
             {
                 lecturaAux.finalizado = true;
+                
                 _repositorioLectura.Update(lecturaAux);
+                dto.fechafin = lecturaAux.FechaFin;
 
             }
                 
