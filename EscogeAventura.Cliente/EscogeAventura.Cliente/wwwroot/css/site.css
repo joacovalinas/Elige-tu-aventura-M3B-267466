@@ -8,10 +8,6 @@ html {
     }
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
 html {
     position: relative;
     min-height: 100%;
@@ -19,6 +15,85 @@ html {
 
 body {
     margin-bottom: 60px;
+}
+
+/* =====================================================
+   TEMAS
+   - Oscuro: por defecto (:root) y con <html data-theme="dark">
+   - Claro:  <html data-theme="light">
+   ===================================================== */
+
+:root,
+[data-theme="dark"] {
+    /* Paleta base (sin cambios respecto al diseño original) */
+    --color-primary: #0B3D2E; /* verde oscuro */
+    --color-secondary: #10A37F; /* verde esmeralda */
+    --color-accent: #2ED9A3; /* verde claro / detalles */
+    --color-purple: #12294D; /* azul noche */
+    --color-bg: #0A1929; /* fondo azul muy oscuro */
+    --color-card: #102A43; /* tarjetas azul oscuro */
+    /* Texto FUERA de botones: blanco */
+    --color-dark: #FFFFFF;
+    --text-muted: rgba(255, 255, 255, 0.65);
+    --text-link: #FFFFFF;
+    --text-danger: #ff7b86;
+    /* Texto DENTRO de botones (se mantiene como el original) */
+    --btn-text: #E8F1EC;
+    --btn-accent-text: #0A1929;
+    /* Color RGB del acento para los rgba(...) */
+    --accent-rgb: 46, 217, 163;
+    /* Superficies */
+    --field-bg: #0A1929;
+    --shadow-card: 0 4px 14px rgba(0, 0, 0, 0.35);
+    --shadow-card-hover: 0 8px 20px rgba(0, 0, 0, 0.5);
+    --shadow-nav: 0 3px 10px rgba(0, 0, 0, 0.4);
+    --focus-gap: #0A1929;
+    /* Navbar y footer */
+    --nav-bg: linear-gradient(90deg, #12294D, #0B3D2E);
+    --nav-text: #FFFFFF;
+    --nav-brand: #FFFFFF;
+    --footer-bg: #12294D;
+    --footer-text: #FFFFFF;
+    /* Botón de opción (lectura) */
+    --opcion-bg: #12294D;
+    --opcion-text: #E8F1EC;
+    --opcion-hover-text: #E8F1EC;
+    --font-heading: 'Fredoka', sans-serif;
+    --font-body: 'Nunito', sans-serif;
+}
+
+[data-theme="light"] {
+    --color-primary: #0B3D2E;
+    --color-secondary: #10A37F;
+    --color-accent: #0E8A69; /* verde más profundo para contraste sobre claro */
+    --color-purple: #12294D;
+    --color-bg: #F2F7F4; /* fondo verdoso muy claro */
+    --color-card: #FFFFFF;
+    /* Texto principal: azul noche */
+    --color-dark: #12294D;
+    --text-muted: rgba(18, 41, 77, 0.65);
+    --text-link: #0B6B50;
+    --text-danger: #C62839;
+    --btn-text: #FFFFFF;
+    --btn-accent-text: #FFFFFF;
+    --accent-rgb: 16, 163, 127;
+    --field-bg: #FFFFFF;
+    --shadow-card: 0 4px 14px rgba(18, 41, 77, 0.10);
+    --shadow-card-hover: 0 8px 20px rgba(18, 41, 77, 0.18);
+    --shadow-nav: 0 3px 10px rgba(18, 41, 77, 0.12);
+    --focus-gap: #FFFFFF;
+    --nav-bg: linear-gradient(90deg, #FFFFFF, #DDF3EA);
+    --nav-text: #12294D;
+    --nav-brand: #0B3D2E;
+    --footer-bg: #DDF3EA;
+    --footer-text: #12294D;
+    --opcion-bg: #EAF6F0;
+    --opcion-text: #12294D;
+    --opcion-hover-text: #0B3D2E;
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem var(--focus-gap), 0 0 0 0.25rem #258cfb;
 }
 
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
@@ -30,18 +105,6 @@ body {
     text-align: start;
 }
 
-:root {
-    --color-primary: #0B3D2E; /* verde oscuro */
-    --color-secondary: #10A37F; /* verde esmeralda */
-    --color-accent: #2ED9A3; /* verde claro / detalles */
-    --color-purple: #12294D; /* azul noche */
-    --color-dark: #E8F1EC; /* texto claro sobre fondo oscuro */
-    --color-bg: #0A1929; /* fondo azul muy oscuro */
-    --color-card: #102A43; /* tarjetas azul oscuro */
-    --font-heading: 'Fredoka', sans-serif;
-    --font-body: 'Nunito', sans-serif;
-}
-
 html, body {
     height: 100%;
 }
@@ -50,6 +113,7 @@ body {
     font-family: var(--font-body);
     background-color: var(--color-bg);
     color: var(--color-dark);
+    transition: background-color 0.25s ease, color 0.25s ease;
 }
 
 h1, h2, h3, h4, h5, h6,
@@ -58,15 +122,20 @@ h1, h2, h3, h4, h5, h6,
     color: var(--color-dark);
 }
 
+.text-muted,
+.lectura-meta {
+    color: var(--text-muted) !important;
+}
+
 /* Navbar */
 .app-navbar {
-    background: linear-gradient(90deg, var(--color-purple), var(--color-primary));
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
-    border-bottom: 1px solid rgba(46, 217, 163, 0.25);
+    background: var(--nav-bg);
+    box-shadow: var(--shadow-nav);
+    border-bottom: 1px solid rgba(var(--accent-rgb), 0.25);
 }
 
     .app-navbar .navbar-brand {
-        color: var(--color-accent);
+        color: var(--nav-brand);
         font-weight: 700;
         font-size: 1.4rem;
         display: flex;
@@ -79,7 +148,7 @@ h1, h2, h3, h4, h5, h6,
     }
 
     .app-navbar .nav-link {
-        color: rgba(232, 241, 236, 0.85);
+        color: var(--nav-text);
         font-weight: 600;
         margin: 0 0.25rem;
         border-radius: 8px;
@@ -88,13 +157,13 @@ h1, h2, h3, h4, h5, h6,
     }
 
         .app-navbar .nav-link:hover {
-            background-color: rgba(46, 217, 163, 0.15);
-            color: var(--color-accent);
+            background-color: rgba(var(--accent-rgb), 0.15);
+            color: var(--nav-text);
         }
 
         .app-navbar .nav-link.active {
-            background-color: rgba(46, 217, 163, 0.22);
-            color: var(--color-accent);
+            background-color: rgba(var(--accent-rgb), 0.22);
+            color: var(--nav-text);
         }
 
 /* Botones */
@@ -116,7 +185,7 @@ h1, h2, h3, h4, h5, h6,
     border-color: var(--color-purple);
     font-weight: 700;
     border-radius: 12px;
-    color: var(--color-dark);
+    color: var(--btn-text);
 }
 
     .btn-secondary:hover {
@@ -128,7 +197,7 @@ h1, h2, h3, h4, h5, h6,
 .btn-accent {
     background-color: var(--color-accent);
     border-color: var(--color-accent);
-    color: var(--color-bg);
+    color: var(--btn-accent-text);
     font-weight: 700;
     border-radius: 12px;
 }
@@ -136,23 +205,23 @@ h1, h2, h3, h4, h5, h6,
 /* Tarjetas de historias */
 .card {
     background-color: var(--color-card);
-    border: 1px solid rgba(46, 217, 163, 0.15);
+    border: 1px solid rgba(var(--accent-rgb), 0.15);
     border-radius: 16px;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
-    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    box-shadow: var(--shadow-card);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background-color 0.25s ease;
     overflow: hidden;
     color: var(--color-dark);
 }
 
     .card:hover {
         transform: translateY(-4px);
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+        box-shadow: var(--shadow-card-hover);
         border-color: var(--color-accent);
     }
 
 .card-title {
     font-family: var(--font-heading);
-    color: var(--color-accent);
+    color: var(--color-dark);
 }
 
 /* Badges de estado / genero */
@@ -173,27 +242,27 @@ h1, h2, h3, h4, h5, h6,
 }
 
 .badge-publicada {
-    background-color: rgba(46, 217, 163, 0.18);
-    color: var(--color-accent);
+    background-color: rgba(var(--accent-rgb), 0.18);
+    color: var(--color-dark);
     border: 1px solid var(--color-accent);
 }
 
 .badge-no-publicada {
-    background-color: rgba(232, 241, 236, 0.08);
-    color: rgba(232, 241, 236, 0.7);
-    border: 1px solid rgba(232, 241, 236, 0.3);
+    background-color: rgba(var(--accent-rgb), 0.06);
+    color: var(--text-muted);
+    border: 1px solid rgba(var(--accent-rgb), 0.35);
 }
 
 /* Footer */
 .app-footer {
-    background-color: var(--color-purple);
-    color: rgba(232, 241, 236, 0.75);
+    background-color: var(--footer-bg);
+    color: var(--footer-text);
     font-size: 0.9rem;
-    border-top: 1px solid rgba(46, 217, 163, 0.2);
+    border-top: 1px solid rgba(var(--accent-rgb), 0.2);
 }
 
     .app-footer a {
-        color: var(--color-accent);
+        color: var(--text-link);
         text-decoration: none;
     }
 
@@ -224,8 +293,6 @@ main {
 }
 
 /* ---------- Formularios: ancho limitado y centrado ---------- */
-/* Uso: <div class="form-wrapper"> ... </div>                   (640px) */
-/*      <div class="form-wrapper form-wrapper-sm"> ... </div>   (420px, ej: login) */
 .form-wrapper {
     max-width: 640px;
     margin-inline: auto;
@@ -242,30 +309,31 @@ main {
 /* Tarjeta que envuelve el formulario */
 .form-card {
     background-color: var(--color-card);
-    border: 1px solid rgba(46, 217, 163, 0.15);
+    border: 1px solid rgba(var(--accent-rgb), 0.15);
     border-radius: 16px;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+    box-shadow: var(--shadow-card);
     padding: 1.75rem;
 }
 
     .form-card h4 {
-        color: var(--color-accent);
+        color: var(--color-dark);
         margin-top: 1.5rem;
         margin-bottom: 1rem;
         padding-top: 1.25rem;
-        border-top: 1px solid rgba(46, 217, 163, 0.15);
+        border-top: 1px solid rgba(var(--accent-rgb), 0.15);
     }
 
-/* ---------- Campos (tema oscuro) ---------- */
+/* ---------- Campos ---------- */
 .form-label {
     font-weight: 600;
     margin-bottom: 0.35rem;
+    color: var(--color-dark);
 }
 
 .form-control,
 .form-select {
-    background-color: var(--color-bg);
-    border: 1px solid rgba(46, 217, 163, 0.25);
+    background-color: var(--field-bg);
+    border: 1px solid rgba(var(--accent-rgb), 0.25);
     color: var(--color-dark);
     border-radius: 10px;
     padding: 0.55rem 0.8rem;
@@ -273,14 +341,15 @@ main {
 
     .form-control:focus,
     .form-select:focus {
-        background-color: var(--color-bg);
+        background-color: var(--field-bg);
         color: var(--color-dark);
         border-color: var(--color-accent);
-        box-shadow: 0 0 0 0.2rem rgba(46, 217, 163, 0.25);
+        box-shadow: 0 0 0 0.2rem rgba(var(--accent-rgb), 0.25);
     }
 
     .form-control::placeholder {
-        color: rgba(232, 241, 236, 0.45);
+        color: var(--text-muted);
+        opacity: 0.7;
     }
 
     .form-select option {
@@ -288,19 +357,18 @@ main {
         color: var(--color-dark);
     }
 
-/* Mensajes de validación más legibles sobre fondo oscuro */
+/* Mensajes de validación */
 .text-danger,
 .field-validation-error {
-    color: #ff7b86 !important;
+    color: var(--text-danger) !important;
     font-size: 0.875rem;
 }
 
 .input-validation-error {
-    border-color: #ff7b86 !important;
+    border-color: var(--text-danger) !important;
 }
 
 /* ---------- Botones con separación ---------- */
-/* Uso: <div class="form-actions"> <button/> <a/> </div> */
 .form-actions {
     display: flex;
     flex-wrap: wrap;
@@ -309,7 +377,6 @@ main {
     margin-top: 1.5rem;
 }
 
-/* Grupo de botones suelto (listados, detalle, etc.) */
 .acciones {
     display: flex;
     flex-wrap: wrap;
@@ -317,7 +384,6 @@ main {
     gap: 0.5rem;
 }
 
-/* Red de seguridad: botones/forms pegados dentro de tablas */
 table .btn + .btn,
 table .btn + form,
 table form + .btn,
@@ -325,9 +391,8 @@ table form + form {
     margin-left: 0.5rem;
 }
 
-/* Botón secundario con borde visible sobre el fondo oscuro */
 .btn-secondary {
-    border-color: rgba(46, 217, 163, 0.35);
+    border-color: rgba(var(--accent-rgb), 0.35);
 }
 
 /* Botón contorno (cerrar sesión, etc.) */
@@ -341,7 +406,7 @@ table form + form {
 
     .btn-outline-accent:hover {
         background-color: var(--color-accent);
-        color: var(--color-bg);
+        color: var(--btn-accent-text);
     }
 
 /* ---------- Usuario logueado en la navbar ---------- */
@@ -373,36 +438,38 @@ table form + form {
 .user-name {
     font-weight: 700;
     font-size: 0.9rem;
-    color: var(--color-dark);
+    color: var(--nav-text);
 }
 
 .user-role {
     font-size: 0.75rem;
-    color: var(--color-accent);
+    color: var(--nav-text);
+    opacity: 0.8;
 }
 
-/* ---------- Tablas (tema oscuro) ---------- */
+/* ---------- Tablas ---------- */
 .table {
     --bs-table-bg: transparent;
     --bs-table-color: var(--color-dark);
-    --bs-table-striped-bg: rgba(46, 217, 163, 0.05);
+    --bs-table-striped-bg: rgba(var(--accent-rgb), 0.05);
     --bs-table-striped-color: var(--color-dark);
-    --bs-table-hover-bg: rgba(46, 217, 163, 0.1);
+    --bs-table-hover-bg: rgba(var(--accent-rgb), 0.1);
     --bs-table-hover-color: var(--color-dark);
-    --bs-table-border-color: rgba(46, 217, 163, 0.15);
+    --bs-table-border-color: rgba(var(--accent-rgb), 0.15);
     vertical-align: middle;
 }
 
     .table thead th {
         font-family: var(--font-heading);
-        color: var(--color-accent);
-        border-bottom: 2px solid rgba(46, 217, 163, 0.35);
+        color: var(--color-dark);
+        border-bottom: 2px solid rgba(var(--accent-rgb), 0.35);
     }
 
 /* ---------- Alertas ---------- */
 .alert {
     border-radius: 12px;
 }
+
 /* =====================================================
    LECTURA DE CAPÍTULOS
    ===================================================== */
@@ -412,20 +479,16 @@ table form + form {
     margin-inline: auto;
 }
 
-.lectura-meta {
-    color: rgba(232, 241, 236, 0.6);
-}
-
 .lectura-card {
     background-color: var(--color-card);
-    border: 1px solid rgba(46, 217, 163, 0.15);
+    border: 1px solid rgba(var(--accent-rgb), 0.15);
     border-radius: 16px;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+    box-shadow: var(--shadow-card);
     padding: 2rem;
 }
 
 .lectura-titulo {
-    color: var(--color-accent);
+    color: var(--color-dark);
     margin-bottom: 1.25rem;
 }
 
@@ -443,7 +506,7 @@ table form + form {
 }
 
     .lectura-opciones h5 {
-        color: var(--color-accent);
+        color: var(--color-dark);
         margin-bottom: 0.25rem;
     }
 
@@ -454,9 +517,9 @@ table form + form {
 .btn-opcion {
     width: 100%;
     text-align: left;
-    background-color: var(--color-purple);
-    border: 1px solid rgba(46, 217, 163, 0.35);
-    color: var(--color-dark);
+    background-color: var(--opcion-bg);
+    border: 1px solid rgba(var(--accent-rgb), 0.35);
+    color: var(--opcion-text);
     border-radius: 12px;
     padding: 0.85rem 1.1rem;
     font-weight: 700;
@@ -465,16 +528,16 @@ table form + form {
 
     .btn-opcion:hover,
     .btn-opcion:focus-visible {
-        background-color: rgba(46, 217, 163, 0.15);
+        background-color: rgba(var(--accent-rgb), 0.15);
         border-color: var(--color-accent);
-        color: var(--color-accent);
+        color: var(--opcion-hover-text);
         transform: translateX(4px);
     }
 
 .lectura-final {
     margin-top: 1.5rem;
     text-align: center;
-    background-color: rgba(46, 217, 163, 0.08);
+    background-color: rgba(var(--accent-rgb), 0.08);
     border: 1px solid var(--color-accent);
     border-radius: 16px;
     padding: 1.75rem 1.5rem;
@@ -485,9 +548,36 @@ table form + form {
 }
 
 .lectura-final h4 {
-    color: var(--color-accent);
+    color: var(--color-dark);
 }
 
 .fila-historia:has(input:checked) {
-    background-color: rgba(46, 217, 163, 0.12);
+    background-color: rgba(var(--accent-rgb), 0.12);
 }
+
+/* =====================================================
+   BOTÓN DE CAMBIO DE TEMA
+   ===================================================== */
+
+.theme-toggle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid rgba(var(--accent-rgb), 0.35);
+    background-color: transparent;
+    color: var(--nav-text);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+    .theme-toggle:hover,
+    .theme-toggle:focus-visible {
+        background-color: rgba(var(--accent-rgb), 0.15);
+        border-color: var(--color-accent);
+        transform: rotate(15deg);
+    }
