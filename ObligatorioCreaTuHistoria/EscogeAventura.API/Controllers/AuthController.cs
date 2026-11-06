@@ -1,6 +1,7 @@
 ﻿using DTOs.DTO.DTOsAuth;
 using DTOs.DTO.DTOsUsuario;
 using EscogeAventura.LogicaAplicacion.ICasosUso.ICUUsuario;
+using EscogeAventura.LogicaNegocios.CustomExceptions.Usuario;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -26,6 +27,10 @@ namespace EscogeAventura.API.Controllers
         [HttpPost("login")]
         public IActionResult Login(DTOLogin dto)
         {
+            if (dto == null || string.IsNullOrWhiteSpace(dto.Email) || string.IsNullOrWhiteSpace(dto.Contrasena))
+            {
+                return BadRequest("Debe ingresar el email y la contraseña");
+            }
             try
             {
 
@@ -33,11 +38,13 @@ namespace EscogeAventura.API.Controllers
 
                 if (u != null)
                 {
+                    return Unauthorized("Email o contraseña incorrectos");
+                }
 
-                    var clave = "UTzl^7yPl$5xrT6&{o89$CW1XXRrN(>XqIp{W4s2S5$>KT$6CG!2M]'ZlrqH-t%eI4.X9W~u#qO+oX£+[?7QDAa";
-                    var claveCodificada = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(clave));
+                var clave = "UTzl^7yPl$5xrT6&{o89$CW1XXRrN(>XqIp{W4s2S5$>KT$6CG!2M]'ZlrqH-t%eI4.X9W~u#qO+oX£+[?7QDAa";
+                var claveCodificada = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(clave));
 
-                    List<Claim> claims = new List<Claim>
+                List<Claim> claims = new List<Claim>
                 {
                     new Claim(ClaimTypes.Name, u.Nombre),
                     new Claim(ClaimTypes.Email, u.Email),
@@ -45,34 +52,32 @@ namespace EscogeAventura.API.Controllers
                     new Claim(ClaimTypes.Sid, u.Id.ToString())
                 };
 
-                    var credenciales = new SigningCredentials(claveCodificada, SecurityAlgorithms.HmacSha512Signature);
-                    var token = new JwtSecurityToken(claims: claims, expires: DateTime.Now.AddDays(3), signingCredentials: credenciales);
-                    var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+                var credenciales = new SigningCredentials(claveCodificada, SecurityAlgorithms.HmacSha512Signature);
+                var token = new JwtSecurityToken(claims: claims, expires: DateTime.Now.AddDays(3), signingCredentials: credenciales);
+                var jwt = new JwtSecurityTokenHandler().WriteToken(token);
 
-                    DTOLoginRespuesta respuesta = new DTOLoginRespuesta
-                    {
-                        Nombre = u.Nombre,
-                        Rol = u.Rol.Nombre,
-                        Token = jwt,
-                        IdUsuario = u.Id
-                    };
-
-
-                    return Ok(respuesta);
-                }
-                else
+                DTOLoginRespuesta respuesta = new DTOLoginRespuesta
                 {
-                    return Unauthorized("No autorizado");
+                    Nombre = u.Nombre,
+                    Rol = u.Rol.Nombre,
+                    Token = jwt,
+                    IdUsuario = u.Id
+                };
 
 
-                }
-
+                return Ok(respuesta);
             }
-            catch (Exception ex)
+            catch (UsuarioException ex)   // tu excepción de dominio, si la tenés
             {
-                return BadRequest(ex.Message);
+                // Mensajes específicos: "El usuario no existe", "Contraseña incorrecta", etc.
+                return Unauthorized(ex.Message);
             }
-                
+            catch (Exception)
+            {
+                // No expongas ex.Message de errores inesperados (puede traer datos internos)
+                return StatusCode(500, "Ocurrió un error inesperado en el servidor");
+            }
+
         }
     }
 }

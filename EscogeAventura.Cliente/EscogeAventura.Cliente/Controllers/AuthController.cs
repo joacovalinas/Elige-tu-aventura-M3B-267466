@@ -22,30 +22,24 @@ namespace EscogeAventura.Cliente.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(DTOLogin dto)
         {
+            if (string.IsNullOrWhiteSpace(dto.Email) || string.IsNullOrWhiteSpace(dto.Contrasena))
+            {
+                ViewBag.msg = "Debe ingresar el email y la contraseña";
+                return View(dto);
+            }
             try
             {
-                //Comienzo a configurar la request
-                //1 - Paso el dto a JSON
+            
                 var json = JsonSerializer.Serialize(dto);
-
-                //2 - Genero el contenido para enviar
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
-                //3 - Hago la request
                 var response = await _cliente.PostAsync("auth/login", content);
 
-
-
-                /* ESTO ES LO MISMO DE ARRIBA PERO EN UNA SOLA LÍNEA
-                   var response = await _client.PostAsync("auth/login", 
-                    new StringContent(JsonSerializer.Serialize(dto), 
-                    Encoding.UTF8, "application/json"));
-                 */
-
+                string result = await response.Content.ReadAsStringAsync();
 
                 if (response.IsSuccessStatusCode)
                 {
 
-                    string result = await response.Content.ReadAsStringAsync();
+                    
                     var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 
                     LoginResponse lr = JsonSerializer.Deserialize<LoginResponse>(result, options);
@@ -55,30 +49,31 @@ namespace EscogeAventura.Cliente.Controllers
                     HttpContext.Session.SetString("LogueadoNombre", lr.Nombre);
                     HttpContext.Session.SetString("Token", lr.token);
 
-                    string token = HttpContext.Session.GetString("Token");
-
                     return RedirectToAction("Index", "Home");
-
-                }
-                else if (response.StatusCode == HttpStatusCode.Unauthorized)
-                {
-                    ViewBag.msg = "Login Incorrecto";
-                    return View();
-                }
-                else
-                {
-                    ViewBag.msg = "Error inesperado";
-                    return View();
                 }
 
+
+                ViewBag.msg = response.StatusCode switch
+                {
+                    HttpStatusCode.Unauthorized => string.IsNullOrWhiteSpace(result) ? "Email o contraseña incorrectos" : result,
+                    HttpStatusCode.BadRequest => string.IsNullOrWhiteSpace(result) ? "Los datos ingresados no son válidos" : result,
+                    HttpStatusCode.InternalServerError => "Error en el servidor, intente más tarde",
+                    _ => $"Error inesperado ({(int)response.StatusCode})"
+                };
+
+                dto.Contrasena = null; // no devolver la contraseña a la vista
+                return View(dto);
+            }
+            catch (HttpRequestException)
+            {
+                ViewBag.msg = "No se pudo conectar con el servidor";
+                return View(dto);
             }
             catch (Exception e)
             {
-
-                ViewBag.msg = "Error inesperado";
-                return View();
+                ViewBag.msg = e.Message;
+                return View(dto);
             }
-            
         }
 
         public IActionResult Logout()

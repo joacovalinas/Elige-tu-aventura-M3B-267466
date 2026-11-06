@@ -2,6 +2,7 @@
 using DTOs.Mappers;
 using EscogeAventura.LogicaAplicacion.ICasosUso.ICUUsuario;
 using EscogeAventura.LogicaNegocios.CustomExceptions.Genericas;
+using EscogeAventura.LogicaNegocios.CustomExceptions.Usuario;
 using EscogeAventura.LogicaNegocios.Entidades;
 using EscogeAventura.LogicaNegocios.IRepositorios;
 using EscogeAventura.LogicaNegocios.ValueObjects;
@@ -28,7 +29,7 @@ namespace EscogeAventura.LogicaAplicacion.CasosUso.CUUsuario
             
             if (buscado is null)
             {
-                throw new DatoVacioException("Usuario no encontrado");
+                throw new UsuarioException("Usuario no encontrado");
             }
             if (password is null)
             {

@@ -66,11 +66,13 @@ else
                 <tbody>
                     @foreach (var h in Model)
                     {
-                        <tr>
+                        <tr class="fila-historia position-relative" style="cursor: pointer;">
                             <td>
-                                <input type="radio" name="id" value="@h.Id" class="form-check-input" required />
+                                <input type="radio" id="hist-@h.Id" name="id" value="@h.Id" class="form-check-input" required />
                             </td>
-                            <td>@h.Titulo</td>
+                            <td>
+                                <label for="hist-@h.Id" class="stretched-link mb-0" style="cursor: pointer;">@h.Titulo</label>
+                            </td>
                             <td>
                                 @if (EstaPublicada(h))
                                 {

@@ -402,3 +402,6 @@ table form + form {
 .alert {
     border-radius: 12px;
 }
+.fila-historia:has(input:checked) {
+    background-color: rgba(46, 217, 163, 0.12);
+}
