@@ -1,6 +1,8 @@
 ﻿using DTOs.DTO.DTOsCapitulo;
 using DTOs.DTO.DTOsLectura;
 using EscogeAventura.LogicaAplicacion.ICasosUso.ICULectura;
+using EscogeAventura.LogicaNegocios.CustomExceptions.Genericas;
+using EscogeAventura.LogicaNegocios.CustomExceptions.Usuario;
 using EscogeAventura.LogicaNegocios.Entidades;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -18,12 +20,15 @@ namespace EscogeAventura.API.Controllers
         private ICUAvanzarLectura _cuAvanzarLectura;
 
         private ICULeerLectura _cuLeerLectura;
-        public LecturaController(ICUAltaLectura cuAltaLectura, ICUObtenerLectura cuObtenerLectura, ICUAvanzarLectura cuAvanzarLectura, ICULeerLectura cuLeerLectura)
+        private ICUObtenerHistorial _cuObtenerHistorial;
+        public LecturaController(ICUAltaLectura cuAltaLectura, ICUObtenerLectura cuObtenerLectura, ICUAvanzarLectura cuAvanzarLectura, 
+            ICULeerLectura cuLeerLectura, ICUObtenerHistorial cuObtenerHistorial)
         {
             _cuAltaLectura = cuAltaLectura;
             _cuObtenerLectura = cuObtenerLectura;
             _cuAvanzarLectura = cuAvanzarLectura;
             _cuLeerLectura = cuLeerLectura;
+            _cuObtenerHistorial = cuObtenerHistorial;
         }
 
 
@@ -74,9 +79,34 @@ namespace EscogeAventura.API.Controllers
             {
                 return StatusCode(500, e.Message);
             }
-
-
-
         }
+
+
+
+        [HttpGet("historial/{usuarioId:int}")]
+        public IActionResult ObtenerHistorial(int usuarioId, [FromQuery] DateTime? fecha)
+        {
+            try
+            {
+                List<DTOLectura> lecturas = _cuObtenerHistorial.Ejecutar(usuarioId, fecha);
+                return Ok(lecturas);
+            }
+            catch (UsuarioException ex)
+            {
+                return NotFound(new { error = ex.Message });
+            }
+            catch (DominioException ex)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, new { error = "Ocurrió un error inesperado" });
+            }
         }
+
+
+
+
+    }
 }

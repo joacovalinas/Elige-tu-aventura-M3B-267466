@@ -44,9 +44,22 @@ namespace EscogeAventura.LogicaAccesoDatos.Repos
             return _context.Lecturas.Include(l => l.Usuario).Include(l => l.Historia).Include(l => l.CapituloActual).Where(l => l.Nombrelectura == nombreLectura).SingleOrDefault();
         }
 
-        public List<Lectura> Obtenerhistorial(int usuarioId, DateTime fechaInicio)
+        public List<Lectura> Obtenerhistorial(int usuarioId, DateTime? fecha)
         {
-            throw new NotImplementedException();
+            var query = _context.Lecturas
+                .Include(l => l.Usuario)
+                .Include(l => l.Historia)
+                .Include(l => l.CapituloActual)
+                .Where(l => l.Usuario.Id == usuarioId);
+
+            if (fecha.HasValue)
+            {
+                query = query.Where(l => l.FechaFin != null
+                    && l.FechaFin.Value.Month == fecha.Value.Month
+                    && l.FechaFin.Value.Year == fecha.Value.Year);
+            }
+
+            return query.ToList();
         }
 
         public void Remove(Lectura ToEliminar)
