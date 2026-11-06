@@ -36,7 +36,7 @@ namespace EscogeAventura.API.Controllers
 
                 DTOUsuario u = _CuVerifExistencia.Ejecutar(dto.Email, dto.Contrasena);
 
-                if (u != null)
+                if (u == null)
                 {
                     return Unauthorized("Email o contraseña incorrectos");
                 }

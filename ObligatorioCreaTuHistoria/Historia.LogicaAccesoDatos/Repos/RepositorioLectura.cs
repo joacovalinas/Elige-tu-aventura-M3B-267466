@@ -54,9 +54,12 @@ namespace EscogeAventura.LogicaAccesoDatos.Repos
 
             if (fecha.HasValue)
             {
-                query = query.Where(l => l.FechaFin != null
-                    && l.FechaFin.Value.Month == fecha.Value.Month
-                    && l.FechaFin.Value.Year == fecha.Value.Year);
+                DateTime desde = new DateTime(fecha.Value.Year, fecha.Value.Month, 1);
+                DateTime hasta = desde.AddMonths(1);
+
+                query = query.Where(l =>
+                    (l.FechaFin != null && l.FechaFin >= desde && l.FechaFin < hasta)
+                    || (l.FechaFin == null && l.FechaInicio >= desde && l.FechaInicio < hasta));
             }
 
             return query.ToList();

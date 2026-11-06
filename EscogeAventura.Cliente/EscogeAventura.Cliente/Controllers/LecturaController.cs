@@ -2,6 +2,7 @@
 using EscogeAventura.Cliente.Models.DTOs.DTOsLectura;
 using EscogeAventura.Cliente.Models.DTOsLectura;
 using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
@@ -119,5 +120,68 @@ namespace EscogeAventura.Cliente.Controllers
 
 
         }
+
+
+
+        [HttpGet]
+        public async Task<IActionResult> Historial(string? mes)
+        {
+            int? usuarioId = HttpContext.Session.GetInt32("LogueadoId");
+            string token = HttpContext.Session.GetString("Token");
+
+            if (usuarioId == null || string.IsNullOrEmpty(token))
+                return RedirectToAction("Login", "Auth");
+
+            // El <input type="month"> manda "yyyy-MM"
+            DateTime? fecha = null;
+            if (!string.IsNullOrWhiteSpace(mes))
+            {
+                if (DateTime.TryParseExact(mes, "yyyy-MM", CultureInfo.InvariantCulture,
+                        DateTimeStyles.None, out DateTime parsed))
+                {
+                    fecha = parsed;
+                }
+                else
+                {
+                    ViewBag.Error = "El mes ingresado no es válido";
+                }
+            }
+
+            ViewBag.Mes = mes;
+
+            _cliente.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            string url = $"Lectura/historial/{usuarioId}";
+            if (fecha.HasValue)
+                url += $"?fecha={fecha.Value:yyyy-MM-dd}";
+
+            var response = await _cliente.GetAsync(url);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var json = await response.Content.ReadAsStringAsync();
+                var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+
+                List<DTOLecturaHistorial> lecturas =
+                    JsonSerializer.Deserialize<List<DTOLecturaHistorial>>(json, options)
+                    ?? new List<DTOLecturaHistorial>();
+
+                return View(lecturas);
+            }
+
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
+                return RedirectToAction("Login", "Auth");
+
+            ViewBag.Error = "Error al obtener el historial. Por favor, inténtelo de nuevo";
+            return View(new List<DTOLecturaHistorial>());
+        }
+
+
+
+
+
+
+
+
     }
 }

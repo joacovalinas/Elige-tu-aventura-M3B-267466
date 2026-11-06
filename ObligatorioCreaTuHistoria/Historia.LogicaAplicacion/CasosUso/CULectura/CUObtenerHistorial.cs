@@ -19,7 +19,7 @@ namespace EscogeAventura.LogicaAplicacion.CasosUso.CULectura
             _repositorioLectura = repositorioLectura;
             _repositorioUsuario = repositorioUsuario;
         }
-        public List<DTOLectura> Ejecutar(int usuarioId, DateTime? fecha)
+        public List<DTOLecturaHistorial> Ejecutar(int usuarioId, DateTime? fecha)
         {
            if( _repositorioUsuario.FindById(usuarioId) == null)
             {
@@ -29,7 +29,7 @@ namespace EscogeAventura.LogicaAplicacion.CasosUso.CULectura
             {
                 throw new DominioException("La fecha no puede ser mayor a la fecha actual");
             }
-                List<DTOLectura> lecturas = MapperLectura.ToListDtoLectura(_repositorioLectura.Obtenerhistorial(usuarioId, fecha));
+                List<DTOLecturaHistorial> lecturas = MapperLectura.ToListDtoLecturaHistorial(_repositorioLectura.Obtenerhistorial(usuarioId, fecha));
                
                 return lecturas;
          }

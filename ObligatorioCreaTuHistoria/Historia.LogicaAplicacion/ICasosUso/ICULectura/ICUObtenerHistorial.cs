@@ -7,6 +7,6 @@ namespace EscogeAventura.LogicaAplicacion.ICasosUso.ICULectura
 {
     public interface ICUObtenerHistorial
     {
-        public List<DTOLectura> Ejecutar(int usuarioId, DateTime? fecha);
+        public List<DTOLecturaHistorial> Ejecutar(int usuarioId, DateTime? fecha);
     }
 }

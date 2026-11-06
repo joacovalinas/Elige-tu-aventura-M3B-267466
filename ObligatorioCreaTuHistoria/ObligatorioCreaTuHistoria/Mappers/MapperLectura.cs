@@ -29,7 +29,7 @@ namespace DTOs.Mappers
         }
 
 
-
+        
         public static DTOOpcionLectura ToDtoOpcionLectura(Opcion p)
         {
 
@@ -67,8 +67,35 @@ namespace DTOs.Mappers
 
             return ret;
 
-
-
         }
+
+
+
+        public static DTOLecturaHistorial ToDtoLecturaHistorial(Lectura l)
+        {
+            DTOLecturaHistorial dto = new DTOLecturaHistorial();
+            dto.Id = l.Id;
+            dto.Nombrelectura = l.Nombrelectura;
+            dto.NomUsuario = l.Usuario.NomUsu;
+            dto.NomHistoria = l.Historia.Titulo;
+            dto.FechaInicio = l.FechaInicio;
+            dto.FechaFin = l.FechaFin;
+            dto.Final = l.Final?.Titulo; // Convertir a string si no es null
+            dto.CapituloActual = l.CapituloActual?.Titulo; // Convertir a string si no es null
+            return dto;
+        }
+
+        public static List<DTOLecturaHistorial> ToListDtoLecturaHistorial(List<Lectura> l)
+        {
+            List<DTOLecturaHistorial> ret = new List<DTOLecturaHistorial>();
+            foreach (Lectura c in l)
+            {
+                ret.Add(ToDtoLecturaHistorial(c));
+            }
+            return ret;
+        }
+
+
+
     }
     }

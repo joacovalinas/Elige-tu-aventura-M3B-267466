@@ -88,7 +88,7 @@ namespace EscogeAventura.API.Controllers
         {
             try
             {
-                List<DTOLectura> lecturas = _cuObtenerHistorial.Ejecutar(usuarioId, fecha);
+                List<DTOLecturaHistorial> lecturas = _cuObtenerHistorial.Ejecutar(usuarioId, fecha);
                 return Ok(lecturas);
             }
             catch (UsuarioException ex)
