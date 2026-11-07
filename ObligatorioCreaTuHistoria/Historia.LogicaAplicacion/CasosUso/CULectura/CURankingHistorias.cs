@@ -18,7 +18,7 @@ namespace EscogeAventura.LogicaAplicacion.CasosUso.CULectura
 
         public List<DTORankingHistorias> Ejecutar()
         {
-            return _repositorioLectura.ObtenerFinalizadas()   // debe incluir Historia
+            return _repositorioLectura.ObtenerFinalizadas()   
                       .GroupBy(l => new { l.Historia.Id, l.Historia.Titulo })
                       .Select(g => new DTORankingHistorias
                       {

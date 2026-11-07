@@ -11,5 +11,7 @@ namespace EscogeAventura.LogicaNegocios.IRepositorios
         Lectura FindByNombreHistoria(string nombreHistoria);
         public List<Lectura> ObtenerFinalizadas();
         public List<Lectura> Obtenerhistorial(int usuarioId, DateTime? fechaInicio);
+        public List<Lectura> ObtenerFinalizadasPorHistoria(int historiaId);
+       
     }
 }

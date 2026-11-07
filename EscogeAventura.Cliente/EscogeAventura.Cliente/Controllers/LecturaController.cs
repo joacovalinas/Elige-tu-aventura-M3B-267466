@@ -56,40 +56,40 @@ namespace EscogeAventura.Cliente.Controllers
 
             TempData["ErrorMessage"] = await response.Content.ReadAsStringAsync();
             return RedirectToAction("Index", "Historia"); // o donde corresponda
-            
+
         }
 
 
-          public async Task<IActionResult> Leer(int nombreLectura, int idLectura)
-          {
-              string token = HttpContext.Session.GetString("Token");
-              _cliente.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-           
+        public async Task<IActionResult> Leer(int nombreLectura, int idLectura)
+        {
+            string token = HttpContext.Session.GetString("Token");
+            _cliente.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
             var response = await _cliente.GetAsync($"Lectura/{idLectura}");
 
-           if (response.IsSuccessStatusCode)
-              {
-                  var json = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+            {
+                var json = await response.Content.ReadAsStringAsync();
 
-                  var options = new JsonSerializerOptions
-                  {
-                      PropertyNameCaseInsensitive = true
-                  
-                  };
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+
+                };
 
                 DTOLeer lectura = new DTOLeer();
                 lectura = JsonSerializer.Deserialize<DTOLeer>(json, options);
 
-                  return View(lectura);
-              }
-              else if (response.StatusCode == HttpStatusCode.Unauthorized)
-              {
-                  return RedirectToAction("Login", "Auth");
-              }
-              else
-              {
-                  TempData["ErrorMessage"] = "Error al obtener las historias. Por favor, inténtelo de nuevo";
-              }
+                return View(lectura);
+            }
+            else if (response.StatusCode == HttpStatusCode.Unauthorized)
+            {
+                return RedirectToAction("Login", "Auth");
+            }
+            else
+            {
+                TempData["ErrorMessage"] = "Error al obtener las historias. Por favor, inténtelo de nuevo";
+            }
 
             return View();
         }
@@ -116,7 +116,7 @@ namespace EscogeAventura.Cliente.Controllers
                 return RedirectToAction("Login", "Auth");
 
             TempData["ErrorMessage"] = await response.Content.ReadAsStringAsync();
-            return View("Leer",dto); // o donde corresponda
+            return View("Leer", dto); // o donde corresponda
 
 
         }
@@ -203,5 +203,71 @@ namespace EscogeAventura.Cliente.Controllers
 
 
 
-    }
+
+        private async Task<List<DTOHistoria>> ObtenerHistorias()
+        {
+            HttpResponseMessage respuesta = await _cliente.GetAsync("Historia/listar"); // poné la ruta real de tu API
+            if (!respuesta.IsSuccessStatusCode)
+                return null;
+
+            string json = await respuesta.Content.ReadAsStringAsync();
+            DTOIndexHistoria dto = JsonSerializer.Deserialize<DTOIndexHistoria>(json,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            if (dto == null || dto.Historias == null)
+                return new List<DTOHistoria>();
+
+            return dto.Historias;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> SeleccionarHistoria()
+        {
+            string token = HttpContext.Session.GetString("Token");
+            _cliente.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            List<DTOHistoria> historias = await ObtenerHistorias();
+            if (historias == null)
+            {
+                ViewBag.Error = "Error al obtener las historias. Por favor, inténtelo de nuevo";
+                return View(new List<DTOHistoria>());
+            }
+
+            return View(historias);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> FinalesAlcanzados(int historiaId)
+        {
+            string token = HttpContext.Session.GetString("Token");
+            _cliente.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            HttpResponseMessage respuesta = await _cliente.GetAsync($"Lectura/finales-alcanzados/{historiaId}");
+            if (respuesta.StatusCode == HttpStatusCode.Unauthorized)
+                return RedirectToAction("Login", "Auth");
+
+            if (!respuesta.IsSuccessStatusCode)
+            {
+                ViewBag.Error = "Error al obtener los finales de la historia. Por favor, inténtelo de nuevo";
+                return View(new List<DTOFinalAlcanzado>());
+            }
+
+            string json = await respuesta.Content.ReadAsStringAsync();
+            List<DTOFinalAlcanzado> finales = JsonSerializer.Deserialize<List<DTOFinalAlcanzado>>(json,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            List<DTOHistoria> historias = await ObtenerHistorias();
+            if (historias != null)
+            {
+                DTOHistoria elegida = historias.FirstOrDefault(h => h.Id == historiaId);
+                if (elegida != null)
+                    ViewBag.TituloHistoria = elegida.Titulo;
+            }
+
+            return View(finales);
+
+
+        }
+
+        }
 }

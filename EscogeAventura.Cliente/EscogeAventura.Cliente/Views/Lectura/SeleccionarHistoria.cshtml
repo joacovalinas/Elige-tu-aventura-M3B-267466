@@ -1,0 +1,42 @@
+﻿@using EscogeAventura.Cliente.Models.DTOs.DTOsHistoria
+@model List<DTOHistoria>
+@{
+    ViewData["Title"] = "Seleccionar historia";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+
+            <h2 class="mb-1">Final más alcanzado</h2>
+            <p class="text-muted mb-4">Elegí una historia para ver cuántas veces se alcanzó cada uno de sus finales.</p>
+
+            @if (!string.IsNullOrEmpty(ViewBag.Error))
+            {
+                <div class="alert alert-danger">@ViewBag.Error</div>
+            }
+
+            @if (Model == null || Model.Count == 0)
+            {
+                <div class="alert alert-info">No hay historias disponibles.</div>
+            }
+            else
+            {
+                <form method="get" asp-action="FinalesAlcanzados">
+                    <div class="mb-3">
+                        <label for="historiaId" class="form-label">Historia</label>
+                        <select id="historiaId" name="historiaId" class="form-select" required>
+                            <option value="">Seleccioná una historia...</option>
+                            @foreach (DTOHistoria h in Model)
+                            {
+                                <option value="@h.Id">@h.Titulo</option>
+                            }
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Ver finales</button>
+                </form>
+            }
+
+        </div>
+    </div>
+</div>

@@ -1,0 +1,65 @@
+﻿@using EscogeAventura.Cliente.Models.DTOs.DTOsHistoria
+@model List<DTOFinalAlcanzado>
+@{
+    ViewData["Title"] = "Finales alcanzados";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-10 col-lg-8 col-xl-6">
+
+            <h2 class="mb-1">Finales alcanzados</h2>
+            <p class="text-muted mb-4">
+                @if (!string.IsNullOrEmpty(ViewBag.TituloHistoria))
+                {
+                    <span>Historia: <strong>@ViewBag.TituloHistoria</strong></span>
+                }
+            </p>
+
+            @if (!string.IsNullOrEmpty(ViewBag.Error))
+            {
+                <div class="alert alert-danger">@ViewBag.Error</div>
+            }
+            else if (Model == null || Model.Count == 0)
+            {
+                <div class="alert alert-info">Esta historia no tiene finales.</div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead>
+                            <tr>
+                                <th scope="col">Final</th>
+                                <th scope="col" class="text-end w-25">Veces alcanzado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (DTOFinalAlcanzado f in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @f.Final
+                                        @if (f.EsMasFrecuente)
+                                        {
+                                            <span class="badge text-bg-success ms-2">Más frecuente</span>
+                                        }
+                                    </td>
+                                    <td class="text-end">@f.CantidadVeces</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                @if (!Model.Any(f => f.EsMasFrecuente))
+                {
+                    <p class="text-muted small">Todavía nadie llegó a un final de esta historia.</p>
+                }
+            }
+
+            <a asp-action="SeleccionarHistoria" class="btn btn-outline-secondary mt-2">Elegir otra historia</a>
+
+        </div>
+    </div>
+</div>

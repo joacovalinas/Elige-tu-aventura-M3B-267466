@@ -1,5 +1,7 @@
 ﻿using DTOs.DTO.DTOsCapitulo;
+using DTOs.DTO.DTOsHistoria;
 using DTOs.DTO.DTOsLectura;
+using EscogeAventura.LogicaAplicacion.ICasosUso.ICUHistoria;
 using EscogeAventura.LogicaAplicacion.ICasosUso.ICULectura;
 using EscogeAventura.LogicaNegocios.CustomExceptions.Genericas;
 using EscogeAventura.LogicaNegocios.CustomExceptions.Usuario;
@@ -21,8 +23,10 @@ namespace EscogeAventura.API.Controllers
         private ICURankingHistorias _cuRankingHistorias;
         private ICULeerLectura _cuLeerLectura;
         private ICUObtenerHistorial _cuObtenerHistorial;
+        private ICUFinalAlcanzado _cuFinalAlcanzado;
+
         public LecturaController(ICUAltaLectura cuAltaLectura, ICUObtenerLectura cuObtenerLectura, ICUAvanzarLectura cuAvanzarLectura, 
-            ICULeerLectura cuLeerLectura, ICUObtenerHistorial cuObtenerHistorial, ICURankingHistorias cuRankingHistorias)
+            ICULeerLectura cuLeerLectura, ICUObtenerHistorial cuObtenerHistorial, ICURankingHistorias cuRankingHistorias, ICUFinalAlcanzado cuFinalAlcanzado)
         {
             _cuAltaLectura = cuAltaLectura;
             _cuObtenerLectura = cuObtenerLectura;
@@ -30,6 +34,7 @@ namespace EscogeAventura.API.Controllers
             _cuLeerLectura = cuLeerLectura;
             _cuObtenerHistorial = cuObtenerHistorial;
             _cuRankingHistorias = cuRankingHistorias;
+            _cuFinalAlcanzado = cuFinalAlcanzado;
         }
 
 
@@ -119,6 +124,27 @@ namespace EscogeAventura.API.Controllers
                 return StatusCode(500, new { error = "Ocurrió un error inesperado" });
             }
         }
+
+
+        [HttpGet("finales-alcanzados/{historiaId}")]
+      
+        public IActionResult ObtenerFinalesAlcanzados(int historiaId)
+        {
+            try
+            {
+                List<DTOFinalAlcanzado> finales = _cuFinalAlcanzado.Ejecutar(historiaId);
+                return Ok(finales);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, new { error = "Ocurrió un error inesperado" });
+            }
+        }
+
+
+
+
+
 
     }
 }

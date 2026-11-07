@@ -72,6 +72,14 @@ namespace EscogeAventura.LogicaAccesoDatos.Repos
 
         }
 
+        public List<Lectura> ObtenerFinalizadasPorHistoria(int historiaId)
+        {
+            return _context.Lecturas
+                .Include(l => l.Final)
+                .Where(l => l.Historia.Id == historiaId && l.Final != null)
+                .ToList();
+        }
+
 
         public void Remove(Lectura ToEliminar)
         {
