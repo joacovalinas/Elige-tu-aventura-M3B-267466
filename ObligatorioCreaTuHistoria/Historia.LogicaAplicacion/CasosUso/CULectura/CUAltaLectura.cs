@@ -40,7 +40,16 @@ namespace EscogeAventura.LogicaAplicacion.CasosUso.CULectura
                 throw new DominioException("No existe esta historia.");
             }
 
-            Lectura aux = _repositorioLectura.FindAll().FirstOrDefault(l => l.Usuario.Id == dto.UsuarioId && l.Nombrelectura == dto.Nombrelectura);
+            Lectura aux = _repositorioLectura.FindAll().
+                FirstOrDefault(l => l.Usuario.Id == dto.UsuarioId && l.Nombrelectura == dto.Nombrelectura && l.Historia.Id== dto.HistoriaId);
+
+            
+
+          /*  if(aux != null && dto.HistoriaId != aux.Historia.Id)
+            {
+                throw new DominioException("Ya existe una lectura con este nombre para este usuario.");
+            }
+          */
 
             if (aux == null)
             {

@@ -23,7 +23,7 @@ namespace EscogeAventura.LogicaAplicacion.CasosUso.CULectura
         public DTOLeer Ejecutar(DTOLeer dto)
         {
             
-            Lectura l= _repositorioLectura.FindByNombreLectura(dto.nombreLectura);
+            Lectura l= _repositorioLectura.FindById(dto.Id);
             Capitulo aux = _repositorioCapitulo.FindByNombreCapituloYHistoria(dto.opcionElegida, dto.HistoriaTitulo);
 
             if (aux is Final final)

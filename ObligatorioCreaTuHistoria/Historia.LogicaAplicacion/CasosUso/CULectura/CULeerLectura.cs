@@ -30,8 +30,11 @@ namespace EscogeAventura.LogicaAplicacion.CasosUso.CULectura
 
 
             DTOLeer dto = new DTOLeer();
-                Capitulo cap = _repositorioCapitulo.FindById(lecturaAux.CapituloActual.Id);
+
+          //  MapperLectura.ToDtoLeer(lecturaAux);
+            Capitulo cap = _repositorioCapitulo.FindById(lecturaAux.CapituloActual.Id);
                 dto.Id = lecturaAux.Id;
+                dto.UsuarioId = lecturaAux.Usuario.Id;
                 dto.capituloActual = MapperCapitulo.ToDtoCapituloLectura(cap);
                 dto.HistoriaTitulo = lecturaAux.Historia.Titulo;
                 dto.nombreLectura = lecturaAux.Nombrelectura;

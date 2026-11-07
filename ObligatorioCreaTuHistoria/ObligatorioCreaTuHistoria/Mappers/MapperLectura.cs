@@ -46,6 +46,7 @@ namespace DTOs.Mappers
 
             DTOLeer dto = new DTOLeer();
             dto.Id = l.Id;
+            dto.UsuarioId = l.Usuario.Id;
             dto.nombreLectura = l.Nombrelectura;
             dto.HistoriaTitulo = l.Historia.Titulo;
             dto.capituloActual = MapperCapitulo.ToDtoCapituloLectura(l.CapituloActual);

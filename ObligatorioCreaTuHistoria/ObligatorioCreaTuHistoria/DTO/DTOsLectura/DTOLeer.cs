@@ -8,6 +8,7 @@ namespace DTOs.DTO.DTOsLectura
     public class DTOLeer
     {
         public int Id { get; set; }
+        public int UsuarioId { get; set; }
         public string nombreLectura { get; set; }
         public string HistoriaTitulo { get; set; }
         public DTOCapituloLectura capituloActual { get; set; }
