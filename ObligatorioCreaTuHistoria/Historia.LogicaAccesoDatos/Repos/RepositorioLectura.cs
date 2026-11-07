@@ -65,6 +65,14 @@ namespace EscogeAventura.LogicaAccesoDatos.Repos
             return query.ToList();
         }
 
+        public List<Lectura> ObtenerFinalizadas()
+        {
+
+            return _context.Lecturas.Include(l => l.Historia).Where(l => l.FechaFin != null).ToList();
+
+        }
+
+
         public void Remove(Lectura ToEliminar)
         {
             _context.Lecturas.Remove(ToEliminar);

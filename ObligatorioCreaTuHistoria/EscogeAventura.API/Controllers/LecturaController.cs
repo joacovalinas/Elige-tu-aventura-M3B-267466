@@ -18,17 +18,18 @@ namespace EscogeAventura.API.Controllers
         private ICUAltaLectura _cuAltaLectura;
         private ICUObtenerLectura _cuObtenerLectura;
         private ICUAvanzarLectura _cuAvanzarLectura;
-
+        private ICURankingHistorias _cuRankingHistorias;
         private ICULeerLectura _cuLeerLectura;
         private ICUObtenerHistorial _cuObtenerHistorial;
         public LecturaController(ICUAltaLectura cuAltaLectura, ICUObtenerLectura cuObtenerLectura, ICUAvanzarLectura cuAvanzarLectura, 
-            ICULeerLectura cuLeerLectura, ICUObtenerHistorial cuObtenerHistorial)
+            ICULeerLectura cuLeerLectura, ICUObtenerHistorial cuObtenerHistorial, ICURankingHistorias cuRankingHistorias)
         {
             _cuAltaLectura = cuAltaLectura;
             _cuObtenerLectura = cuObtenerLectura;
             _cuAvanzarLectura = cuAvanzarLectura;
             _cuLeerLectura = cuLeerLectura;
             _cuObtenerHistorial = cuObtenerHistorial;
+            _cuRankingHistorias = cuRankingHistorias;
         }
 
 
@@ -105,8 +106,19 @@ namespace EscogeAventura.API.Controllers
             }
         }
 
-
-
+        [HttpGet("ranking")]
+        public IActionResult ObtenerRankingHistorias()
+        {
+            try
+            {
+                List<DTORankingHistorias> ranking = _cuRankingHistorias.Ejecutar();
+                return Ok(ranking);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, new { error = "Ocurrió un error inesperado" });
+            }
+        }
 
     }
 }

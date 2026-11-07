@@ -55,6 +55,7 @@ namespace EscogeAventura.API
             builder.Services.AddScoped<ICUAvanzarLectura, CUAvanzarLectura>();
             builder.Services.AddScoped<ICULeerLectura, CULeerLectura>();
             builder.Services.AddScoped<ICUObtenerHistorial, CUObtenerHistorial>();
+            builder.Services.AddScoped<ICURankingHistorias, CURankingHistorias>();
             //JWT
 
 

@@ -178,8 +178,28 @@ namespace EscogeAventura.Cliente.Controllers
 
 
 
+        [HttpGet]
+        public async Task<IActionResult> RankingHistorias()
+        {
+            string token = HttpContext.Session.GetString("Token");
+            _cliente.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response = await _cliente.GetAsync($"Lectura/Ranking");
+            if (response.IsSuccessStatusCode)
+            {
+                var json = await response.Content.ReadAsStringAsync();
+                var lista = JsonSerializer.Deserialize<List<DTORankingHistorias>>(json,
+                    new JsonSerializerOptions
+                    { PropertyNameCaseInsensitive = true,
+                        IncludeFields = true
+                    });
 
-
+                return View(lista);
+            }
+            if (response.StatusCode == HttpStatusCode.Unauthorized)
+                return RedirectToAction("Login", "Auth");
+            ViewBag.Error = "Error al obtener el detalle de la lectura. Por favor, inténtelo de nuevo";
+            return View(new List<DTORankingHistorias>());
+        }
 
 
 
