@@ -68,7 +68,7 @@ namespace EscogeAventura.LogicaAccesoDatos.Repos
         public List<Lectura> ObtenerFinalizadas()
         {
 
-            return _context.Lecturas.Include(l => l.Historia).Where(l => l.FechaFin != null).ToList();
+            return _context.Lecturas.Include(l => l.Usuario).Include(l => l.Historia).Where(l => l.FechaFin != null).ToList();
 
         }
 

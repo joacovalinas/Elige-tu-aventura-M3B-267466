@@ -1,8 +1,10 @@
 ﻿using DTOs.DTO.DTOsCapitulo;
 using DTOs.DTO.DTOsHistoria;
 using DTOs.DTO.DTOsLectura;
+using DTOs.DTO.DTOsUsuario;
 using EscogeAventura.LogicaAplicacion.ICasosUso.ICUHistoria;
 using EscogeAventura.LogicaAplicacion.ICasosUso.ICULectura;
+using EscogeAventura.LogicaAplicacion.ICasosUso.ICUUsuario;
 using EscogeAventura.LogicaNegocios.CustomExceptions.Genericas;
 using EscogeAventura.LogicaNegocios.CustomExceptions.Usuario;
 using EscogeAventura.LogicaNegocios.Entidades;
@@ -24,9 +26,10 @@ namespace EscogeAventura.API.Controllers
         private ICULeerLectura _cuLeerLectura;
         private ICUObtenerHistorial _cuObtenerHistorial;
         private ICUFinalAlcanzado _cuFinalAlcanzado;
-
-        public LecturaController(ICUAltaLectura cuAltaLectura, ICUObtenerLectura cuObtenerLectura, ICUAvanzarLectura cuAvanzarLectura, 
-            ICULeerLectura cuLeerLectura, ICUObtenerHistorial cuObtenerHistorial, ICURankingHistorias cuRankingHistorias, ICUFinalAlcanzado cuFinalAlcanzado)
+        private ICURankingUsuarios _cuRankingUsuarios;
+        public LecturaController(ICUAltaLectura cuAltaLectura, ICUObtenerLectura cuObtenerLectura, ICUAvanzarLectura cuAvanzarLectura,
+                                    ICULeerLectura cuLeerLectura, ICUObtenerHistorial cuObtenerHistorial, ICURankingHistorias cuRankingHistorias,
+                                    ICUFinalAlcanzado cuFinalAlcanzado, ICURankingUsuarios cuRankingUsuarios)
         {
             _cuAltaLectura = cuAltaLectura;
             _cuObtenerLectura = cuObtenerLectura;
@@ -35,6 +38,7 @@ namespace EscogeAventura.API.Controllers
             _cuObtenerHistorial = cuObtenerHistorial;
             _cuRankingHistorias = cuRankingHistorias;
             _cuFinalAlcanzado = cuFinalAlcanzado;
+            _cuRankingUsuarios = cuRankingUsuarios;
         }
 
 
@@ -141,7 +145,19 @@ namespace EscogeAventura.API.Controllers
             }
         }
 
-
+        [HttpGet("ranking-usuarios")]
+        public IActionResult ObtenerRankingUsuarios()
+        {
+            try
+            {
+                List<DTORankingUsuarios> ranking = _cuRankingUsuarios.Ejecutar();
+                return Ok(ranking);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, new { error = "Ocurrió un error inesperado" });
+            }
+        }
 
 
 

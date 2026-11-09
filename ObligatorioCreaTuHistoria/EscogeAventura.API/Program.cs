@@ -57,6 +57,7 @@ namespace EscogeAventura.API
             builder.Services.AddScoped<ICUObtenerHistorial, CUObtenerHistorial>();
             builder.Services.AddScoped<ICURankingHistorias, CURankingHistorias>();
             builder.Services.AddScoped<ICUFinalAlcanzado, CUFinalAlcanzado>();
+            builder.Services.AddScoped<ICURankingUsuarios, CURankingUsuarios>();
 
             //JWT
 

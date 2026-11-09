@@ -1,4 +1,5 @@
-﻿using EscogeAventura.Cliente.Models.DTOs.DTOsHistoria;
+﻿using EscogeAventura.Cliente.Models.DTOs;
+using EscogeAventura.Cliente.Models.DTOs.DTOsHistoria;
 using EscogeAventura.Cliente.Models.DTOs.DTOsLectura;
 using EscogeAventura.Cliente.Models.DTOsLectura;
 using Microsoft.AspNetCore.Mvc;
@@ -269,5 +270,33 @@ namespace EscogeAventura.Cliente.Controllers
 
         }
 
+
+
+
+
+        [HttpGet]
+        public async Task<IActionResult> RankingUsuarios()
+        {
+            string token = HttpContext.Session.GetString("Token");
+            _cliente.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
+            HttpResponseMessage respuesta = await _cliente.GetAsync("Lectura/ranking-usuarios");
+
+            if (respuesta.StatusCode == HttpStatusCode.Unauthorized)
+                return RedirectToAction("Login", "Auth");
+
+            if (!respuesta.IsSuccessStatusCode)
+            {
+                ViewBag.Error = "Error al obtener el ranking de usuarios. Por favor, inténtelo de nuevo";
+                return View(new List<DTORankingUsuarios>());
+            }
+
+            string json = await respuesta.Content.ReadAsStringAsync();
+            List<DTORankingUsuarios> ranking = JsonSerializer.Deserialize<List<DTORankingUsuarios>>(json,
+                new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+            return View(ranking);
         }
+
+    }
 }
