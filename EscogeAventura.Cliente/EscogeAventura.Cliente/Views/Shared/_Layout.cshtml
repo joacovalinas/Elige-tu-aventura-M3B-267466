@@ -61,7 +61,17 @@
                             {
                                 // Links para el admin
                               
-                               
+                                <li class="nav-item">
+                                    <a class="nav-link @Activo("Lectura", "RankingHistorias")" asp-controller="Lectura" asp-action="RankingHistorias">Ranking historia</a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link @Activo("Lectura", "SeleccionarHistoria")" asp-controller="Lectura" asp-action="SeleccionarHistoria">Ver finales Alcanzados</a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link @Activo("Lectura", "RankingUsuarios")" asp-controller="Lectura" asp-action="RankingUsuarios">Ranking usuarios </a>
+                                </li>
                             }
                             else
                             {
@@ -72,20 +82,10 @@
                                 </li>
 
                                 <li class="nav-item">
-                                    <a class="nav-link @Activo("Lectura", "Historial")" asp-controller="Lectura" asp-action="Historial">Mi historial(ver usuario permitido)</a>
+                                    <a class="nav-link @Activo("Lectura", "Historial")" asp-controller="Lectura" asp-action="Historial">Mi historial</a>
                                 </li>   
 
-                                <li class="nav-item">
-                                    <a class="nav-link @Activo("Lectura", "RankingHistorias")" asp-controller="Lectura" asp-action="RankingHistorias">Ranking historia(ver usuario permitido)</a>
-                                </li>
-
-                                <li class="nav-item">
-                                    <a class="nav-link @Activo("Lectura", "SeleccionarHistoria")" asp-controller="Lectura" asp-action="SeleccionarHistoria">Ver finales Alcanzados(ver usuario permitido)</a>
-                                </li>
-
-                                <li class="nav-item">
-                                    <a class="nav-link @Activo("Lectura", "RankingUsuarios")" asp-controller="Lectura" asp-action="RankingUsuarios">Ranking usuarios (ver usuario permitido)</a>
-                                </li>
+                       
 
                             }
                         }

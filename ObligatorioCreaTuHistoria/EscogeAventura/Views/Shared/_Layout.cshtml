@@ -61,10 +61,7 @@
                                 </li>
 
                             }
-                            else
-                            {
-                                // Solo botones para el Usuario
-                            }
+                          
                         }
 
                     </ul>
@@ -81,7 +78,9 @@
                                 </span>
                             </li>
                             <li class="nav-item">
-                                <a class="btn btn-outline-accent btn-sm" asp-area="" asp-controller="Auth" asp-action="Logout">Cerrar sesión</a>
+                                <button type="button" class="btn btn-outline-accent btn-sm" data-bs-toggle="modal" data-bs-target="#modalLogout">
+                                    Cerrar sesión
+                                </button>
                             </li>
                         }
                         else
@@ -107,6 +106,28 @@
             &copy; 2026 - EscogeAventura - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
+
+    @if (LogueadoId != null)
+    {
+        <div class="modal fade" id="modalLogout" tabindex="-1" aria-labelledby="modalLogoutLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalLogoutLabel">Cerrar sesión</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body">
+                        ¿Estás seguro de que querés cerrar sesión?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-accent" data-bs-dismiss="modal">Cancelar</button>
+                        <a class="btn btn-accent" asp-controller="Auth" asp-action="Logout">Sí, cerrar sesión</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

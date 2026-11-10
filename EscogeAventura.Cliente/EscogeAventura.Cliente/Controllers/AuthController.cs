@@ -48,7 +48,7 @@ namespace EscogeAventura.Cliente.Controllers
                     HttpContext.Session.SetString("LogueadoRol", lr.Rol);
                     HttpContext.Session.SetString("LogueadoNombre", lr.Nombre);
                     HttpContext.Session.SetString("Token", lr.token);
-
+                    
                     return RedirectToAction("Index", "Home");
                 }
 

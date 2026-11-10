@@ -141,6 +141,10 @@ namespace EscogeAventura.WebApp
             app.UseHttpsRedirection();
             app.UseRouting();
 
+
+
+
+            app.UseAuthentication();
             app.UseAuthorization();
             app.UseSession();
             app.MapStaticAssets();

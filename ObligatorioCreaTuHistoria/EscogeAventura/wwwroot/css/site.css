@@ -405,3 +405,39 @@ table form + form {
 .fila-historia:has(input:checked) {
     background-color: rgba(46, 217, 163, 0.12);
 }
+
+/* ---------- Select múltiple: opciones seleccionadas visibles ---------- */
+.form-select[multiple] {
+    min-height: 140px;
+}
+
+    .form-select[multiple] option {
+        padding: 0.35rem 0.6rem;
+        border-radius: 6px;
+        margin-bottom: 2px;
+    }
+
+        /* El gradiente fuerza el color también cuando el select no tiene foco */
+        .form-select[multiple] option:checked {
+            background: var(--color-secondary) linear-gradient(0deg, var(--color-secondary), var(--color-secondary));
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .form-select[multiple] option:hover {
+            background-color: rgba(46, 217, 163, 0.2);
+        }
+
+.modal-content {
+    background-color: #14213d; /* ajustalo a tu paleta */
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.modal-header, .modal-footer {
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+.btn-close {
+    filter: invert(1);
+}

@@ -2,6 +2,7 @@
 using DTOs.DTO.DTOsUsuario;
 using EscogeAventura.LogicaAplicacion.ICasosUso.ICUUsuario;
 using EscogeAventura.LogicaNegocios.CustomExceptions.Usuario;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -13,6 +14,7 @@ namespace EscogeAventura.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+   
     public class AuthController : ControllerBase
     {
         private ICUVerifExistencia _CuVerifExistencia;

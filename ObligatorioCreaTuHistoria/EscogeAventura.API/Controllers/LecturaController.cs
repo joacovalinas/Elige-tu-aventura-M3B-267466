@@ -1,4 +1,4 @@
-﻿using DTOs.DTO.DTOsCapitulo;
+﻿
 using DTOs.DTO.DTOsHistoria;
 using DTOs.DTO.DTOsLectura;
 using DTOs.DTO.DTOsUsuario;
@@ -16,7 +16,7 @@ namespace EscogeAventura.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-   // [Authorize (Roles = "Usuario")]
+   [Authorize]
     public class LecturaController : ControllerBase
     {
         private ICUAltaLectura _cuAltaLectura;
@@ -43,8 +43,10 @@ namespace EscogeAventura.API.Controllers
 
 
 
+   
 
         [HttpPost("ALtaLectura")]
+        [Authorize(Roles = "Usuario")]
         public IActionResult AltaLectura(DTOAltaLectura dto)
         {
             try
@@ -61,7 +63,9 @@ namespace EscogeAventura.API.Controllers
             }
         }
 
+       
         [HttpGet("{IdLectura:int}")]
+        [Authorize(Roles = "Usuario")]
         public IActionResult LeerLectura(int IdLectura)
         {
             try
@@ -78,6 +82,8 @@ namespace EscogeAventura.API.Controllers
 
 
         [HttpPost("Avanzar")]
+        [Authorize(Roles = "Usuario")]
+
         public IActionResult AvanzarLectura(DTOLeer dto)
         {
             try
@@ -94,6 +100,8 @@ namespace EscogeAventura.API.Controllers
 
 
         [HttpGet("historial/{usuarioId:int}")]
+        [Authorize(Roles = "Usuario")]
+
         public IActionResult ObtenerHistorial(int usuarioId, [FromQuery] DateTime? fecha)
         {
             try
@@ -116,6 +124,8 @@ namespace EscogeAventura.API.Controllers
         }
 
         [HttpGet("ranking")]
+        [Authorize(Roles = "Admin")]
+
         public IActionResult ObtenerRankingHistorias()
         {
             try
@@ -131,7 +141,8 @@ namespace EscogeAventura.API.Controllers
 
 
         [HttpGet("finales-alcanzados/{historiaId}")]
-      
+        [Authorize(Roles = "Admin")]
+
         public IActionResult ObtenerFinalesAlcanzados(int historiaId)
         {
             try
@@ -146,6 +157,7 @@ namespace EscogeAventura.API.Controllers
         }
 
         [HttpGet("ranking-usuarios")]
+        [Authorize(Roles = "Admin")]
         public IActionResult ObtenerRankingUsuarios()
         {
             try

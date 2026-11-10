@@ -173,6 +173,9 @@ namespace EscogeAventura.Cliente.Controllers
             if (response.StatusCode == HttpStatusCode.Unauthorized)
                 return RedirectToAction("Login", "Auth");
 
+            if(response.StatusCode == HttpStatusCode.Forbidden)
+                return RedirectToAction("Index", "Home");
+
             ViewBag.Error = "Error al obtener el historial. Por favor, inténtelo de nuevo";
             return View(new List<DTOLecturaHistorial>());
         }

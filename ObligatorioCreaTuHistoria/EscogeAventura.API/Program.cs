@@ -13,6 +13,7 @@ using EscogeAventura.LogicaNegocios.IRepositorios;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 using System.Text;
 
 namespace EscogeAventura.API
@@ -67,18 +68,28 @@ namespace EscogeAventura.API
 
 
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(opt =>
-            {
-                opt.TokenValidationParameters = new TokenValidationParameters
-                {
-                    //Definir las verificaciones a realizar
-                    ValidateIssuer = false,
-                    ValidateAudience = false,
-                    ValidateLifetime = true,
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = claveCodificada
-                };
-            });
+          .AddJwtBearer(opt =>
+          {
+              opt.TokenValidationParameters = new TokenValidationParameters
+              {
+                  ValidateIssuer = false,
+                  ValidateAudience = false,
+                  ValidateLifetime = true,
+                  ValidateIssuerSigningKey = true,
+                  IssuerSigningKey = claveCodificada,
+                  RoleClaimType = ClaimTypes.Role,
+                  NameClaimType = ClaimTypes.Name
+              };
+
+              opt.Events = new JwtBearerEvents
+              {
+                  OnAuthenticationFailed = contexto =>
+                  {
+                      Console.WriteLine("JWT FALLÓ: " + contexto.Exception.Message);
+                      return Task.CompletedTask;
+                  }
+              };
+          });
 
 
             builder.Services.AddAuthorization();
@@ -90,6 +101,19 @@ namespace EscogeAventura.API
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
 
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("politicaEspecifica", builder =>
+                {
+                    builder.AllowAnyOrigin() // cambiar por nombre web app
+                           .AllowAnyMethod()
+                           .AllowAnyHeader();
+                });
+            });
+
+
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -98,10 +122,15 @@ namespace EscogeAventura.API
                 app.MapOpenApi();
             }
 
+          
+
+            app.UseCors("politicaEspecifica");
             app.UseHttpsRedirection();
 
-            app.UseAuthorization();
+
             app.UseAuthentication();
+            app.UseAuthorization();
+          
 
             app.MapControllers();
 

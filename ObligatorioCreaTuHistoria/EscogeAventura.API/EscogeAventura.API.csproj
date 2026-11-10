@@ -7,13 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.13" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.14" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.12" />
+    <PackageReference Include="Microsoft.IdentityModel.JsonWebTokens" Version="8.23.0" />
     <PackageReference Include="System.Security.Cryptography.Pkcs" Version="10.0.13" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EscogeAventura\EscogeAventura.WebApp.csproj" />
     <ProjectReference Include="..\Historia.LogicaAccesoDatos\EscogeAventura.LogicaAccesoDatos.csproj" />
     <ProjectReference Include="..\Historia.LogicaAplicacion\EscogeAventura.LogicaAplicacion.csproj" />
     <ProjectReference Include="..\Historia.LogicaNegocios\EscogeAventura.LogicaNegocios.csproj" />

@@ -1,6 +1,7 @@
 ﻿    using DTOs.DTO.DTOsHistoria;
 using EscogeAventura.LogicaAplicacion.ICasosUso.ICUCategoria;
 using EscogeAventura.LogicaAplicacion.ICasosUso.ICUHistoria;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,6 +9,7 @@ namespace EscogeAventura.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class HistoriaController : ControllerBase
     {
         private ICUListarHistoriasPublicadas _cuListarHistoriasPublicadas;
@@ -19,7 +21,9 @@ namespace EscogeAventura.API.Controllers
             _cuObtenerCategorias = cuObtenerCategorias;
         }
 
+        
         [HttpGet("listar")]
+        [Authorize(Roles = "Usuario,Admin")]
         public IActionResult ListarHistorias( int? categoriaId)
         {
             try
